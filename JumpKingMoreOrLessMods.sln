@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessAutoEquipping", "LessAutoEquipping\LessAutoEquipping.csproj", "{0D9871B5-C8BB-4970-B4B5-DC05F0CDC077}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreSaves", "MoreSaves\MoreSaves.csproj", "{31002E37-A67F-4A10-AE8F-A78A06E03CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreTextOptions", "MoreTextOptions\MoreTextOptions.csproj", "{7F9A9182-3A01-45BA-8BFB-9943653B7510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLayeringOptions", "MoreLayeringOptions\MoreLayeringOptions.csproj", "{F1CF119B-E912-4EAC-89F3-2052A6D47841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,14 @@ Global
 		{7F9A9182-3A01-45BA-8BFB-9943653B7510}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F9A9182-3A01-45BA-8BFB-9943653B7510}.Release|x64.ActiveCfg = Release|x64
 		{7F9A9182-3A01-45BA-8BFB-9943653B7510}.Release|x64.Build.0 = Release|x64
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Debug|x64.Build.0 = Debug|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1CF119B-E912-4EAC-89F3-2052A6D47841}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
