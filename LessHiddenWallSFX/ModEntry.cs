@@ -41,16 +41,15 @@ namespace LessHiddenWallSFX
         [OnLevelStart]
         public static void OnLevelStart()
         {
-            var contentManager = Game1.instance.contentManager;
-            var level = contentManager.level;
-            if (level == null)
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            if (tags is null)
             {
                 return;
             }
 
             // Really it doesn't mute it but sets it to null so theres nothing to play.
             // In a way it is muting it.
-            foreach (var tag in level.Info.Tags)
+            foreach (var tag in tags)
             {
                 if (tag == "MuteHiddenWallSFX")
                 {

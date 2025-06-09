@@ -53,7 +53,8 @@ namespace LessBabeNoises
             MuteNewBabe = false;
             MuteGhostBabe = false;
 
-            if (Game1.instance.contentManager?.level?.Info.Tags is null)
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            if (tags is null)
             {
                 return;
             }
@@ -63,7 +64,7 @@ namespace LessBabeNoises
                 .Field("m_ending_manager")
                 .Field("m_endings")
                 .GetValue<List<IEnding>>();
-            foreach (var tag in Game1.instance.contentManager.level.Info.Tags)
+            foreach (var tag in tags)
             {
                 if (tag == "MuteMainBabe")
                 {

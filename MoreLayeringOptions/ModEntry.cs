@@ -14,7 +14,10 @@ namespace MoreLayeringOptions
         [OnLevelStart]
         public static void OnLevelStart()
         {
-            //_ = Debugger.Launch();
+#if DEBUG
+            Debugger.Launch();
+            Harmony.DEBUG = true;
+#endif
 
             /* The order of entities for vanilla (and presumably any map) is:
                  JumpKing.PauseMenu.MenuFactory
@@ -59,12 +62,13 @@ namespace MoreLayeringOptions
                  JumpKing.MiscEntities.EarthquakeEntity
             */
 
-            if (Game1.instance.contentManager?.level?.Info.Tags is null)
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            if (tags is null)
             {
                 return;
             }
 
-            foreach (var tag in Game1.instance.contentManager.level.Info.Tags)
+            foreach (var tag in tags)
             {
                 if (tag == "MoveBirdBeforeProps")
                 {
