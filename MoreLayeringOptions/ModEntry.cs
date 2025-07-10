@@ -1,22 +1,27 @@
 namespace MoreLayeringOptions
 {
+#if DEBUG
+    using System.Diagnostics;
+#endif
     using System.Collections.Generic;
     using EntityComponent;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
 
     [JumpKingMod("Zebra.MoreLayeringOptions")]
+    [UsedImplicitly]
     public static class ModEntry
     {
         /// <summary>
         /// Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
+        [UsedImplicitly]
         public static void OnLevelStart()
         {
 #if DEBUG
             Debugger.Launch();
-            Harmony.DEBUG = true;
 #endif
 
             /* The order of entities for vanilla (and presumably any map) is:
@@ -75,11 +80,14 @@ namespace MoreLayeringOptions
                     MoveBirdBeforeProps();
                     break;
                 }
-                if (tag == "MoveWallsBeforePlayer")
+
+                if (tag != "MoveWallsBeforePlayer")
                 {
-                    MoveWallsBeforePlayer();
-                    break;
+                    continue;
                 }
+
+                MoveWallsBeforePlayer();
+                break;
             }
         }
 

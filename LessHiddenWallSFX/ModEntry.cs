@@ -6,39 +6,47 @@ namespace LessHiddenWallSFX
     using System.Text.RegularExpressions;
     using EntityComponent;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
     using Microsoft.Xna.Framework;
+#if DEBUG
+    using System.Diagnostics;
+#endif
 
-    [JumpKingMod(IDENTIFIER)]
+    [JumpKingMod(Identifier)]
     public static class ModEntry
     {
-        private const string IDENTIFIER = "Zebra.LessHiddenWallSFX";
+        private const string Identifier = "Zebra.LessHiddenWallSFX";
 
         /// <summary>The RaymanWallEnity type.</summary>
         private static Type RaymanWall { get; set; }
+
         /// <summary>Regex to match the entire tag defining screen numbers.</summary>
-        private static Regex TagRegex { get; set; } = new Regex(@"^MuteHiddenWallSFX=\(\s*(\d+(?:-\d+)?(?:\s*,\s*\d+(?:-\d+)?)*?)\s*\)$");
+        private static Regex TagRegex { get; } =
+            new Regex(@"^MuteHiddenWallSFX=\(\s*(\d+(?:-\d+)?(?:\s*,\s*\d+(?:-\d+)?)*?)\s*\)$");
+
         /// <summary>Matches all numbers of ranges into their own group.</summary>
-        private static Regex NumberRegex { get; set; } = new Regex(@"\d+(?:-\d+)?");
+        private static Regex NumberRegex { get; } = new Regex(@"\d+(?:-\d+)?");
 
         /// <summary>
-        /// Called by Jump King before the level loads
+        ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
+        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
 #if DEBUG
             Debugger.Launch();
-            Harmony.DEBUG = true;
 #endif
             RaymanWall = AccessTools.TypeByName("JumpKing.Props.RaymanWall.RaymanWallEntity");
         }
 
         /// <summary>
-        /// Called by Jump King when the Level Starts
+        ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
+        [UsedImplicitly]
         public static void OnLevelStart()
         {
             var tags = Game1.instance.contentManager?.level?.Info.Tags;
@@ -56,17 +64,20 @@ namespace LessHiddenWallSFX
                     MuteAll();
                     break;
                 }
+
                 var match = TagRegex.Match(tag);
-                if (match.Success)
+                if (!match.Success)
                 {
-                    MuteScreens(GetMutedScreens(match.Value));
-                    break;
+                    continue;
                 }
+
+                MuteScreens(GetMutedScreens(match.Value));
+                break;
             }
         }
 
         /// <summary>
-        /// Mutes all RaymanWalls by setting their sound reference to null.
+        ///     Mutes all RaymanWalls by setting their sound reference to null.
         /// </summary>
         private static void MuteAll()
         {
@@ -76,14 +87,15 @@ namespace LessHiddenWallSFX
                 {
                     continue;
                 }
+
                 _ = Traverse.Create(entity).Field("m_appear_sfx").SetValue(null);
             }
         }
 
         /// <summary>
-        /// Creates a HashSet of Screens that RaymanWalls are supposed to be muted on. The tag contained either single
-        /// numbers that can be directly added to the mute screens or a range of the form x-y. This results in all screens
-        /// from x to y (inclusive) being muted.
+        ///     Creates a HashSet of Screens that RaymanWalls are supposed to be muted on. The tag contained either single
+        ///     numbers that can be directly added to the mute screens or a range of the form x-y. This results in all screens
+        ///     from x to y (inclusive) being muted.
         /// </summary>
         /// <param name="tagInside">The screen numbers that have been defined inside the tag.</param>
         /// <returns>A HashSet containing all screens that RaymanWalls are supposed to be muted on.</returns>
@@ -102,6 +114,7 @@ namespace LessHiddenWallSFX
                     {
                         continue;
                     }
+
                     foreach (var i in Enumerable.Range(start, end - start + 1))
                     {
                         _ = screens.Add(i);
@@ -112,12 +125,13 @@ namespace LessHiddenWallSFX
                     _ = screens.Add(int.Parse(value));
                 }
             }
+
             return screens;
         }
 
         /// <summary>
-        /// Mutes RaymanWalls by setting their sound reference to null should their screen position
-        /// be inside the HashSet of screens that RaymanWalls are supposed to be muted on.
+        ///     Mutes RaymanWalls by setting their sound reference to null should their screen position
+        ///     be inside the HashSet of screens that RaymanWalls are supposed to be muted on.
         /// </summary>
         /// <param name="screens">Screens that RaymanWalls are supposed to be muted on.</param>
         private static void MuteScreens(HashSet<int> screens)
@@ -128,10 +142,12 @@ namespace LessHiddenWallSFX
                 {
                     continue;
                 }
+
                 var traverse = Traverse.Create(entity);
                 // From 346 to -13 is screen 1 => 0 to -360.
                 // From -14 to -373 is screen 2 => -360 to -720.
-                var screen = 1 + (((int)Traverse.Create(entity).Field("m_position").GetValue<Vector2>().Y - 346) / -360);
+                var screen = 1 + (((int)Traverse.Create(entity).Field("m_position").GetValue<Vector2>().Y - 346) /
+                                  -360);
                 if (screens.Contains(screen))
                 {
                     _ = traverse.Field("m_appear_sfx").SetValue(null);

@@ -4,22 +4,24 @@ namespace MoreTextOptions.Patches
     using System.Collections.Generic;
     using System.Linq;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    [HarmonyPatch(typeof(SpriteBatch), nameof(SpriteBatch.DrawString),
-        new[] { typeof(SpriteFont), typeof(string), typeof(Vector2), typeof(Color) })]
+    [HarmonyPatch(typeof(SpriteBatch), nameof(SpriteBatch.DrawString), typeof(SpriteFont), typeof(string),
+        typeof(Vector2), typeof(Color))]
     public static class PatchSpriteBatch
     {
+        [UsedImplicitly]
         public static bool Prefix(SpriteFont spriteFont, ref string text, Vector2 position, ref Color color)
         {
-            if (!ModEntry.REGEX.IsMatch(text))
+            if (!ModEntry.Regex.IsMatch(text))
             {
                 return true;
             }
 
-            var pairs = Sanitize(ModEntry.REGEX.Split(text));
+            var pairs = Sanitize(ModEntry.Regex.Split(text));
 
             var colors = new List<string>();
             var texts = new List<string>();
@@ -34,6 +36,7 @@ namespace MoreTextOptions.Patches
                 {
                     texts.Add(element);
                 }
+
                 i++;
             }
 
@@ -72,6 +75,7 @@ namespace MoreTextOptions.Patches
                 pairs = new LinkedList<string>(substrings);
                 _ = pairs.AddFirst("#FFFFFF");
             }
+
             return pairs;
         }
 

@@ -3,13 +3,14 @@ namespace MoreSaves.Patches
     using HarmonyLib;
     using JumpKing.MiscEntities.WorldItems.Inventory;
 
-    public class PatchInventoryManager
+    public static class PatchInventoryManager
     {
         private static readonly Traverse Inventory;
 
         static PatchInventoryManager()
         {
-            var inventoryManager = AccessTools.TypeByName("JumpKing.MiscEntities.WorldItems.Inventory.InventoryManager");
+            var inventoryManager =
+                AccessTools.TypeByName("JumpKing.MiscEntities.WorldItems.Inventory.InventoryManager");
 
             Inventory = Traverse.Create(inventoryManager).Property("inventory");
         }

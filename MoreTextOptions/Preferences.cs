@@ -3,17 +3,17 @@ namespace MoreTextOptions
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    public class Preferences : INotifyPropertyChanged
+    public sealed class Preferences : INotifyPropertyChanged
     {
-        private bool isCustomTextColor = false;
-        private int textRed = 255;
-        private int textGreen = 255;
+        private bool isCustomOutline;
+        private bool isCustomTextColor;
+        private bool isOutlineDisabled;
+        private int outlineBlue;
+        private int outlineGreen;
+        private int outlineRed;
         private int textBlue = 255;
-        private bool isOutlineDisabled = false;
-        private bool isCustomOutline = false;
-        private int outlineRed = 0;
-        private int outlineGreen = 0;
-        private int outlineBlue = 0;
+        private int textGreen = 255;
+        private int textRed = 255;
 
         public bool IsCustomTextColor
         {
@@ -107,7 +107,7 @@ namespace MoreTextOptions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

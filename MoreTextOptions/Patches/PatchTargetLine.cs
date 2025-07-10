@@ -1,9 +1,12 @@
+// ReSharper disable InconsistentNaming
+
 namespace MoreTextOptions.Patches
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.Props.RattmanText;
@@ -12,11 +15,12 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(TargetLine), "MyRun")]
     public static class PatchTargetLine
     {
-        private static readonly Type TypeBB = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
+        private static readonly Type TypeBb = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
         private static readonly Type TypeRattman = AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
         private static readonly Type TypeOldMan = AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity");
 
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
+        [UsedImplicitly]
         public static void Postfix(TargetLine __instance)
         {
             var typeInstance = __instance.game_object.GetType();
@@ -46,7 +50,7 @@ namespace MoreTextOptions.Patches
 
             var blackBoardComp = __instance.GetType()
                 .GetMethod("GetComponent")
-                .MakeGenericMethod(TypeBB)
+                ?.MakeGenericMethod(TypeBb)
                 .Invoke(__instance, new object[] { });
             var dict = Traverse.Create(blackBoardComp).Field("m_values").GetValue<Dictionary<string, object>>();
 

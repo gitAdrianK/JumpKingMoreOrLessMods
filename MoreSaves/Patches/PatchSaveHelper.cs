@@ -28,9 +28,11 @@ namespace MoreSaves.Patches
             MethodSaveStats = saveEncrypted.MakeGenericMethod(typeof(PlayerStats));
             MethodSaveInventory = saveEncrypted.MakeGenericMethod(typeof(Inventory));
 
-            MethodSaveGeneralSettingsPatch = new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveGeneralSettings)));
+            MethodSaveGeneralSettingsPatch =
+                new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveGeneralSettings)));
             MethodSaveStatsPatch = new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveStats)));
-            MethodSaveInventoryPatch = new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveInventory)));
+            MethodSaveInventoryPatch =
+                new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveInventory)));
         }
 
         public PatchSaveHelper(Harmony harmony)
@@ -55,25 +57,29 @@ namespace MoreSaves.Patches
             {
                 return;
             }
-            PatchXmlWrapper.Serialize(PatchSaveLube.GetGeneralSettings(), ModStrings.AUTO, ModEntry.SaveName, ModStrings.SAVES_PERMA);
+
+            PatchXmlWrapper.Serialize(PatchSaveLube.GetGeneralSettings(), ModStrings.Auto, ModEntry.SaveName,
+                ModStrings.SavesPerma);
         }
 
-        public static void SaveStats(string p_file, PlayerStats p_object)
+        public static void SaveStats(string pFile, PlayerStats pObject)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
-            PatchEncryption.SavePlayerStats(p_object, p_file, ModStrings.AUTO, ModEntry.SaveName, ModStrings.SAVES_PERMA);
+
+            PatchEncryption.SavePlayerStats(pObject, pFile, ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
         }
 
-        public static void SaveInventory(Inventory p_object)
+        public static void SaveInventory(Inventory pObject)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
-            PatchEncryption.SaveInventory(p_object, ModStrings.AUTO, ModEntry.SaveName, ModStrings.SAVES_PERMA);
+
+            PatchEncryption.SaveInventory(pObject, ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
         }
     }
 }

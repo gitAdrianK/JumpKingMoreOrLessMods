@@ -1,4 +1,4 @@
-namespace MoreSaves.Menues.Nodes
+namespace MoreSaves.Menus.Nodes
 {
     using System.Diagnostics;
     using System.IO;
@@ -7,11 +7,11 @@ namespace MoreSaves.Menues.Nodes
     using JumpKing;
 
     /// <summary>
-    /// Opens the explorer at the mods location.
+    ///     Opens the explorer at the mods location.
     /// </summary>
     public class NodeOpenFolderExplorer : IBTnode
     {
-        protected override BTresult MyRun(TickData p_data)
+        protected override BTresult MyRun(TickData pData)
         {
             _ = Process.Start("explorer.exe", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             Game1.instance.contentManager.audio.menu.Select.Play();

@@ -5,10 +5,12 @@ namespace LessAutoEquipping.Patches
     using System.Reflection;
     using System.Reflection.Emit;
     using HarmonyLib;
+    using JetBrains.Annotations;
 
     [HarmonyPatch("JumpKing.MiscEntities.WorldItems.WorldItemComp", "OnPickup")]
-    public class PatchWorldItemComp
+    public static class PatchWorldItemComp
     {
+        [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);
@@ -34,54 +36,65 @@ namespace LessAutoEquipping.Patches
             // Find the first part, that is where we want to insert out own IL instructions.
             for (i = 0; i < code.Count - 4; i++)
             {
-                if (code[i].opcode == OpCodes.Ldarg_0
-                    && code[i + 1].opcode == OpCodes.Ldflda
-                    && code[i + 2].opcode == OpCodes.Ldfld
-                    && code[i + 3].opcode == OpCodes.Ldc_I4_1
-                    && code[i + 4].opcode == OpCodes.Call
-                    && (code[i + 4].operand as MethodInfo) == setSkinEnabled)
+                if (code[i].opcode != OpCodes.Ldarg_0
+                    || code[i + 1].opcode != OpCodes.Ldflda
+                    || code[i + 2].opcode != OpCodes.Ldfld
+                    || code[i + 3].opcode != OpCodes.Ldc_I4_1
+                    || code[i + 4].opcode != OpCodes.Call
+                    || code[i + 4].operand as MethodInfo != setSkinEnabled)
                 {
-                    firstInsertionIndex = i;
-                    break;
+                    continue;
                 }
+
+                firstInsertionIndex = i;
+                break;
             }
+
             // Find the second part, that is where we want to jump to in case of auto equipping being disabled.
             for (; i < code.Count - 2; i++)
             {
-                if (code[i].opcode == OpCodes.Ldarg_0
-                    && code[i + 1].opcode == OpCodes.Ldfld
-                    && code[i + 2].opcode == OpCodes.Call
-                    && (code[i + 2].operand as MethodInfo) == removeWorldItem)
+                if (code[i].opcode != OpCodes.Ldarg_0
+                    || code[i + 1].opcode != OpCodes.Ldfld
+                    || code[i + 2].opcode != OpCodes.Call
+                    || code[i + 2].operand as MethodInfo != removeWorldItem)
                 {
-                    firstContinueFound = true;
-                    code[i].labels.Add(firstContinueLabel);
-                    break;
+                    continue;
                 }
+
+                firstContinueFound = true;
+                code[i].labels.Add(firstContinueLabel);
+                break;
             }
+
             // Find the first(third total) part, that is where we want to insert out own IL instructions.
             for (i = 0; i < code.Count - 3; i++)
             {
-                if (code[i].opcode == OpCodes.Ldarg_0
-                    && code[i + 1].opcode == OpCodes.Ldflda
-                    && code[i + 2].opcode == OpCodes.Ldfld
-                    && code[i + 3].opcode == OpCodes.Call
-                    && (code[i + 3].operand as MethodInfo) == enableSkin)
+                if (code[i].opcode != OpCodes.Ldarg_0
+                    || code[i + 1].opcode != OpCodes.Ldflda
+                    || code[i + 2].opcode != OpCodes.Ldfld
+                    || code[i + 3].opcode != OpCodes.Call
+                    || code[i + 3].operand as MethodInfo != enableSkin)
                 {
-                    secondInsertionIndex = i;
-                    break;
+                    continue;
                 }
+
+                secondInsertionIndex = i;
+                break;
             }
+
             // Find the second(fourth total) part, that is where we want to jump to in case of auto equipping being disabled.
             for (; i < code.Count - 2; i++)
             {
-                if (code[i].opcode == OpCodes.Ldarg_0
-                    && code[i + 1].opcode == OpCodes.Call
-                    && code[i + 2].opcode == OpCodes.Brfalse_S)
+                if (code[i].opcode != OpCodes.Ldarg_0
+                    || code[i + 1].opcode != OpCodes.Call
+                    || code[i + 2].opcode != OpCodes.Brfalse_S)
                 {
-                    secondContinueFound = true;
-                    code[i].labels.Add(secondContinueLabel);
-                    break;
+                    continue;
                 }
+
+                secondContinueFound = true;
+                code[i].labels.Add(secondContinueLabel);
+                break;
             }
 
             if (firstInsertionIndex == -1
@@ -100,7 +113,7 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, firstContinueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, firstContinueLabel)
             };
             code.InsertRange(firstInsertionIndex, firstInsert);
 
@@ -112,9 +125,9 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, secondContinueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, secondContinueLabel)
             };
-            code.InsertRange(secondInsertionIndex + firstInsert.Count(), secondInsert);
+            code.InsertRange(secondInsertionIndex + firstInsert.Count, secondInsert);
 
             return code.AsEnumerable();
         }

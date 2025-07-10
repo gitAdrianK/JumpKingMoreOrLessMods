@@ -2,14 +2,16 @@ namespace MoreBlockSizes.Patches
 {
     using System.IO;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Level;
     using JumpKing.Level.Sampler;
     using Microsoft.Xna.Framework.Graphics;
 
     [HarmonyPatch(typeof(LevelManager), nameof(LevelManager.LoadScreens))]
-    public class PatchLoadBlocks
+    public static class PatchLoadBlocks
     {
+        [UsedImplicitly]
         public static bool Prefix()
         {
             var contentManager = Game1.instance.contentManager;
@@ -20,22 +22,23 @@ namespace MoreBlockSizes.Patches
             {
                 return true;
             }
+
             var texture = contentManager.Load<Texture2D>(file);
             if (LevelDebugState.instance != null)
             {
-                contentManager.ReloadAsset<Texture2D>("sizes", required: true);
+                contentManager.ReloadAsset<Texture2D>("sizes", true);
             }
+
             if (texture.Width != 780 || texture.Height != 585)
             {
                 return true;
             }
+
             PatchLoadBlocksInterval.Sizes = LevelTexture.FromTexture(texture);
             return true;
         }
 
-        public class PostfixLoadScreens
-        {
-            public static void Postfix() => PatchLoadBlocksInterval.Sizes = null;
-        }
+        [UsedImplicitly]
+        public static void Postfix() => PatchLoadBlocksInterval.Sizes = null;
     }
 }

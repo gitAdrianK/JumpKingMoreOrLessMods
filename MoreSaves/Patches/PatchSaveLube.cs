@@ -6,13 +6,13 @@ namespace MoreSaves.Patches
     using JumpKing.SaveThread;
 
     /// <summary>
-    /// Patches the SaveLube class. 
-    /// Function SaveCombinedSaveFile to also save at our mod location.
-    /// Function DeleteSaves to also delete the saves inside the auto folder.
+    ///     Patches the SaveLube class.
+    ///     Function SaveCombinedSaveFile to also save at our mod location.
+    ///     Function DeleteSaves to also delete the saves inside the auto folder.
     /// </summary>
     public class PatchSaveLube
     {
-        private static readonly char SEP;
+        private static readonly char Sep;
 
         private static readonly Traverse CombinedSavefile;
         private static readonly Traverse GeneralSettings;
@@ -25,7 +25,7 @@ namespace MoreSaves.Patches
 
         static PatchSaveLube()
         {
-            SEP = Path.DirectorySeparatorChar;
+            Sep = Path.DirectorySeparatorChar;
 
             var saveLube = AccessTools.TypeByName("JumpKing.SaveThread.SaveLube");
 
@@ -53,18 +53,20 @@ namespace MoreSaves.Patches
             );
         }
 
-        public static void SaveCombinedSaveFile(CombinedSaveFile p_object)
+        public static void SaveCombinedSaveFile(CombinedSaveFile pObject)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
-            PatchEncryption.SaveCombinedSaveFile(p_object, ModStrings.AUTO, ModEntry.SaveName, ModStrings.SAVES);
-            PatchEncryption.SavePlayerStats(PatchAchievementManager.GetPermaStats(), ModStrings.PERMANENT, ModStrings.AUTO, ModEntry.SaveName, ModStrings.SAVES_PERMA);
+
+            PatchEncryption.SaveCombinedSaveFile(pObject, ModStrings.Auto, ModEntry.SaveName, ModStrings.Saves);
+            PatchEncryption.SavePlayerStats(PatchAchievementManager.GetPermaStats(), ModStrings.Permanent,
+                ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
         }
 
         /// <summary>
-        /// Deletes the savefiles in the dll directory when the give up option in selected in game.
+        ///     Deletes the savefiles in the dll directory when the give up option in selected in game.
         /// </summary>
         public static void DeleteSaves()
         {
@@ -72,11 +74,13 @@ namespace MoreSaves.Patches
             {
                 return;
             }
-            var directory = $"{ModEntry.DllDirectory}{SEP}{ModStrings.AUTO}{SEP}{ModEntry.SaveName}{SEP}";
+
+            var directory = $"{ModEntry.DllDirectory}{Sep}{ModStrings.Auto}{Sep}{ModEntry.SaveName}{Sep}";
             if (Directory.Exists(directory))
             {
                 Directory.Delete(directory, true);
             }
+
             ModEntry.SaveName = string.Empty;
         }
 

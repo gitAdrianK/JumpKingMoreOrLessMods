@@ -6,6 +6,7 @@ namespace MoreBlockSizes.Patches
     using System.Reflection;
     using System.Reflection.Emit;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing.Level;
     using JumpKing.Level.Sampler;
     using Microsoft.Xna.Framework;
@@ -13,8 +14,9 @@ namespace MoreBlockSizes.Patches
     [HarmonyPatch(typeof(LevelManager), "LoadBlocksInterval")]
     public class PatchLoadBlocksInterval
     {
-        public static LevelTexture Sizes { get; set; } = null;
+        public static LevelTexture Sizes { get; set; }
 
+        [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);
@@ -40,101 +42,121 @@ namespace MoreBlockSizes.Patches
 
             var rectangleCtor = AccessTools.Constructor(
                 typeof(Rectangle),
-                new Type[] { typeof(Point), typeof(Point) });
+                new[] { typeof(Point), typeof(Point) });
 
             int i;
             // Find the two br instructions that need to be adjusted.
             for (i = 0; i < code.Count - 3; i++)
             {
-                if (code[i].opcode == OpCodes.Br
-                    && code[i + 1].opcode == OpCodes.Ldc_I4_0
-                    && code[i + 2].opcode == OpCodes.Stloc_S
-                    && code[i + 3].opcode == OpCodes.Br)
+                if (code[i].opcode != OpCodes.Br
+                    || code[i + 1].opcode != OpCodes.Ldc_I4_0
+                    || code[i + 2].opcode != OpCodes.Stloc_S
+                    || code[i + 3].opcode != OpCodes.Br)
                 {
-                    firstBrReplaceIndex = i;
-                    secondBrReplaceIndex = i + 3;
-                    break;
+                    continue;
                 }
+
+                firstBrReplaceIndex = i;
+                secondBrReplaceIndex = i + 3;
+                break;
             }
+
             // Find the br.s instruction that needs to be adjusted.
             for (; i < code.Count - 2; i++)
             {
-                if (code[i].opcode == OpCodes.Stind_I1
-                    && code[i + 1].opcode == OpCodes.Br_S
-                    && code[i + 2].opcode == OpCodes.Ldloca_S)
+                if (code[i].opcode != OpCodes.Stind_I1
+                    || code[i + 1].opcode != OpCodes.Br_S
+                    || code[i + 2].opcode != OpCodes.Ldloca_S)
                 {
-                    brsReplaceIndex = i + 1;
-                    break;
+                    continue;
                 }
+
+                brsReplaceIndex = i + 1;
+                break;
             }
+
             // Insertion index of our method call.
             for (; i < code.Count - 2; i++)
             {
-                if (code[i].opcode == OpCodes.Ldloc_S
-                    && code[i + 1].opcode == OpCodes.Call
-                    && (code[i + 1].operand as ConstructorInfo) == rectangleCtor
-                    && code[i + 2].opcode == OpCodes.Ldloc_S)
+                if (code[i].opcode != OpCodes.Ldloc_S
+                    || code[i + 1].opcode != OpCodes.Call
+                    || code[i + 1].operand as ConstructorInfo != rectangleCtor
+                    || code[i + 2].opcode != OpCodes.Ldloc_S)
                 {
-                    firstInsertionIndex = i + 2;
-                    break;
+                    continue;
                 }
+
+                firstInsertionIndex = i + 2;
+                break;
             }
+
             // Removal index, we are removing all 3 btw.
             // Also insertion index as we are inserting right after.
             for (; i < code.Count - 4; i++)
             {
-                if (code[i].opcode == OpCodes.Ldloc_S
-                    && (code[i].operand as LocalBuilder).LocalIndex == 11
-                    && code[i + 1].opcode == OpCodes.Brfalse_S
-                    && code[i + 2].opcode == OpCodes.Ldloc_3
-                    && code[i + 3].opcode == OpCodes.Ldloc_S
-                    && (code[i + 3].operand as LocalBuilder).LocalIndex == 11
-                    && code[i + 4].opcode == OpCodes.Callvirt)
+                if (code[i].opcode != OpCodes.Ldloc_S
+                    || ((LocalBuilder)code[i].operand).LocalIndex != 11
+                    || code[i + 1].opcode != OpCodes.Brfalse_S
+                    || code[i + 2].opcode != OpCodes.Ldloc_3
+                    || code[i + 3].opcode != OpCodes.Ldloc_S
+                    || ((LocalBuilder)code[i + 3].operand).LocalIndex != 11
+                    || code[i + 4].opcode != OpCodes.Callvirt)
                 {
-                    removalIndex = i;
-                    secondInsertionIndex = i + 4;
-                    break;
+                    continue;
                 }
+
+                removalIndex = i;
+                secondInsertionIndex = i + 4;
+                break;
             }
+
             // Third jump label comes first
             for (; i < code.Count - 3; i++)
             {
-                if (code[i].opcode == OpCodes.Callvirt
-                    && code[i + 1].opcode == OpCodes.Ldloc_S
-                    && code[i + 2].opcode == OpCodes.Ldc_I4_1
-                    && code[i + 3].opcode == OpCodes.Add)
+                if (code[i].opcode != OpCodes.Callvirt
+                    || code[i + 1].opcode != OpCodes.Ldloc_S
+                    || code[i + 2].opcode != OpCodes.Ldc_I4_1
+                    || code[i + 3].opcode != OpCodes.Add)
                 {
-                    thirdContinueFound = true;
-                    code[i + 1].labels.Add(thirdContinueLabel);
-                    break;
+                    continue;
                 }
+
+                thirdContinueFound = true;
+                code[i + 1].labels.Add(thirdContinueLabel);
+                break;
             }
+
             // Then second label comes first
             for (; i < code.Count - 3; i++)
             {
-                if (code[i].opcode == OpCodes.Stloc_S
-                    && code[i + 1].opcode == OpCodes.Ldloc_S
-                    && code[i + 2].opcode == OpCodes.Ldloc_1
-                    && code[i + 3].opcode == OpCodes.Blt)
+                if (code[i].opcode != OpCodes.Stloc_S
+                    || code[i + 1].opcode != OpCodes.Ldloc_S
+                    || code[i + 2].opcode != OpCodes.Ldloc_1
+                    || code[i + 3].opcode != OpCodes.Blt)
                 {
-                    secondContinueFound = true;
-                    code[i + 1].labels.Add(secondContinueLabel);
-                    break;
+                    continue;
                 }
+
+                secondContinueFound = true;
+                code[i + 1].labels.Add(secondContinueLabel);
+                break;
             }
+
             // And lastly first
             for (; i < code.Count - 4; i++)
             {
-                if (code[i].opcode == OpCodes.Add
-                    && code[i + 1].opcode == OpCodes.Stloc_S
-                    && code[i + 2].opcode == OpCodes.Ldloc_S
-                    && code[i + 3].opcode == OpCodes.Ldloc_2
-                    && code[i + 4].opcode == OpCodes.Blt)
+                if (code[i].opcode != OpCodes.Add
+                    || code[i + 1].opcode != OpCodes.Stloc_S
+                    || code[i + 2].opcode != OpCodes.Ldloc_S
+                    || code[i + 3].opcode != OpCodes.Ldloc_2
+                    || code[i + 4].opcode != OpCodes.Blt)
                 {
-                    firstContinueFound = true;
-                    code[i + 2].labels.Add(firstContinueLabel);
-                    break;
+                    continue;
                 }
+
+                firstContinueFound = true;
+                code[i + 2].labels.Add(firstContinueLabel);
+                break;
             }
 
             if (firstBrReplaceIndex == -1
@@ -163,7 +185,7 @@ namespace MoreBlockSizes.Patches
                     AccessTools.Method(
                         typeof(PatchLoadBlocksInterval),
                         nameof(GetHitbox),
-                        new Type[] { typeof(int), typeof(int), typeof(int) })),
+                        new[] { typeof(int), typeof(int), typeof(int) })),
                 new CodeInstruction(
                     OpCodes.Stloc_S, 10)
             };

@@ -3,7 +3,7 @@ namespace LessNpcDialog
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    public class Preferences : INotifyPropertyChanged
+    public sealed class Preferences : INotifyPropertyChanged
     {
         private bool isEnabled = true;
 
@@ -19,7 +19,7 @@ namespace LessNpcDialog
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

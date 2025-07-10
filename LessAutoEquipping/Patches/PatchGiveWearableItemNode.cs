@@ -5,11 +5,13 @@ namespace LessAutoEquipping.Patches
     using System.Reflection;
     using System.Reflection.Emit;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing.GameManager.MultiEnding;
 
     [HarmonyPatch(typeof(GiveWearableItemNode), "MyRun")]
-    public class PatchGiveWearableItemNode
+    public static class PatchGiveWearableItemNode
     {
+        [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);
@@ -25,24 +27,29 @@ namespace LessAutoEquipping.Patches
             // Find the first part, that is where we want to insert out own IL instructions.
             for (i = 0; i < code.Count - 2; i++)
             {
-                if (code[i].opcode == OpCodes.Ldarg_0
-                    && code[i + 1].opcode == OpCodes.Ldfld
-                    && code[i + 2].opcode == OpCodes.Call
-                    && (code[i + 2].operand as MethodInfo) == enableSkin)
+                if (code[i].opcode != OpCodes.Ldarg_0
+                    || code[i + 1].opcode != OpCodes.Ldfld
+                    || code[i + 2].opcode != OpCodes.Call
+                    || code[i + 2].operand as MethodInfo != enableSkin)
                 {
-                    insertionIndex = i;
-                    break;
+                    continue;
                 }
+
+                insertionIndex = i;
+                break;
             }
+
             // Find the second part, that is where we want to jump to in case of auto equipping being disabled.
             for (; i < code.Count - 1; i++)
             {
-                if (code[i].opcode == OpCodes.Ldc_I4_1 && code[i + 1].opcode == OpCodes.Ret)
+                if (code[i].opcode != OpCodes.Ldc_I4_1 || code[i + 1].opcode != OpCodes.Ret)
                 {
-                    continueFound = true;
-                    code[i].labels.Add(continueLabel);
-                    break;
+                    continue;
                 }
+
+                continueFound = true;
+                code[i].labels.Add(continueLabel);
+                break;
             }
 
             if (insertionIndex == -1 || !continueFound)
@@ -58,7 +65,7 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel)
             };
             code.InsertRange(insertionIndex, insert);
 

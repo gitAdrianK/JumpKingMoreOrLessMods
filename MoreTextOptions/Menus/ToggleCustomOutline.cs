@@ -1,20 +1,22 @@
-namespace MoreTextOptions.Menues
+namespace MoreTextOptions.Menus
 {
     using System.Diagnostics.CodeAnalysis;
+    using JetBrains.Annotations;
     using JumpKing.Mods;
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT.Actions;
 
     public class ToggleCustomOutline : ITextToggle
     {
-        [PauseMenuItemSetting]
-        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
-        public static ToggleCustomOutline Toggle(object factory, GuiFormat format)
-            => new ToggleCustomOutline();
-
-        public ToggleCustomOutline() : base(ModEntry.Preferences.IsCustomOutline)
+        private ToggleCustomOutline() : base(ModEntry.Preferences.IsCustomOutline)
         {
         }
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static ToggleCustomOutline Toggle(object factory, GuiFormat format)
+            => new ToggleCustomOutline();
 
         protected override string GetName() => "Custom outline colour";
 

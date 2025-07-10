@@ -4,7 +4,7 @@ namespace MoreSaves.Patches
     using HarmonyLib;
     using JumpKing.MiscSystems.Achievements;
 
-    public class PatchAchievementManager
+    public static class PatchAchievementManager
     {
         private static readonly Traverse PlayerStats;
         private static readonly Traverse PermaStats;
@@ -13,7 +13,8 @@ namespace MoreSaves.Patches
         {
             var achievementManager = AccessTools.TypeByName("JumpKing.MiscSystems.Achievements.AchievementManager");
 
-            var achievementManagerInstance = achievementManager.GetField("instance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            var achievementManagerInstance = achievementManager
+                .GetField("instance", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null);
             var achievementManagerTraverse = Traverse.Create(achievementManagerInstance);
 
             PlayerStats = achievementManagerTraverse.Field("m_snapshot");

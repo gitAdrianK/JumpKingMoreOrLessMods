@@ -6,6 +6,7 @@ namespace LessBabeNoises
     using BehaviorTree;
     using EntityComponent.BT;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.GameManager.MultiEnding;
     using JumpKing.GameManager.MultiEnding.NewBabePlusEnding;
@@ -14,35 +15,39 @@ namespace LessBabeNoises
     using JumpKing.Mods;
     using JumpKing.Util;
     using JumpKing.Util.DrawBT;
+#if DEBUG
+    using System.Diagnostics;
+#endif
 
-    [JumpKingMod(IDENTIFIER)]
+    [JumpKingMod(Identifier)]
     public static class ModEntry
     {
-        private const string IDENTIFIER = "Zebra.LessBabeNoises";
-        private const string HARMONY_IDENTIFIER = IDENTIFIER + ".Harmony";
+        private const string Identifier = "Zebra.LessBabeNoises";
+        private const string HarmonyIdentifier = Identifier + ".Harmony";
 
-        public static bool MuteMainBabe { get; private set; } = false;
-        public static bool MuteNewBabe { get; private set; } = false;
-        public static bool MuteGhostBabe { get; private set; } = false;
+        public static bool MuteMainBabe { get; private set; }
+        public static bool MuteNewBabe { get; private set; }
+        public static bool MuteGhostBabe { get; private set; }
 
         /// <summary>
-        /// Called by Jump King before the level loads
+        ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
+        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HARMONY_IDENTIFIER);
+            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
-            Harmony.DEBUG = true;
 #endif
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
-        /// Called by Jump King when the Level Starts
+        ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
+        [UsedImplicitly]
         public static void OnLevelStart()
         {
             // Babes get created before OnLevelStart is called, so we cant rely on their MakeBT method to remove babe sounds!
@@ -66,29 +71,29 @@ namespace LessBabeNoises
                 .GetValue<List<IEnding>>();
             foreach (var tag in tags)
             {
-                if (tag == "MuteMainBabe")
+                switch (tag)
                 {
-                    MuteMainBabe = true;
-                    RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NormalEnding)));
-                }
-                else if (tag == "MuteNewBabe")
-                {
-                    MuteNewBabe = true;
-                    RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
-                }
-                else if (tag == "MuteGhostBabe")
-                {
-                    MuteGhostBabe = true;
-                    RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(OwlEnding)));
+                    case "MuteMainBabe":
+                        MuteMainBabe = true;
+                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NormalEnding)));
+                        break;
+                    case "MuteNewBabe":
+                        MuteNewBabe = true;
+                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
+                        break;
+                    case "MuteGhostBabe":
+                        MuteGhostBabe = true;
+                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(OwlEnding)));
+                        break;
                 }
             }
         }
 
         /// <summary>
-        /// Removes the noises made by the babe in the ending.
+        ///     Removes the noises made by the babe in the ending.
         /// </summary>
         /// <param name="ending">The ending the babe belongs to</param>
-        public static void RemoveBabeNoises(IEnding ending)
+        private static void RemoveBabeNoises(IEnding ending)
         {
             /* Sounds, in order played, are:
              * Main Babe
@@ -96,14 +101,14 @@ namespace LessBabeNoises
              * 2 - player.Land
              * 3 - babe.Kiss
              * 4 - babe.Pickup
-             * 
+             *
              * New Babe
              * 1 - babe.Jump
              * 2 - babe.Kiss
              * 3 - babe.Mou
              * 4 - audio.Plink
              * 5 - babe.Pickup
-             * 
+             *
              * Ghost Babe
              * 1 - babe.Kiss
              * 2 - babe.Jump

@@ -1,4 +1,4 @@
-namespace MoreSaves.Menues.Nodes
+namespace MoreSaves.Menus.Nodes
 {
     using System.Collections.Generic;
     using System.IO;
@@ -13,26 +13,25 @@ namespace MoreSaves.Menues.Nodes
     using JumpKing.SaveThread;
     using JumpKing.SaveThread.SaveComponents;
     using JumpKing.Workshop;
-    using MoreSaves.Patches;
+    using Patches;
 
     /// <summary>
-    /// Node to load a save from the mod into Jump King.
-    /// All required fields will be set and the JK menu will reload/update.
+    ///     Node to load a save from the mod into Jump King.
+    ///     All required fields will be set and the JK menu will reload/update.
     /// </summary>
     public class NodeLoadSave : IBTnode
     {
-        private static readonly char SEP;
+        private const string Saves = ModStrings.Saves;
+        private const string SavesPerma = ModStrings.SavesPerma;
+        private const string Combined = ModStrings.Combined;
+        private const string Event = ModStrings.Event;
+        private const string Stats = ModStrings.Stats;
+        private const string Permanent = ModStrings.Permanent;
+        private const string Inventory = ModStrings.Inventory;
+        private const string Settings = ModStrings.Settings;
 
-        private const string SAVES = ModStrings.SAVES;
-        private const string SAVES_PERMA = ModStrings.SAVES_PERMA;
-        private const string COMBINED = ModStrings.COMBINED;
-        private const string EVENT = ModStrings.EVENT;
-        private const string STATS = ModStrings.STATS;
-        private const string PERMANENT = ModStrings.PERMANENT;
-        private const string INVENTORY = ModStrings.INVENTORY;
-        private const string SETTINGS = ModStrings.SETTINGS;
-
-        private const string CONTENT = ModStrings.CONTENT;
+        private const string Content = ModStrings.Content;
+        private static readonly char Sep;
 
         private static readonly JKContentManager ContentManager;
         private static readonly SaveManager SaveManager;
@@ -60,7 +59,7 @@ namespace MoreSaves.Menues.Nodes
 
         static NodeLoadSave()
         {
-            SEP = Path.DirectorySeparatorChar;
+            Sep = Path.DirectorySeparatorChar;
 
             // Classes and methods.
             ContentManager = Game1.instance.contentManager;
@@ -88,7 +87,8 @@ namespace MoreSaves.Menues.Nodes
             SaveProgramStartInitialize = saveLube.GetMethod("ProgramStartInitialize");
             SaveCombinedSaveFile = saveLube.GetMethod("SaveCombinedSaveFile");
 
-            var achievementManagerInstance = achievementManager.GetField("instance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            var achievementManagerInstance = achievementManager
+                .GetField("instance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             var achievementManagerTraverse = Traverse.Create(achievementManagerInstance);
             TraversePlayerStats = achievementManagerTraverse.Field("m_snapshot");
             TraversePermaStats = achievementManagerTraverse.Field("m_all_time_stats");
@@ -99,23 +99,30 @@ namespace MoreSaves.Menues.Nodes
             this.directory = ModEntry.DllDirectory;
             foreach (var folder in folders)
             {
-                this.directory += folder + SEP;
+                this.directory += folder + Sep;
             }
         }
 
-        protected override BTresult MyRun(TickData p_data)
+        protected override BTresult MyRun(TickData pData)
         {
             try
             {
                 SaveManager.StopSaving();
 
                 // Load from dllDirectory
-                var combinedSaveFile = (CombinedSaveFile)LoadCombinedSaveFile.Invoke(null, new object[] { $"{this.directory}{SEP}{SAVES}{SEP}{COMBINED}" });
-                var eventFlags = (EventFlagsSave)LoadEventFlags.Invoke(null, new object[] { $"{this.directory}{SEP}{SAVES_PERMA}{SEP}{EVENT}" });
-                var playerStats = (PlayerStats)LoadPlayerStats.Invoke(null, new object[] { $"{this.directory}{SEP}{SAVES_PERMA}{SEP}{STATS}" });
-                var permaStats = (PlayerStats)LoadPlayerStats.Invoke(null, new object[] { $"{this.directory}{SEP}{SAVES_PERMA}{SEP}{PERMANENT}" });
-                var inventory = (Inventory)LoadInventory.Invoke(null, new object[] { $"{this.directory}{SEP}{SAVES_PERMA}{SEP}{INVENTORY}" });
-                var generalSettings = XmlSerializerHelper.Deserialize<GeneralSettings>($"{this.directory}{SEP}{SAVES_PERMA}{SEP}{SETTINGS}");
+                var combinedSaveFile = (CombinedSaveFile)LoadCombinedSaveFile.Invoke(null,
+                    new object[] { $"{this.directory}{Sep}{Saves}{Sep}{Combined}" });
+                var eventFlags = (EventFlagsSave)LoadEventFlags.Invoke(null,
+                    new object[] { $"{this.directory}{Sep}{SavesPerma}{Sep}{Event}" });
+                var playerStats = (PlayerStats)LoadPlayerStats.Invoke(null,
+                    new object[] { $"{this.directory}{Sep}{SavesPerma}{Sep}{Stats}" });
+                var permaStats = (PlayerStats)LoadPlayerStats.Invoke(null,
+                    new object[] { $"{this.directory}{Sep}{SavesPerma}{Sep}{Permanent}" });
+                var inventory = (Inventory)LoadInventory.Invoke(null,
+                    new object[] { $"{this.directory}{Sep}{SavesPerma}{Sep}{Inventory}" });
+                var generalSettings =
+                    XmlSerializerHelper.Deserialize<GeneralSettings>(
+                        $"{this.directory}{Sep}{SavesPerma}{Sep}{Settings}");
 
                 // Root and level.
                 string root;
@@ -123,7 +130,7 @@ namespace MoreSaves.Menues.Nodes
 
                 if (playerStats.steam_level_id == null)
                 {
-                    root = CONTENT;
+                    root = Content;
                 }
                 else
                 {
@@ -134,7 +141,7 @@ namespace MoreSaves.Menues.Nodes
                 // Save and set
                 ContentManager.ReinitializeAssets();
 
-                if (root == CONTENT)
+                if (root == Content)
                 {
                     ContentManager.SetLevel(root);
                 }
@@ -178,6 +185,7 @@ namespace MoreSaves.Menues.Nodes
             {
                 SaveManager.StartSaving();
             }
+
             return BTresult.Success;
         }
     }

@@ -5,13 +5,15 @@ namespace LessBabeNoises.Patches
     using BehaviorTree;
     using EntityComponent.BT;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing.Util;
 
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.NewBabePlusEnding.Actors.HangingBabe", "MakeBT")]
-    public class PatchHangingBabe
+    public static class PatchHangingBabe
     {
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
-        public static void Postfix(BehaviorTreeComp __result)
+        [UsedImplicitly]
+        public static void Postfix(BehaviorTreeComp result)
         {
             /* Sounds, in order played, are:
                 1 - babe.Mou
@@ -21,8 +23,9 @@ namespace LessBabeNoises.Patches
             {
                 return;
             }
+
             var sequencorChildren = Traverse
-                .Create(__result.GetRaw())
+                .Create(result.GetRaw())
                 .Field("m_root_node")
                 .Field("m_children");
             var filteredNodes = sequencorChildren

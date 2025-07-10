@@ -7,9 +7,9 @@ namespace MoreSaves.Patches
     using JumpKing.MiscSystems.Achievements;
     using JumpKing.SaveThread;
 
-    public class PatchEncryption
+    public static class PatchEncryption
     {
-        private static readonly char SEP;
+        private static readonly char Sep;
 
         private static readonly MethodInfo MethodSaveCombinedSaveFile;
         private static readonly MethodInfo MethodSavePlayerStats;
@@ -18,11 +18,16 @@ namespace MoreSaves.Patches
 
         static PatchEncryption()
         {
-            SEP = Path.DirectorySeparatorChar;
+            Sep = Path.DirectorySeparatorChar;
 
             var encryption = AccessTools.TypeByName("FileUtil.Encryption.Encryption");
 
             var saveFile = encryption.GetMethod("SaveFile");
+            if (saveFile == null)
+            {
+                return;
+            }
+
             MethodSaveCombinedSaveFile = saveFile.MakeGenericMethod(typeof(CombinedSaveFile));
             MethodSavePlayerStats = saveFile.MakeGenericMethod(typeof(PlayerStats));
             MethodSaveEventFlags = saveFile.MakeGenericMethod(typeof(EventFlagsSave));
@@ -30,19 +35,19 @@ namespace MoreSaves.Patches
         }
 
         /// <summary>
-        /// Used to save the combined savefile.
-        /// Filename is always combined.sav
+        ///     Used to save the combined savefile.
+        ///     Filename is always combined.sav
         /// </summary>
         /// <param name="combinedSave">Combined savefile to save</param>
         /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
         public static void SaveCombinedSaveFile(CombinedSaveFile combinedSave, params string[] folders)
         {
             var path = BuildAndCreatePath(folders);
-            _ = MethodSaveCombinedSaveFile.Invoke(null, new object[] { $"{path}{ModStrings.COMBINED}", combinedSave });
+            _ = MethodSaveCombinedSaveFile.Invoke(null, new object[] { $"{path}{ModStrings.Combined}", combinedSave });
         }
 
         /// <summary>
-        /// Used to save the given player stats.
+        ///     Used to save the given player stats.
         /// </summary>
         /// <param name="playerStats">PlayerStats to save</param>
         /// <param name="name">The name of the file it will be saved as</param>
@@ -54,29 +59,29 @@ namespace MoreSaves.Patches
         }
 
         /// <summary>
-        /// Used to save the given event flags.
+        ///     Used to save the given event flags.
         /// </summary>
         /// <param name="eventFlags">EventFlagsSave to save</param>
         /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
         public static void SaveEventFlags(EventFlagsSave eventFlags, params string[] folders)
         {
             var path = BuildAndCreatePath(folders);
-            _ = MethodSaveEventFlags.Invoke(null, new object[] { $"{path}{ModStrings.EVENT}", eventFlags });
+            _ = MethodSaveEventFlags.Invoke(null, new object[] { $"{path}{ModStrings.Event}", eventFlags });
         }
 
         /// <summary>
-        /// Used to save the given inventory.
+        ///     Used to save the given inventory.
         /// </summary>
         /// <param name="inventory">Inventory to save</param>
         /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
         public static void SaveInventory(Inventory inventory, params string[] folders)
         {
             var path = BuildAndCreatePath(folders);
-            _ = MethodSaveInventory.Invoke(null, new object[] { $"{path}{ModStrings.INVENTORY}", inventory });
+            _ = MethodSaveInventory.Invoke(null, new object[] { $"{path}{ModStrings.Inventory}", inventory });
         }
 
         /// <summary>
-        /// Builds a path from given folders, starting from the path to the dll. If the path doesn't exist creates it.
+        ///     Builds a path from given folders, starting from the path to the dll. If the path doesn't exist creates it.
         /// </summary>
         /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
         /// <returns>The path</returns>
@@ -85,12 +90,13 @@ namespace MoreSaves.Patches
             var path = ModEntry.DllDirectory;
             foreach (var folder in folders)
             {
-                path += folder + SEP;
+                path += folder + Sep;
                 if (!Directory.Exists(path))
                 {
                     _ = Directory.CreateDirectory(path);
                 }
             }
+
             return path;
         }
     }

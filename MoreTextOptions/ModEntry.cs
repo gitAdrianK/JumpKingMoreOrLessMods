@@ -7,21 +7,25 @@ namespace MoreTextOptions
     using System.Reflection;
     using System.Text.RegularExpressions;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
     using Microsoft.Xna.Framework;
-    using MoreTextOptions.Util;
+    using Util;
+#if DEBUG
+    using System.Diagnostics;
+#endif
 
-    [JumpKingMod(IDENTIFIER)]
+    [JumpKingMod(Identifier)]
     public static class ModEntry
     {
-        private const string IDENTIFIER = "Zebra.MoreTextOptions";
-        private const string HARMONY_IDENTIFIER = IDENTIFIER + ".Harmony";
-        private const string PREFERENCES_FILE = IDENTIFIER + ".Settings.xml";
+        private const string Identifier = "Zebra.MoreTextOptions";
+        private const string HarmonyIdentifier = Identifier + ".Harmony";
+        private const string PreferencesFile = Identifier + ".Settings.xml";
 
-        public static readonly Regex REGEX = new Regex("{color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
+        public static readonly Regex Regex = new Regex("{color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
         private static string PreferencesPath { get; set; }
         public static Preferences Preferences { get; private set; }
         public static int OffsetX { get; private set; }
@@ -29,23 +33,27 @@ namespace MoreTextOptions
 
         [MainMenuItemSetting]
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
         public static TextInfo HintOptionsLocation(object factory, GuiFormat format)
-            => new TextInfo("Options in the pausemenu!", Color.Lime);
+            => new TextInfo("Options in the pause menu!", Color.Lime);
 
         /// <summary>
-        /// Called by Jump King before the level loads
+        ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
+        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HARMONY_IDENTIFIER);
+            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
-            Harmony.DEBUG = true;
 #endif
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            PreferencesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), PREFERENCES_FILE);
+            PreferencesPath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
+                throw new InvalidOperationException(),
+                PreferencesFile);
             Preferences = Serialization.ReadFromFile<Preferences>(PreferencesPath);
             Preferences.PropertyChanged += SavePreferencesToFile;
 

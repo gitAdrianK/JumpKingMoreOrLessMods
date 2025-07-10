@@ -5,13 +5,15 @@ namespace LessBabeNoises.Patches
     using BehaviorTree;
     using EntityComponent.BT;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing.Util;
 
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.NormalEnding.EndingKing", "MakeBT")]
-    public class PatchEndingKing
+    public static class PatchEndingKing
     {
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
-        public static void Postfix(BehaviorTreeComp __result)
+        [UsedImplicitly]
+        public static void Postfix(BehaviorTreeComp result)
         {
             /* Sounds, in order played, are:
                 1 - player.Jump
@@ -31,7 +33,7 @@ namespace LessBabeNoises.Patches
             }
 
             var btSequencor = Traverse
-                .Create(__result.GetRaw())
+                .Create(result.GetRaw())
                 .Field("m_root_node")
                 .Field("m_children")
                 .GetValue<IBTnode[]>()
@@ -42,9 +44,10 @@ namespace LessBabeNoises.Patches
             var filteredNodes = traverseChildren
                 .GetValue<IBTnode[]>()
                 .Where(node => !(node is PlaySFX));
+            var ibTnodes = filteredNodes as IBTnode[] ?? filteredNodes.ToArray();
             _ = traverseChildren
-                .SetValue(filteredNodes.ToArray());
-            var btSimultaneos = filteredNodes
+                .SetValue(ibTnodes.ToArray());
+            var btSimultaneos = ibTnodes
                 .Last(node => node is BTsimultaneous);
             var btSequencor2 = Traverse
                 .Create(btSimultaneos)

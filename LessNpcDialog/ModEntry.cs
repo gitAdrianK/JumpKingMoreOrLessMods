@@ -1,36 +1,44 @@
 namespace LessNpcDialog
 {
+    using System;
     using System.ComponentModel;
     using System.IO;
     using System.Reflection;
     using HarmonyLib;
+    using JetBrains.Annotations;
     using JumpKing.Mods;
-    using LessNpcDialog.Util;
+    using Util;
+#if DEBUG
+    using System.Diagnostics;
+#endif
 
-    [JumpKingMod(IDENTIFIER)]
+    [JumpKingMod(Identifier)]
     public static class ModEntry
     {
-        private const string IDENTIFIER = "Zebra.LessNpcDialog";
-        private const string HARMONY_IDENTIFIER = IDENTIFIER + ".Harmony";
-        private const string PREFERENCES_FILE = IDENTIFIER + ".Settings.xml";
+        private const string Identifier = "Zebra.LessNpcDialog";
+        private const string HarmonyIdentifier = Identifier + ".Harmony";
+        private const string PreferencesFile = Identifier + ".Settings.xml";
 
         private static string PreferencesPath { get; set; }
         public static Preferences Preferences { get; private set; }
 
         /// <summary>
-        /// Called by Jump King before the level loads
+        ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
+        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HARMONY_IDENTIFIER);
+            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
-            Harmony.DEBUG = true;
 #endif
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            PreferencesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), PREFERENCES_FILE);
+            PreferencesPath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
+                throw new InvalidOperationException(),
+                PreferencesFile);
             Preferences = Serialization.ReadFromFile<Preferences>(PreferencesPath);
             Preferences.PropertyChanged += SavePreferencesToFile;
         }

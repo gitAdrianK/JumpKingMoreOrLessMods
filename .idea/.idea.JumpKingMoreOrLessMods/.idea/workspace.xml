@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="403618f2-dd2b-450f-8285-4b66b71be828" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/LessAutoEquipping.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/LessAutoEquipping.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Menues/TogglePreventAutoEquip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Menus/TogglePreventAutoEquip.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchGiveWearableItemNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchGiveWearableItemNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchMerchantComp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchMerchantComp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchWorldItemComp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Patches/PatchWorldItemComp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Preferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/LessBabeNoises.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/LessBabeNoises.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchEndingKing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchEndingKing.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchHangingBabe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchHangingBabe.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchNBPKingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchNBPKingEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchOwlKingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchOwlKingEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessBabeNoises/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessHiddenWallSFX/LessHiddenWallSFX.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LessHiddenWallSFX/LessHiddenWallSFX.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessHiddenWallSFX/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessHiddenWallSFX/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessHiddenWallSFX/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/LessHiddenWallSFX/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/LessLocationText.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/LessLocationText.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Menues/ToggleDiscoverLocationText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Menus/ToggleDiscoverLocationText.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Menues/ToggleEnterLocationText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Menus/ToggleEnterLocationText.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Patches/PatchLocationComp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Patches/PatchLocationComp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Preferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/LessNpcDialog.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/LessNpcDialog.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Menues/ToggleEnabled.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Menus/ToggleEnabled.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Patches/PatchSayLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Patches/PatchSayLine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Preferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/MoreBlockSizes.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/MoreBlockSizes.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/Patches/PatchLoadBlocks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/Patches/PatchLoadBlocks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/Patches/PatchLoadBlocksInterval.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/Patches/PatchLoadBlocksInterval.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreBlockSizes/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/MoreBlockSizes/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreLayeringOptions/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreLayeringOptions/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreLayeringOptions/MoreLayeringOptions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreLayeringOptions/MoreLayeringOptions.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menues/ButtonTextExplorer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/ButtonTextExplorer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menues/Models/ModelLoadOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Models/ModelLoadOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menues/Nodes/NodeCreateManualSave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Nodes/NodeCreateManualSave.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menues/Nodes/NodeLoadSave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Nodes/NodeLoadSave.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menues/Nodes/NodeOpenFolderExplorer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Nodes/NodeOpenFolderExplorer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/ModStrings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/ModStrings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/MoreSaves.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/MoreSaves.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchAchievementManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchAchievementManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchEncryption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchEncryption.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchInventoryManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchInventoryManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveLube.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveLube.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchXmlWrapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchXmlWrapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderOutlineBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineBlue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderOutlineGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineGreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderOutlineRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineRed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderTextBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextBlue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderTextGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextGreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/SliderTextRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextRed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/TextInfoExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/TextInfoExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/ToggleCustomOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomOutline.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/ToggleCustomText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomText.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menues/ToggleDisableOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleDisableOutline.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSayLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSayLine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpeechBubbleFormat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpeechBubbleFormat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpriteBatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpriteBatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpriteFont.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchSpriteFont.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Preferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/packages.config" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="jetbrains-rider" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "gitAdrianK"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/gitAdrianK/JumpKingMoreOrLessMods.git",
+    "accountId": "accc8f35-94a4-4466-a59f-5b786deda4fe"
+  }
+}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2zdPfBm76GjHdmweNXBes0q9K7e" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "rider.code.cleanup.on.save": "true",
+    "settings.editor.selected.configurable": "actions.on.save",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="403618f2-dd2b-450f-8285-4b66b71be828" name="Changes" comment="" />
+      <created>1752058077556</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1752058077556</updated>
+      <workItem from="1752058078704" duration="534000" />
+      <workItem from="1752059319059" duration="13000" />
+      <workItem from="1752059371516" duration="3000" />
+      <workItem from="1752174256575" duration="2576000" />
+    </task>
+    <task id="LOCAL-00001" summary="Move from VisualStudio to Rider">
+      <option name="closed" value="true" />
+      <created>1752058105021</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752058105021</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/gitAdrianK/JumpKingMoreOrLessMods" />
+    <MESSAGE value="Move from VisualStudio to Rider" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move from VisualStudio to Rider" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
