@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace MoreSaves.Patches
 {
     using System.Reflection;
@@ -24,9 +26,9 @@ namespace MoreSaves.Patches
             var save = saveHelper.GetMethod("Save");
             var saveEncrypted = saveHelper.GetMethod("SaveEncrypted");
 
-            MethodSaveGeneralSettings = save.MakeGenericMethod(typeof(GeneralSettings));
-            MethodSaveStats = saveEncrypted.MakeGenericMethod(typeof(PlayerStats));
-            MethodSaveInventory = saveEncrypted.MakeGenericMethod(typeof(Inventory));
+            MethodSaveGeneralSettings = save?.MakeGenericMethod(typeof(GeneralSettings));
+            MethodSaveStats = saveEncrypted?.MakeGenericMethod(typeof(PlayerStats));
+            MethodSaveInventory = saveEncrypted?.MakeGenericMethod(typeof(Inventory));
 
             MethodSaveGeneralSettingsPatch =
                 new HarmonyMethod(AccessTools.Method(typeof(PatchSaveHelper), nameof(SaveGeneralSettings)));
@@ -62,24 +64,25 @@ namespace MoreSaves.Patches
                 ModStrings.SavesPerma);
         }
 
-        public static void SaveStats(string pFile, PlayerStats pObject)
+        public static void SaveStats(string p_file, PlayerStats p_object)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
 
-            PatchEncryption.SavePlayerStats(pObject, pFile, ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
+            PatchEncryption.SavePlayerStats(p_object, p_file, ModStrings.Auto, ModEntry.SaveName,
+                ModStrings.SavesPerma);
         }
 
-        public static void SaveInventory(Inventory pObject)
+        public static void SaveInventory(Inventory p_object)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
 
-            PatchEncryption.SaveInventory(pObject, ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
+            PatchEncryption.SaveInventory(p_object, ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
         }
     }
 }

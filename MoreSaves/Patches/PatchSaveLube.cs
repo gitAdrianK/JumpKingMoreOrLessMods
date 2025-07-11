@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace MoreSaves.Patches
 {
     using System.IO;
@@ -33,7 +35,7 @@ namespace MoreSaves.Patches
             GeneralSettings = Traverse.Create(saveLube).Property("generalSettings");
 
             var genericSave = saveLube.GetMethod("Save");
-            MethodSaveCombinedSaveFile = genericSave.MakeGenericMethod(typeof(CombinedSaveFile));
+            MethodSaveCombinedSaveFile = genericSave?.MakeGenericMethod(typeof(CombinedSaveFile));
             MethodSaveCombinedPatch = new HarmonyMethod(typeof(PatchSaveLube).GetMethod(nameof(SaveCombinedSaveFile)));
 
             MethodDeleteSave = saveLube.GetMethod("DeleteSaves");
@@ -53,14 +55,14 @@ namespace MoreSaves.Patches
             );
         }
 
-        public static void SaveCombinedSaveFile(CombinedSaveFile pObject)
+        public static void SaveCombinedSaveFile(CombinedSaveFile p_object)
         {
             if (ModEntry.SaveName == string.Empty)
             {
                 return;
             }
 
-            PatchEncryption.SaveCombinedSaveFile(pObject, ModStrings.Auto, ModEntry.SaveName, ModStrings.Saves);
+            PatchEncryption.SaveCombinedSaveFile(p_object, ModStrings.Auto, ModEntry.SaveName, ModStrings.Saves);
             PatchEncryption.SavePlayerStats(PatchAchievementManager.GetPermaStats(), ModStrings.Permanent,
                 ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
         }

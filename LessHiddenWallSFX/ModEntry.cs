@@ -55,7 +55,7 @@ namespace LessHiddenWallSFX
                 return;
             }
 
-            // Really it doesn't mute it but sets it to null so theres nothing to play.
+            // Really it doesn't mute it but sets it to null so there's nothing to play.
             // In a way it is muting it.
             foreach (var tag in tags)
             {

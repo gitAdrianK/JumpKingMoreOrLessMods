@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace LessLocationText.Patches
 {
     using System.Diagnostics.CodeAnalysis;
@@ -11,11 +13,11 @@ namespace LessLocationText.Patches
         [HarmonyPostfix]
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
-        public static void PatchPollCurrent(ref bool result)
+        public static void PatchPollCurrent(ref bool __result)
         {
             if (ModEntry.Preferences.ShouldHideEnter)
             {
-                result = false;
+                __result = false;
             }
         }
 
@@ -23,11 +25,11 @@ namespace LessLocationText.Patches
         [HarmonyPostfix]
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
-        public static void PatchPollNewScreen(ref bool result)
+        public static void PatchPollNewScreen(ref bool __result)
         {
             if (ModEntry.Preferences.ShouldHideDiscover)
             {
-                result = false;
+                __result = false;
             }
         }
     }

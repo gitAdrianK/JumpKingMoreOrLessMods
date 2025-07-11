@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace LessBabeNoises.Patches
 {
     using System.Diagnostics.CodeAnalysis;
@@ -13,7 +15,7 @@ namespace LessBabeNoises.Patches
     {
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
-        public static void Postfix(BehaviorTreeComp result)
+        public static void Postfix(BehaviorTreeComp __result)
         {
             /* Sounds, in order played, are:
                 1 - player.EndingParasol
@@ -29,7 +31,7 @@ namespace LessBabeNoises.Patches
             }
 
             var managerNodes = Traverse
-                .Create(result.GetRaw())
+                .Create(__result.GetRaw())
                 .Field("m_root_node")
                 .Field("m_children")
                 .GetValue<IBTnode[]>();

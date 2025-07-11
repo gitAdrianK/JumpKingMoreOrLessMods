@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace LessNpcDialog.Patches
 {
     using System.Diagnostics.CodeAnalysis;
@@ -11,14 +13,14 @@ namespace LessNpcDialog.Patches
     {
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
-        public static bool Prefix(ref BTresult result)
+        public static bool Prefix(ref BTresult __result)
         {
             if (!ModEntry.Preferences.IsEnabled)
             {
                 return true;
             }
 
-            result = BTresult.Success;
+            __result = BTresult.Success;
             return false;
         }
     }
