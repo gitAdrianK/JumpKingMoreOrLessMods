@@ -17,7 +17,7 @@ namespace MoreTextOptions.Patches
     {
         private static readonly Type TypeBb = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
         private static readonly Type TypeRattman = AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
-        private static readonly Type TypeOldMan = AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity");
+        private static readonly Type TypeOldMan = AccessTools.TypeByName("JumpKing.MiscEntities.PatchOldManEntity");
 
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]

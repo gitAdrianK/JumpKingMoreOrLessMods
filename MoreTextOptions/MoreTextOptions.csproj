@@ -86,6 +86,7 @@
     <Compile Include="Menus\ToggleCustomText.cs"/>
     <Compile Include="Menus\ToggleDisableOutline.cs"/>
     <Compile Include="ModEntry.cs"/>
+    <Compile Include="Patches\PatchOldManEntity.cs"/>
     <Compile Include="Patches\PatchSayLine.cs"/>
     <Compile Include="Patches\PatchSpeechBubbleFormat.cs"/>
     <Compile Include="Patches\PatchSpriteBatch.cs"/>

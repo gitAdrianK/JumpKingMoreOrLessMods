@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="403618f2-dd2b-450f-8285-4b66b71be828" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchOldManEntity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchEndingKing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchEndingKing.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchHangingBabe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchHangingBabe.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchNBPKingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchNBPKingEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchOwlKingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessBabeNoises/Patches/PatchOwlKingEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessHiddenWallSFX/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessHiddenWallSFX/ModEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessLocationText/Patches/PatchLocationComp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Patches/PatchLocationComp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Patches/PatchSayLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Patches/PatchSayLine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveLube.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Patches/PatchSaveLube.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +39,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/115d97b957eb41cabade1b29d1e7edf4e2400/a5/d8da5a5c/SpriteFont.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/120611e03054417a87a6d1bfe0288579baa00/05/806277cb/JKContentManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -85,7 +84,15 @@
       <workItem from="1752059371516" duration="3000" />
       <workItem from="1752174256575" duration="2728000" />
       <workItem from="1752215937479" duration="4000" />
-      <workItem from="1752265529631" duration="618000" />
+      <workItem from="1752265529631" duration="771000" />
+      <workItem from="1752307229544" duration="11000" />
+      <workItem from="1752480903637" duration="805000" />
+      <workItem from="1752482836430" duration="2040000" />
+      <workItem from="1752486066928" duration="190000" />
+      <workItem from="1752490464856" duration="1888000" />
+      <workItem from="1752506272411" duration="393000" />
+      <workItem from="1752507097287" duration="494000" />
+      <workItem from="1752560435722" duration="1683000" />
     </task>
     <task id="LOCAL-00001" summary="Move from VisualStudio to Rider">
       <option name="closed" value="true" />
@@ -103,7 +110,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752176966158</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix auto rename">
+      <option name="closed" value="true" />
+      <created>1752266285410</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752266285410</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,7 +130,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Merge branch 'master' of https://github.com/gitAdrianK/JumpKingMoreOrLessMods" />
     <MESSAGE value="Move from VisualStudio to Rider" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move from VisualStudio to Rider" />
+    <MESSAGE value="Fix auto rename" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix auto rename" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

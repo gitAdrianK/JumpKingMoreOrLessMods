@@ -13,7 +13,7 @@ namespace MoreTextOptions.Patches
     public static class PatchTextHelper
     {
         [UsedImplicitly]
-        public static bool Prefix(ref SpriteFont p_font, ref string p_text, ref Vector2 p_position, ref Color p_color,
+        public static bool Prefix(SpriteFont p_font, string p_text, Vector2 p_position, ref Color p_color,
             ref bool p_is_outlined)
         {
             if (!p_is_outlined)

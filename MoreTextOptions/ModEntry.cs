@@ -13,6 +13,8 @@ namespace MoreTextOptions
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Patches;
     using Util;
 #if DEBUG
     using System.Diagnostics;
@@ -64,6 +66,31 @@ namespace MoreTextOptions
             OffsetX = Math.Max(red.X, Math.Max(green.X, blue.X));
             OffsetY = red.Y;
         }
+
+        /// <summary>
+        ///     Called by Jump King when the Level Starts
+        /// </summary>
+        [OnLevelStart]
+        [UsedImplicitly]
+        public static void OnLevelStart()
+        {
+            var root = Game1.instance.contentManager.root;
+
+            PatchOldManEntity.Default = null;
+            var defaultPath = Path.Combine(root, "font", "Default");
+            if (File.Exists(defaultPath + ".xnb"))
+            {
+                PatchOldManEntity.Default = Game1.instance.contentManager.Load<SpriteFont>(defaultPath);
+            }
+
+            PatchOldManEntity.Gargoyle = null;
+            var gargoylePath = Path.Combine(root, "font", "Gargoyle");
+            if (File.Exists(gargoylePath + ".xnb"))
+            {
+                PatchOldManEntity.Gargoyle = Game1.instance.contentManager.Load<SpriteFont>(gargoylePath);
+            }
+        }
+
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)
             => Serialization.SaveToFile(Preferences, PreferencesPath);
