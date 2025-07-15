@@ -5,9 +5,7 @@ namespace MoreSaves.Menus.Models
     using System.Linq;
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
-    using JumpKing.Mods;
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
     using LanguageJK;
@@ -33,24 +31,6 @@ namespace MoreSaves.Menus.Models
         ///     The buttons that the manual page can hold.
         /// </summary>
         private static List<TextButton> manualButtons;
-
-        [MainMenuItemSetting]
-        [UsedImplicitly]
-        public static TextButton LoadAutoSavefile(object factory, GuiFormat format)
-        {
-            SetupButtons();
-            return new TextButton("Load Automatic Save",
-                CreateLoadOptions(factory, format, 0, PageOption.Auto));
-        }
-
-        [MainMenuItemSetting]
-        [UsedImplicitly]
-        public static TextButton LoadManualSavefile(object factory, GuiFormat format)
-        {
-            SetupButtons();
-            return new TextButton("Load Manual Save",
-                CreateLoadOptions(factory, format, 0, PageOption.Manual));
-        }
 
         /// <summary>
         ///     Reads the auto and manual directories and creates a button for each folder found inside.

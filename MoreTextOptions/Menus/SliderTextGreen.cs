@@ -2,25 +2,15 @@
 
 namespace MoreTextOptions.Menus
 {
-    using System.Diagnostics.CodeAnalysis;
-    using JetBrains.Annotations;
     using JumpKing;
-    using JumpKing.Mods;
-    using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT.Actions;
     using Microsoft.Xna.Framework;
 
     public class SliderTextGreen : ISlider
     {
-        private SliderTextGreen() : base(ModEntry.Preferences.TextGreen / 255.0f)
+        public SliderTextGreen() : base(ModEntry.Preferences.TextGreen / 255.0f)
         {
         }
-
-        [PauseMenuItemSetting]
-        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
-        [UsedImplicitly]
-        public static SliderTextGreen Slider(object factory, GuiFormat format)
-            => new SliderTextGreen();
 
         protected override void IconDraw(float pValue, int x, int y, out int newX)
         {

@@ -5,13 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="403618f2-dd2b-450f-8285-4b66b71be828" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchOldManEntity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreSaves/Menus/Models/ModelLoadOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Models/ModelLoadOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineBlue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineGreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineRed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextBlue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextGreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextRed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/TextInfoExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/TextInfoExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomOutline.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomText.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleDisableOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleDisableOutline.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/MoreTextOptions.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTextHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +52,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/115d97b957eb41cabade1b29d1e7edf4e2400/a5/d8da5a5c/SpriteFont.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/120611e03054417a87a6d1bfe0288579baa00/05/806277cb/JKContentManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/120611e03054417a87a6d1bfe0288579baa00/ac/8c21ecb6/OldManFont.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -92,7 +104,10 @@
       <workItem from="1752490464856" duration="1888000" />
       <workItem from="1752506272411" duration="393000" />
       <workItem from="1752507097287" duration="494000" />
-      <workItem from="1752560435722" duration="1683000" />
+      <workItem from="1752560435722" duration="1826000" />
+      <workItem from="1752595159303" duration="55000" />
+      <workItem from="1752603179918" duration="1588000" />
+      <workItem from="1752605567778" duration="268000" />
     </task>
     <task id="LOCAL-00001" summary="Move from VisualStudio to Rider">
       <option name="closed" value="true" />
@@ -118,7 +133,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752266285410</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add custom font support.&#10;&#10;This gives the ability to replace Default and Gargoyle, it is not full-blown custom font support.">
+      <option name="closed" value="true" />
+      <created>1752562214523</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752562214523</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,7 +154,8 @@
     <MESSAGE value="Merge branch 'master' of https://github.com/gitAdrianK/JumpKingMoreOrLessMods" />
     <MESSAGE value="Move from VisualStudio to Rider" />
     <MESSAGE value="Fix auto rename" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix auto rename" />
+    <MESSAGE value="Add custom font support.&#10;&#10;This gives the ability to replace Default and Gargoyle, it is not full-blown custom font support." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add custom font support.&#10;&#10;This gives the ability to replace Default and Gargoyle, it is not full-blown custom font support." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

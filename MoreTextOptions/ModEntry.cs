@@ -12,6 +12,7 @@ namespace MoreTextOptions
     using JumpKing.Mods;
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
+    using Menus;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Patches;
@@ -38,6 +39,66 @@ namespace MoreTextOptions
         [UsedImplicitly]
         public static TextInfo HintOptionsLocation(object factory, GuiFormat format)
             => new TextInfo("Options in the pause menu!", Color.Lime);
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static TextInfoExample DisplayExampleText(object factory, GuiFormat format)
+            => new TextInfoExample();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static ToggleCustomText CustomText(object factory, GuiFormat format)
+            => new ToggleCustomText();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderTextRed TextRed(object factory, GuiFormat format)
+            => new SliderTextRed();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderTextGreen TextGreen(object factory, GuiFormat format)
+            => new SliderTextGreen();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderTextBlue TextBlue(object factory, GuiFormat format)
+            => new SliderTextBlue();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static ToggleDisableOutline ToggleOutline(object factory, GuiFormat format)
+            => new ToggleDisableOutline();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static ToggleCustomOutline CustomOutline(object factory, GuiFormat format)
+            => new ToggleCustomOutline();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderOutlineRed OutlineRed(object factory, GuiFormat format)
+            => new SliderOutlineRed();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderOutlineGreen OutlineGreen(object factory, GuiFormat format)
+            => new SliderOutlineGreen();
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static SliderOutlineBlue OutlineBlue(object factory, GuiFormat format)
+            => new SliderOutlineBlue();
 
         /// <summary>
         ///     Called by Jump King before the level loads

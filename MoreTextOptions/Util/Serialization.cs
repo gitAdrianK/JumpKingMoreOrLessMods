@@ -3,7 +3,7 @@ namespace MoreTextOptions.Util
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.IO;
     using System.Reflection;
     using System.Xml.Linq;
 
@@ -11,19 +11,17 @@ namespace MoreTextOptions.Util
     {
         public static void SaveToFile<T>(T obj, string path) where T : new()
         {
-            try
-            {
-                var document = new XDocument(Serialize(obj));
-                document.Save(path);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"[ERROR] [{path}] {e.Message}");
-            }
+            var document = new XDocument(Serialize(obj));
+            document.Save(path);
         }
 
         public static T ReadFromFile<T>(string path) where T : new()
         {
+            if (!File.Exists(path))
+            {
+                return new T();
+            }
+
             var document = XDocument.Load(path);
             return Deserialize<T>(document.Root);
         }
@@ -49,7 +47,7 @@ namespace MoreTextOptions.Util
                 return element;
             }
 
-            if (obj is IEnumerable list && !(obj is string))
+            if (obj is IEnumerable list)
             {
                 foreach (var item in list)
                 {

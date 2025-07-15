@@ -3,6 +3,7 @@ namespace LessNpcDialog.Util
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
     using System.Xml.Linq;
 
@@ -16,6 +17,11 @@ namespace LessNpcDialog.Util
 
         public static T ReadFromFile<T>(string path) where T : new()
         {
+            if (!File.Exists(path))
+            {
+                return new T();
+            }
+
             var document = XDocument.Load(path);
             return Deserialize<T>(document.Root);
         }
