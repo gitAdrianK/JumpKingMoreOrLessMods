@@ -5,9 +5,9 @@ namespace MoreTextOptions.Patches
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using HarmonyLib;
     using JetBrains.Annotations;
-    using JumpKing;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.Props.RattmanText;
     using Microsoft.Xna.Framework.Graphics;
@@ -15,9 +15,15 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(TargetLine), "MyRun")]
     public static class PatchTargetLine
     {
-        private static readonly Type TypeBb = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
-        private static readonly Type TypeRattman = AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
-        private static readonly Type TypeOldMan = AccessTools.TypeByName("JumpKing.MiscEntities.PatchOldManEntity");
+        private static readonly Type TypeBlackBoardComp = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
+
+        private static readonly Type TypeRattmanEntity =
+            AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
+
+        private static readonly Type TypeOldManEntity = AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity");
+
+        private static readonly MethodInfo GetOldManFont =
+            AccessTools.Method(AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity"), "GetOldManFont");
 
         [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
@@ -27,7 +33,7 @@ namespace MoreTextOptions.Patches
             OldManFont oldManFont;
             int width;
 
-            if (typeInstance == TypeRattman)
+            if (typeInstance == TypeRattmanEntity)
             {
                 var settings = Traverse.Create(__instance.game_object)
                     .Field("m_settings")
@@ -35,7 +41,7 @@ namespace MoreTextOptions.Patches
                 oldManFont = settings.font;
                 width = settings.bubble_format.width;
             }
-            else if (typeInstance == TypeOldMan)
+            else if (typeInstance == TypeOldManEntity)
             {
                 var settings = Traverse.Create(__instance.game_object)
                     .Field("m_settings")
@@ -50,22 +56,11 @@ namespace MoreTextOptions.Patches
 
             var blackBoardComp = __instance.GetType()
                 .GetMethod("GetComponent")
-                ?.MakeGenericMethod(TypeBb)
+                ?.MakeGenericMethod(TypeBlackBoardComp)
                 .Invoke(__instance, new object[] { });
             var dict = Traverse.Create(blackBoardComp).Field("m_values").GetValue<Dictionary<string, object>>();
 
-            SpriteFont font;
-            switch (oldManFont)
-            {
-                case OldManFont.Default:
-                    font = Game1.instance.contentManager.font.StyleFont;
-                    break;
-                case OldManFont.Gargoyle:
-                    font = Game1.instance.contentManager.font.GargoyleFont;
-                    break;
-                default:
-                    throw new Exception("Unknown font choice");
-            }
+            var font = (SpriteFont)GetOldManFont.Invoke(null, new object[] { oldManFont });
 
             dict["BB_LINE_KEY"] = string.Join("",
                 SpeechBubbleFormat.ChopString((string)dict["BB_LINE_KEY"], font, width));

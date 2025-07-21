@@ -6,23 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="403618f2-dd2b-450f-8285-4b66b71be828" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.JumpKingMoreOrLessMods/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessAutoEquipping/Util/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessLocationText/Util/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LessNpcDialog/Util/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreSaves/Menus/Models/ModelLoadOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreSaves/Menus/Models/ModelLoadOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineBlue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineGreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderOutlineRed.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextBlue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextBlue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextGreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextGreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextRed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/SliderTextRed.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/TextInfoExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/TextInfoExample.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomOutline.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomText.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleCustomText.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleDisableOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Menus/ToggleDisableOutline.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Patches/PatchTargetLine.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Properties/AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MoreTextOptions/Util/Serialization.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +39,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/120611e03054417a87a6d1bfe0288579baa00/05/806277cb/JKContentManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/120611e03054417a87a6d1bfe0288579baa00/ac/8c21ecb6/OldManFont.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LessAutoEquipping/ModEntry.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Dokumente/Projekte/jk/JumpKingMoreOrLessMods/MoreTextOptions/Patches/PatchTargetLine.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -108,6 +94,7 @@
       <workItem from="1752595159303" duration="55000" />
       <workItem from="1752603179918" duration="1588000" />
       <workItem from="1752605567778" duration="268000" />
+      <workItem from="1753103686229" duration="2653000" />
     </task>
     <task id="LOCAL-00001" summary="Move from VisualStudio to Rider">
       <option name="closed" value="true" />
