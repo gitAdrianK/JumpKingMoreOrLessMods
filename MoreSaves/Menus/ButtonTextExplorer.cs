@@ -22,19 +22,12 @@ namespace MoreSaves.Menus
         private readonly SpriteFont font;
         private readonly string text;
 
-        private ButtonTextExplorer(string text, IBTnode child, Color color) : base(text, child, color)
+        public ButtonTextExplorer(string text, IBTnode child, Color color) : base(text, child, color)
         {
             this.font = Game1.instance.contentManager.font.MenuFont;
             this.text = text;
             this.color = color;
         }
-
-        [MainMenuItemSetting]
-        [PauseMenuItemSetting]
-        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
-        [UsedImplicitly]
-        public static ButtonTextExplorer OpenFolderExplorer(object factory, GuiFormat format)
-            => new ButtonTextExplorer("Open Saves Folder", new NodeOpenFolderExplorer(), Color.Lime);
 
         public override void Draw(int x, int y, bool selected)
         {

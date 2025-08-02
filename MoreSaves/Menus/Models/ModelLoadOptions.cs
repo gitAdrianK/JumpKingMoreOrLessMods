@@ -75,7 +75,7 @@ namespace MoreSaves.Menus.Models
             return name;
         }
 
-        private static MenuSelectorClosePopup CreateLoadOptions(object factory, GuiFormat format, int page,
+        public static MenuSelectorClosePopup CreateLoadOptions(object factory, GuiFormat format, int page,
             PageOption pageOption)
         {
             List<TextButton> buttons;
@@ -140,7 +140,7 @@ namespace MoreSaves.Menus.Models
             return menuSelector;
         }
 
-        private enum PageOption
+        public enum PageOption
         {
             Auto,
             Manual

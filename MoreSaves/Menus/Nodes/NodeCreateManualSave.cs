@@ -19,12 +19,6 @@ namespace MoreSaves.Menus.Nodes
         private const string Manual = ModStrings.Manual;
         private const string SavesPerma = ModStrings.SavesPerma;
 
-        [PauseMenuItemSetting]
-        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
-        [UsedImplicitly]
-        public static TextButton CreateManualSave(object factory, GuiFormat format)
-            => new TextButton("Create Manual Save", new NodeCreateManualSave());
-
         protected override BTresult MyRun(TickData pData)
         {
             if (ModEntry.SaveName == string.Empty)

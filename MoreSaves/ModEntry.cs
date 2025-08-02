@@ -1,5 +1,6 @@
 namespace MoreSaves
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -8,9 +9,14 @@ namespace MoreSaves
     using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
+    using JumpKing.PauseMenu;
+    using JumpKing.PauseMenu.BT;
     using JumpKing.SaveThread;
     using LanguageJK;
+    using Menus;
     using Menus.Models;
+    using Menus.Nodes;
+    using Microsoft.Xna.Framework;
     using Patches;
 #if DEBUG
     using System.Diagnostics;
@@ -30,6 +36,37 @@ namespace MoreSaves
         //public static string ExeDirectory { get; private set; }
 
         public static string SaveName { get; set; }
+
+        [MainMenuItemSetting]
+        [UsedImplicitly]
+        public static TextButton LoadAutoSavefile(object factory, GuiFormat format)
+        {
+            ModelLoadOptions.SetupButtons();
+            return new TextButton("Load Automatic Save",
+                ModelLoadOptions.CreateLoadOptions(factory, format, 0, ModelLoadOptions.PageOption.Auto));
+        }
+
+        [MainMenuItemSetting]
+        [UsedImplicitly]
+        public static TextButton LoadManualSavefile(object factory, GuiFormat format)
+        {
+            ModelLoadOptions.SetupButtons();
+            return new TextButton("Load Manual Save",
+                ModelLoadOptions.CreateLoadOptions(factory, format, 0, ModelLoadOptions.PageOption.Manual));
+        }
+
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static TextButton CreateManualSave(object factory, GuiFormat format)
+            => new TextButton("Create Manual Save", new NodeCreateManualSave());
+
+        [MainMenuItemSetting]
+        [PauseMenuItemSetting]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
+        [UsedImplicitly]
+        public static ButtonTextExplorer OpenFolderExplorer(object factory, GuiFormat format)
+            => new ButtonTextExplorer("Open Saves Folder", new NodeOpenFolderExplorer(), Color.Lime);
 
         /// <summary>
         ///     Called by Jump King before the level loads
