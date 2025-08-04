@@ -59,7 +59,7 @@ namespace MoreTextOptions.Patches
                     }
                     else
                     {
-                        if (isStart && !string.IsNullOrWhiteSpace(c.ToString()))
+                        if (isStart && !char.IsWhiteSpace(c))
                         {
                             _ = stringBuilder.Append(color);
                             isStart = false;
