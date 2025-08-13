@@ -1,15 +1,10 @@
 namespace MoreSaves.Menus
 {
-    using System.Diagnostics.CodeAnalysis;
     using BehaviorTree;
-    using JetBrains.Annotations;
     using JumpKing;
-    using JumpKing.Mods;
-    using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nodes;
 
     /// <summary>
     ///     Custom text button that adds the "Explore" icon to the end of the button.

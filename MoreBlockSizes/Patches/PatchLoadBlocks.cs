@@ -29,7 +29,8 @@ namespace MoreBlockSizes.Patches
                 contentManager.ReloadAsset<Texture2D>("sizes", true);
             }
 
-            if (texture.Width != 780 || texture.Height != 585)
+            var levelTexture = Game1.instance.contentManager.LevelTexture;
+            if (texture.Height != levelTexture.Height || texture.Width != levelTexture.Width)
             {
                 return true;
             }
