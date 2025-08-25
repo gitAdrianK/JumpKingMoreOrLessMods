@@ -87,7 +87,7 @@ namespace MoreSaves
                 _ = new PatchSaveLube(harmony);
                 _ = new PatchGameTitleScreen(harmony);
             }
-            catch (NotImplementedException e)
+            catch (NotImplementedException)
             {
                 PatchGameTitleScreen.HasPatchingFailed = true;
                 throw;
