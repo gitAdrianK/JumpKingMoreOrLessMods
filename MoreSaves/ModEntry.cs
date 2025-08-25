@@ -1,5 +1,6 @@
 namespace MoreSaves
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
@@ -79,8 +80,18 @@ namespace MoreSaves
 #if DEBUG
             Debugger.Launch();
 #endif
-            _ = new PatchSaveHelper(harmony);
-            _ = new PatchSaveLube(harmony);
+
+            try
+            {
+                _ = new PatchSaveHelper(harmony);
+                _ = new PatchSaveLube(harmony);
+                _ = new PatchGameTitleScreen(harmony);
+            }
+            catch (NotImplementedException e)
+            {
+                PatchGameTitleScreen.HasPatchingFailed = true;
+                throw;
+            }
 
             DllDirectory =
                 $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}";
