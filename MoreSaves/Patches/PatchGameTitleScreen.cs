@@ -8,12 +8,12 @@
 
     public class PatchGameTitleScreen
     {
-        public static bool HasPatchingFailed { get; set; }
-
         public PatchGameTitleScreen(Harmony harmony) =>
             _ = harmony.Patch(
                 typeof(GameTitleScreen).GetMethod(nameof(GameTitleScreen.Draw)),
                 postfix: new HarmonyMethod(typeof(PatchGameTitleScreen).GetMethod(nameof(DrawPatch))));
+
+        public static bool HasPatchingFailed { get; set; }
 
         public static void DrawPatch()
         {
@@ -21,6 +21,7 @@
             {
                 return;
             }
+
             TextHelper.DrawString(
                 Game1.instance.contentManager.font.MenuFontSmall,
                 "Automatic saving not working!",
@@ -28,6 +29,5 @@
                 Color.Red,
                 new Vector2(0f, 0f));
         }
-
     }
 }

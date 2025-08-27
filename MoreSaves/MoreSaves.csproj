@@ -82,7 +82,7 @@
     <Compile Include="Menus\Nodes\NodeOpenFolderExplorer.cs"/>
     <Compile Include="Patches\PatchAchievementManager.cs"/>
     <Compile Include="Patches\PatchEncryption.cs"/>
-    <Compile Include="Patches\PatchGameTitleScreen.cs" />
+    <Compile Include="Patches\PatchGameTitleScreen.cs"/>
     <Compile Include="Patches\PatchInventoryManager.cs"/>
     <Compile Include="Patches\PatchSaveHelper.cs"/>
     <Compile Include="Patches\PatchSaveLube.cs"/>
@@ -93,7 +93,7 @@
     <None Include="packages.config"/>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

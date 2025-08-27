@@ -14,7 +14,7 @@ namespace MoreLayeringOptions
     public static class ModEntry
     {
         /// <summary>
-        /// Called by Jump King when the Level Starts
+        ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
         [UsedImplicitly]
@@ -126,6 +126,7 @@ namespace MoreLayeringOptions
                 entityManager.MoveToFront(other);
             }
         }
+
         private static void MoveWallsBeforePlayer()
         {
             var entityManager = EntityManager.instance;

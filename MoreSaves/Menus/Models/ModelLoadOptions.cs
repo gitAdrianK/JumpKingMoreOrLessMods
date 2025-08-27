@@ -14,6 +14,12 @@ namespace MoreSaves.Menus.Models
 
     public static class ModelLoadOptions
     {
+        public enum PageOption
+        {
+            Auto,
+            Manual
+        }
+
         private const string Auto = ModStrings.Auto;
         private const string Manual = ModStrings.Manual;
 
@@ -138,12 +144,6 @@ namespace MoreSaves.Menus.Models
 
             menuSelector.Initialize();
             return menuSelector;
-        }
-
-        public enum PageOption
-        {
-            Auto,
-            Manual
         }
     }
 }
