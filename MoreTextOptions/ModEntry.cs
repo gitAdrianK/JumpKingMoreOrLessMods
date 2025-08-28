@@ -14,7 +14,6 @@ namespace MoreTextOptions
     using JumpKing.PauseMenu.BT;
     using Menus;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using Patches;
     using Util;
 #if DEBUG
@@ -133,24 +132,7 @@ namespace MoreTextOptions
         /// </summary>
         [OnLevelStart]
         [UsedImplicitly]
-        public static void OnLevelStart()
-        {
-            var root = Game1.instance.contentManager.root;
-
-            PatchOldManEntity.Default = null;
-            var defaultPath = Path.Combine(root, "font", "Default");
-            if (File.Exists(defaultPath + ".xnb"))
-            {
-                PatchOldManEntity.Default = Game1.instance.contentManager.Load<SpriteFont>(defaultPath);
-            }
-
-            PatchOldManEntity.Gargoyle = null;
-            var gargoylePath = Path.Combine(root, "font", "Gargoyle");
-            if (File.Exists(gargoylePath + ".xnb"))
-            {
-                PatchOldManEntity.Gargoyle = Game1.instance.contentManager.Load<SpriteFont>(gargoylePath);
-            }
-        }
+        public static void OnLevelStart() => PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
 
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)
