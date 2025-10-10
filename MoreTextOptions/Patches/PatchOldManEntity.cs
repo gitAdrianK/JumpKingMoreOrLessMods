@@ -17,6 +17,8 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch("JumpKing.MiscEntities.OldManEntity", "GetOldManFont")]
     public static class PatchOldManEntity
     {
+        private static bool HasCustomFonts { get; set; }
+
         private static SpriteFont[] Fonts { get; set; } =
         {
             Game1.instance.contentManager.font.StyleFont, Game1.instance.contentManager.font.GargoyleFont
@@ -25,6 +27,11 @@ namespace MoreTextOptions.Patches
         [UsedImplicitly]
         public static bool Prefix(OldManFont p_font, ref SpriteFont __result)
         {
+            if (!HasCustomFonts)
+            {
+                return true;
+            }
+
             __result = Fonts?[(int)p_font] ?? Game1.instance.contentManager.font.StyleFont;
             return false;
         }
@@ -36,6 +43,8 @@ namespace MoreTextOptions.Patches
         /// <param name="contentManager">JK Content Manager.</param>
         public static void LoadAndAssignFonts(JKContentManager contentManager)
         {
+            HasCustomFonts = false;
+
             var root = contentManager.root;
             var fontPath = Path.Combine(root, "font");
 
@@ -44,6 +53,7 @@ namespace MoreTextOptions.Patches
                 return;
             }
 
+            HasCustomFonts = true;
             var intToFontDictionary = new Dictionary<int, SpriteFont>();
             var nameToIntDictionary = new Dictionary<string, int>();
 
