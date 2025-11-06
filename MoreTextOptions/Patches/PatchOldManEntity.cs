@@ -19,10 +19,7 @@ namespace MoreTextOptions.Patches
     {
         private static bool HasCustomFonts { get; set; }
 
-        private static SpriteFont[] Fonts { get; set; } =
-        {
-            Game1.instance.contentManager.font.StyleFont, Game1.instance.contentManager.font.GargoyleFont
-        };
+        private static SpriteFont[] Fonts { get; set; }
 
         [UsedImplicitly]
         public static bool Prefix(OldManFont p_font, ref SpriteFont __result)
@@ -32,7 +29,13 @@ namespace MoreTextOptions.Patches
                 return true;
             }
 
-            __result = Fonts?[(int)p_font] ?? Game1.instance.contentManager.font.StyleFont;
+            var customFont = Fonts?[(int)p_font];
+            if (customFont is null)
+            {
+                return true;
+            }
+
+            __result = Fonts[(int)p_font];
             return false;
         }
 
@@ -44,6 +47,7 @@ namespace MoreTextOptions.Patches
         public static void LoadAndAssignFonts(JKContentManager contentManager)
         {
             HasCustomFonts = false;
+            Fonts = null;
 
             var root = contentManager.root;
             var fontPath = Path.Combine(root, "font");
@@ -53,17 +57,16 @@ namespace MoreTextOptions.Patches
                 return;
             }
 
-            HasCustomFonts = true;
             var intToFontDictionary = new Dictionary<int, SpriteFont>();
             var nameToIntDictionary = new Dictionary<string, int>();
 
             intToFontDictionary[0] = File.Exists(Path.Combine(fontPath, "Default.xnb"))
                 ? contentManager.Load<SpriteFont>(Path.Combine(fontPath, "Default"))
-                : contentManager.font.StyleFont;
+                : null;
 
             intToFontDictionary[1] = File.Exists(Path.Combine(fontPath, "Gargoyle.xnb"))
                 ? contentManager.Load<SpriteFont>(Path.Combine(fontPath, "Gargoyle"))
-                : contentManager.font.GargoyleFont;
+                : null;
 
             var index = 2;
             foreach (var fontFile in Directory.GetFiles(fontPath, "*.xnb")
@@ -76,6 +79,7 @@ namespace MoreTextOptions.Patches
                 index++;
             }
 
+            HasCustomFonts = true;
             Fonts = intToFontDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
 
             if (index == 2)
@@ -85,8 +89,14 @@ namespace MoreTextOptions.Patches
                 return;
             }
 
-            var oldManSettings = LoadOldManSettings(fontPath);
-            var rattmanSettings = LoadRattmanSettings(fontPath);
+            var oldManResult = LoadOldManSettings(fontPath, out var oldManSettings);
+            var rattmanResult = LoadRattmanSettings(fontPath, out var rattmanSettings);
+            // For additional safety, if someone makes a font folder
+            // puts fonts inside but does not define any custom font mappings.
+            if (!oldManResult && !rattmanResult)
+            {
+                return;
+            }
 
             var oldManType = AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity");
             var rattmanType = AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
@@ -133,20 +143,20 @@ namespace MoreTextOptions.Patches
             }
         }
 
-        private static Dictionary<string, string> LoadOldManSettings(string fontPath)
+        private static bool LoadOldManSettings(string fontPath, out Dictionary<string, string> settings)
         {
-            var settings = new Dictionary<string, string>();
+            settings = new Dictionary<string, string>();
 
             var xmlFile = Path.Combine(fontPath, "OldManSettings.xml");
             if (!File.Exists(xmlFile))
             {
-                return settings;
+                return false;
             }
 
             var root = XDocument.Load(xmlFile).Root;
             if (root == null)
             {
-                return settings;
+                return false;
             }
 
             var elements = root.Elements("OldManSetting");
@@ -163,23 +173,23 @@ namespace MoreTextOptions.Patches
                 settings[name.Value] = font.Value;
             }
 
-            return settings;
+            return true;
         }
 
-        private static Dictionary<int, string> LoadRattmanSettings(string fontPath)
+        private static bool LoadRattmanSettings(string fontPath, out Dictionary<int, string> settings)
         {
-            var settings = new Dictionary<int, string>();
+            settings = new Dictionary<int, string>();
 
             var xmlFile = Path.Combine(fontPath, "RattmanSettings.xml");
             if (!File.Exists(xmlFile))
             {
-                return settings;
+                return false;
             }
 
             var root = XDocument.Load(xmlFile).Root;
             if (root == null)
             {
-                return settings;
+                return false;
             }
 
             var elements = root.Elements("RattmanSetting");
@@ -196,7 +206,7 @@ namespace MoreTextOptions.Patches
                 settings[int.Parse(screen.Value)] = font.Value;
             }
 
-            return settings;
+            return true;
         }
     }
 }
