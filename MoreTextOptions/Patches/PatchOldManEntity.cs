@@ -40,8 +40,8 @@ namespace MoreTextOptions.Patches
         }
 
         /// <summary>
-        /// Loads all fonts inside the font folder as well assigning the corresponding id of the font
-        /// to entities that have been specified inside the OldManSettings.xml and RattmanSettings.xml.
+        ///     Loads all fonts inside the font folder as well assigning the corresponding id of the font
+        ///     to entities that have been specified inside the OldManSettings.xml and RattmanSettings.xml.
         /// </summary>
         /// <param name="contentManager">JK Content Manager.</param>
         public static void LoadAndAssignFonts(JKContentManager contentManager)

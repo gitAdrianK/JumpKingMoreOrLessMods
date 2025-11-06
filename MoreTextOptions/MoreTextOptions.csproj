@@ -91,6 +91,7 @@
     <Compile Include="Patches\PatchSpeechBubbleFormat.cs"/>
     <Compile Include="Patches\PatchSpriteBatch.cs"/>
     <Compile Include="Patches\PatchSpriteFont.cs"/>
+    <Compile Include="Patches\PatchStatsScreen.cs"/>
     <Compile Include="Patches\PatchTargetLine.cs"/>
     <Compile Include="Patches\PatchTextHelper.cs"/>
     <Compile Include="Preferences.cs"/>

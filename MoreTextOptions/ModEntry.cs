@@ -132,8 +132,11 @@ namespace MoreTextOptions
         /// </summary>
         [OnLevelStart]
         [UsedImplicitly]
-        public static void OnLevelStart() => PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
-
+        public static void OnLevelStart()
+        {
+            PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
+            PatchStatsScreen.LoadEndingNames();
+        }
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)
             => Serialization.SaveToFile(Preferences, PreferencesPath);
