@@ -56,12 +56,15 @@
       <HintPath>..\packages\JetBrains.Annotations.2025.1.0-eap1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="JumpKing">
+      <Private>False</Private>
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\Jump King\JumpKing.exe</HintPath>
     </Reference>
     <Reference Include="LanguageJK">
+     <Private>False</Private>
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\Jump King\LanguageJK.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
+      <Private>False</Private>
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\Jump King\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System"/>
