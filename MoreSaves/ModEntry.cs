@@ -81,11 +81,11 @@ namespace MoreSaves
             Debugger.Launch();
 #endif
 
+            _ = new PatchGameTitleScreen(harmony);
             try
             {
                 _ = new PatchSaveHelper(harmony);
                 _ = new PatchSaveLube(harmony);
-                _ = new PatchGameTitleScreen(harmony);
             }
             catch (NotImplementedException)
             {

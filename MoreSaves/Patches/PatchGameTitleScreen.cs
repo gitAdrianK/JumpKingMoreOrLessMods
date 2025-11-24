@@ -24,7 +24,7 @@
 
             TextHelper.DrawString(
                 Game1.instance.contentManager.font.MenuFontSmall,
-                "Automatic saving not working!",
+                "MoreSaves: Wrong Harmony version loaded, cannot save automatically!",
                 new Vector2(0f, 0f),
                 Color.Red,
                 new Vector2(0f, 0f));
