@@ -1,6 +1,7 @@
 namespace MoreBlockSizes.Patches
 {
     using System.IO;
+    using System.Linq;
     using HarmonyLib;
     using JetBrains.Annotations;
     using JumpKing;
@@ -9,13 +10,20 @@ namespace MoreBlockSizes.Patches
     using Microsoft.Xna.Framework.Graphics;
 
     [HarmonyPatch(typeof(LevelManager), nameof(LevelManager.LoadScreens))]
-    public static class PatchLoadBlocks
+    public static class PatchLoadScreens
     {
         [UsedImplicitly]
         public static bool Prefix()
         {
             var contentManager = Game1.instance.contentManager;
-            // Can't use Path.Combine as the path in reload in hardcoded to be ...bin\\sizes
+
+            var tags = contentManager.level?.Info.Tags;
+            if (!(tags is null))
+            {
+                PatchLoadBlocksInterval.CanMesh = tags.Contains("MoreBlocksCanMesh");
+            }
+
+            // Can't use Path.Combine as the path in reload is hardcoded to be ...bin\\sizes
             //var file = Path.Combine(contentManager.root, "sizes");
             var file = contentManager.root + "\\" + "sizes";
             if (!File.Exists(file + ".xnb"))

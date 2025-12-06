@@ -25,7 +25,9 @@ namespace MoreBlockSizes.Patches
         private static readonly Color BlockCodeWind = Color.Lime;
         private static readonly Color BlockCodeSlope = Color.Red;
 
+        public static bool CanMesh { get; set; }
         public static LevelTexture Sizes { get; set; }
+        private static bool CanResize => !(Sizes is null);
 
         [UsedImplicitly]
         public static MethodBase TargetMethod() =>
@@ -48,6 +50,114 @@ namespace MoreBlockSizes.Patches
             wind_direction = null;
             teleport = new[] { new TeleportLink(), new TeleportLink() };
 
+            if (CanMesh)
+            {
+                __result = WithMeshing(p_src, level, p_screen, ref wind_enabled, ref teleport, ref wind_int,
+                    ref wind_direction);
+                return false;
+            }
+
+            if (CanResize)
+            {
+                __result = WithCustomSizes(p_src, level, p_screen, ref wind_enabled, ref teleport, ref wind_int,
+                    ref wind_direction);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static IBlock[] WithCustomSizes(
+            LevelTexture src,
+            Level level,
+            int screen,
+            ref bool windEnabled,
+            ref TeleportLink[] teleport,
+            ref float windInt,
+            ref bool? windDirection)
+        {
+            var list = new List<IBlock>();
+            for (var i = 0; i < Height; i++)
+            {
+                for (var j = 0; j < Width; j++)
+                {
+                    var color = src.GetColor(screen, j, i);
+                    if (color == BlockCodeWind)
+                    {
+                        windEnabled = true;
+                    }
+
+                    var blockFactory =
+                        ((List<IBlockFactory>)BlockFactories.GetValue(null)).FirstOrDefault(bf =>
+                            bf.CanMakeBlock(color, level));
+                    if (blockFactory == null)
+                    {
+                        if (color.G == 0 && color.B == byte.MaxValue)
+                        {
+                            if (j >= 30)
+                            {
+                                teleport[1] = new TeleportLink(color.R);
+                            }
+                            else
+                            {
+                                teleport[0] = new TeleportLink(color.R);
+                            }
+                        }
+
+                        if (color.G == byte.MaxValue && color.B == 0)
+                        {
+                            if (color.R < 208 && color.R > 191)
+                            {
+                                windInt = color.R - 191;
+                            }
+
+                            if (color.R > 207 && color.R < 224)
+                            {
+                                windInt = color.R - 207;
+                                windDirection = true;
+                            }
+
+                            if (color.R > 223 && color.R < 240)
+                            {
+                                windInt = color.R - 223;
+                                windDirection = false;
+                            }
+
+                            windEnabled = true;
+                        }
+                    }
+                    else
+                    {
+                        var location = new Point(j * 8, (i - (screen * 45)) * 8);
+                        var size = new Point(8, 8);
+                        var block = blockFactory.GetBlock(
+                            blockRect: new Rectangle(location, size),
+                            blockCode: color,
+                            level: level,
+                            textureSrc: src,
+                            currentScreen: screen,
+                            x: j,
+                            y: i);
+                        if (block != null)
+                        {
+                            list.Add(block);
+                        }
+                    }
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        private static IBlock[] WithMeshing(
+            LevelTexture src,
+            Level level,
+            int screen,
+            ref bool windEnabled,
+            ref TeleportLink[] teleport,
+            ref float windInt,
+            ref bool? windDirection)
+        {
             var visited = new bool[Width, Height];
 
             var list = new List<IBlock>();
@@ -60,10 +170,10 @@ namespace MoreBlockSizes.Patches
                         continue;
                     }
 
-                    var color = p_src.GetColor(p_screen, x, y);
+                    var color = src.GetColor(screen, x, y);
                     if (color == BlockCodeWind)
                     {
-                        wind_enabled = true;
+                        windEnabled = true;
                     }
 
                     var blockFactory =
@@ -87,39 +197,39 @@ namespace MoreBlockSizes.Patches
                         {
                             if (color.R < 208 && color.R > 191)
                             {
-                                wind_int = color.R - 191;
+                                windInt = color.R - 191;
                             }
 
                             if (color.R > 207 && color.R < 224)
                             {
-                                wind_int = color.R - 207;
-                                wind_direction = true;
+                                windInt = color.R - 207;
+                                windDirection = true;
                             }
 
                             if (color.R > 223 && color.R < 240)
                             {
-                                wind_int = color.R - 223;
-                                wind_direction = false;
+                                windInt = color.R - 223;
+                                windDirection = false;
                             }
 
-                            wind_enabled = true;
+                            windEnabled = true;
                         }
                     }
                     else
                     {
                         Rectangle rect;
                         // Don't mesh blocks with custom sizes.
-                        if (GetHitbox(p_screen, x, y, out var result))
+                        if (GetHitbox(screen, x, y, out var result))
                         {
                             rect = result;
                         }
                         else
                         {
-                            var location = new Point(x * 8, (y - (p_screen * 45)) * 8);
+                            var location = new Point(x * 8, (y - (screen * 45)) * 8);
                             // Don't mesh slopes, their type gets set later.
                             var meshed = color == BlockCodeSlope
                                 ? new Point(1, 1)
-                                : GetGreedyMeshedSize(visited, p_screen, x, y, color, p_src);
+                                : GetGreedyMeshedSize(visited, screen, x, y, color, src);
                             var size = new Point(8 * meshed.X, 8 * meshed.Y);
                             rect = new Rectangle(location, size);
                         }
@@ -128,8 +238,8 @@ namespace MoreBlockSizes.Patches
                             blockRect: rect,
                             blockCode: color,
                             level: level,
-                            textureSrc: p_src,
-                            currentScreen: p_screen,
+                            textureSrc: src,
+                            currentScreen: screen,
                             x: x,
                             y: y);
                         if (!(block is null))
@@ -140,8 +250,7 @@ namespace MoreBlockSizes.Patches
                 }
             }
 
-            __result = list.ToArray();
-            return false;
+            return list.ToArray();
         }
 
         private static Point GetGreedyMeshedSize(bool[,] visited, int screen, int x, int y, Color color,
