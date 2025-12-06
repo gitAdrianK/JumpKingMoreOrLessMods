@@ -128,10 +128,9 @@ namespace MoreBlockSizes.Patches
                     }
                     else
                     {
-                        var location = new Point(j * 8, (i - (screen * 45)) * 8);
-                        var size = new Point(8, 8);
+                        GetHitbox(screen, j, i, out var result);
                         var block = blockFactory.GetBlock(
-                            blockRect: new Rectangle(location, size),
+                            blockRect: result,
                             blockCode: color,
                             level: level,
                             textureSrc: src,
