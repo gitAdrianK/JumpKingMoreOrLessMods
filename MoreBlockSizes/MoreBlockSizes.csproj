@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs"/>
+    <Compile Include="Patches\PatchDebugDraw.cs"/>
     <Compile Include="Patches\PatchLoadBlocks.cs"/>
     <Compile Include="Patches\PatchLoadBlocksInterval.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs"/>
