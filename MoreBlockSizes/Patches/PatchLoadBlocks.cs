@@ -1,6 +1,5 @@
 namespace MoreBlockSizes.Patches
 {
-    using System.Diagnostics;
     using System.IO;
     using HarmonyLib;
     using JetBrains.Annotations;
