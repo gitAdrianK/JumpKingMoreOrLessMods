@@ -25,9 +25,12 @@ namespace MoreBlockSizes.Patches
         private static readonly Color BlockCodeWind = Color.Lime;
         private static readonly Color BlockCodeSlope = Color.Red;
 
-        public static bool CanMesh { get; set; }
+        public static bool[] Visited;
         public static LevelTexture Sizes { get; set; }
+
+        private static bool CanMesh => !(Visited is null);
         private static bool CanResize => !(Sizes is null);
+
 
         [UsedImplicitly]
         public static MethodBase TargetMethod() =>
@@ -157,14 +160,17 @@ namespace MoreBlockSizes.Patches
             ref float windInt,
             ref bool? windDirection)
         {
-            var visited = new bool[Width, Height];
+            for (var i = 0; i < Visited.Length; i++)
+            {
+                Visited[i] = false;
+            }
 
             var list = new List<IBlock>();
             for (var y = 0; y < Height; y++)
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    if (visited[x, y])
+                    if (Visited[x + (y * Width)])
                     {
                         continue;
                     }
@@ -228,7 +234,7 @@ namespace MoreBlockSizes.Patches
                             // Don't mesh slopes, their type gets set later.
                             var meshed = color == BlockCodeSlope
                                 ? new Point(1, 1)
-                                : GetGreedyMeshedSize(visited, screen, x, y, color, src);
+                                : GetGreedyMeshedSize(Visited, screen, x, y, color, src);
                             var size = new Point(8 * meshed.X, 8 * meshed.Y);
                             rect = new Rectangle(location, size);
                         }
@@ -252,17 +258,18 @@ namespace MoreBlockSizes.Patches
             return list.ToArray();
         }
 
-        private static Point GetGreedyMeshedSize(bool[,] visited, int screen, int x, int y, Color color,
+        private static Point GetGreedyMeshedSize(bool[] visited, int screen, int x, int y, Color color,
             LevelTexture texture)
         {
             var blockWidth = 1;
             var blockHeight = 1;
 
             while (x + blockWidth < Width
-                   && !visited[x + blockWidth, y]
-                   && color == texture.GetColor(screen, x + blockWidth, y))
+                   && !visited[x + blockWidth + (y * Width)]
+                   && color == texture.GetColor(screen, x + blockWidth, y)
+                   && !GetHitbox(screen, x + blockWidth, y, out _))
             {
-                visited[x + blockWidth, y] = true;
+                visited[x + blockWidth + (y * Width)] = true;
                 blockWidth += 1;
             }
 
@@ -271,7 +278,9 @@ namespace MoreBlockSizes.Patches
             {
                 for (var dx = 0; dx < blockWidth; dx++)
                 {
-                    if (!visited[x + dx, y + blockHeight] && color == texture.GetColor(screen, x + dx, y + blockHeight))
+                    if (!visited[x + dx + ((y + blockHeight) * Width)]
+                        && color == texture.GetColor(screen, x + dx, y + blockHeight)
+                        && GetHitbox(screen, x + dx, y + blockHeight, out _))
                     {
                         continue;
                     }
@@ -287,7 +296,7 @@ namespace MoreBlockSizes.Patches
 
                 for (var dx = 0; dx < blockWidth; dx++)
                 {
-                    visited[x + dx, y + blockHeight] = true;
+                    visited[x + dx + ((y + blockHeight) * Width)] = true;
                 }
 
                 blockHeight += 1;
@@ -300,12 +309,6 @@ namespace MoreBlockSizes.Patches
         {
             var location = new Point(x * 8, (y - (screen * 45)) * 8);
             var size = new Point(8, 8);
-            if (Sizes == null)
-            {
-                result = new Rectangle(location, size);
-                return false;
-            }
-
             var color = Sizes.GetColor(screen, x, y);
             if (color.R > 63
                 || color.G < 1

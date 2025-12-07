@@ -12,6 +12,9 @@ namespace MoreBlockSizes.Patches
     [HarmonyPatch(typeof(LevelManager), nameof(LevelManager.LoadScreens))]
     public static class PatchLoadScreens
     {
+        private const int Width = 60;
+        private const int Height = 45;
+
         [UsedImplicitly]
         public static bool Prefix()
         {
@@ -20,7 +23,10 @@ namespace MoreBlockSizes.Patches
             var tags = contentManager.level?.Info.Tags;
             if (!(tags is null))
             {
-                PatchLoadBlocksInterval.CanMesh = tags.Contains("MoreBlocksCanMesh");
+                if (tags.Contains("GreedyMeshBlocks"))
+                {
+                    PatchLoadBlocksInterval.Visited = new bool[Width * Height];
+                }
             }
 
             // Can't use Path.Combine as the path in reload is hardcoded to be ...bin\\sizes
@@ -48,6 +54,10 @@ namespace MoreBlockSizes.Patches
         }
 
         [UsedImplicitly]
-        public static void Postfix() => PatchLoadBlocksInterval.Sizes = null;
+        public static void Postfix()
+        {
+            PatchLoadBlocksInterval.Visited = null;
+            PatchLoadBlocksInterval.Sizes = null;
+        }
     }
 }
