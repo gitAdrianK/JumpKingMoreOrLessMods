@@ -15,7 +15,7 @@ namespace MoreTextOptions.Patches
     {
         private static readonly AccessTools.FieldRef<SayLine, string> CurrentLineRef =
             AccessTools.FieldRefAccess<SayLine, string>(
-                AccessTools.Field("JumpKing.MiscEntities.OldMan:m_current_line"));
+                AccessTools.Field("JumpKing.MiscEntities.OldMan.SayLine:m_current_line"));
 
         // Basically ModEntry regex, but requires it to be at the start and no first '{'.
         private static readonly Regex PrefixRegex =
