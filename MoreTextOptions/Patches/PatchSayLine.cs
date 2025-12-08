@@ -13,6 +13,10 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(SayLine), "MyRun")]
     public static class PatchSayLine
     {
+        private static readonly AccessTools.FieldRef<SayLine, string> CurrentLineRef =
+            AccessTools.FieldRefAccess<SayLine, string>(
+                AccessTools.Field("JumpKing.MiscEntities.OldMan:m_current_line"));
+
         // Basically ModEntry regex, but requires it to be at the start and no first '{'.
         private static readonly Regex PrefixRegex =
             new Regex("^color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
@@ -43,9 +47,7 @@ namespace MoreTextOptions.Patches
             // but we are also adding the next character (17).
             if (remainder.Length >= 17)
             {
-                _ = Traverse.Create(__instance)
-                    .Field("m_current_line")
-                    .SetValue(currentLine + remainder.Substring(0, 17));
+                CurrentLineRef(__instance) = currentLine + remainder.Substring(0, 17);
             }
         }
     }
