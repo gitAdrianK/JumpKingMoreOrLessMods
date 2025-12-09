@@ -25,10 +25,9 @@ namespace MoreBlockSizes.Patches
         private static readonly Color BlockCodeWind = Color.Lime;
         private static readonly Color BlockCodeSlope = Color.Red;
 
-        public static bool[] Visited;
         public static LevelTexture Sizes { get; set; }
 
-        private static bool CanMesh => !(Visited is null);
+        public static bool CanMesh { get; set; }
         private static bool CanResize => !(Sizes is null);
 
 
@@ -69,6 +68,8 @@ namespace MoreBlockSizes.Patches
 
             return true;
         }
+
+        // A large part is the original code copied out and could be cleaned up.
 
         private static IBlock[] WithCustomSizes(
             LevelTexture src,
@@ -160,17 +161,14 @@ namespace MoreBlockSizes.Patches
             ref float windInt,
             ref bool? windDirection)
         {
-            for (var i = 0; i < Visited.Length; i++)
-            {
-                Visited[i] = false;
-            }
+            var visited = new bool[Width, Height];
 
             var list = new List<IBlock>();
             for (var y = 0; y < Height; y++)
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    if (Visited[x + (y * Width)])
+                    if (visited[x, y])
                     {
                         continue;
                     }
@@ -232,10 +230,9 @@ namespace MoreBlockSizes.Patches
                         {
                             var location = new Point(x * 8, (y - (screen * 45)) * 8);
                             // Don't mesh slopes, their type gets set later.
-                            var meshed = color == BlockCodeSlope
-                                ? new Point(1, 1)
-                                : GetGreedyMeshedSize(Visited, screen, x, y, color, src);
-                            var size = new Point(8 * meshed.X, 8 * meshed.Y);
+                            var size = color == BlockCodeSlope
+                                ? new Point(8, 8)
+                                : GetGreedyMeshedSize(visited, screen, x, y, color, src);
                             rect = new Rectangle(location, size);
                         }
 
@@ -258,18 +255,18 @@ namespace MoreBlockSizes.Patches
             return list.ToArray();
         }
 
-        private static Point GetGreedyMeshedSize(bool[] visited, int screen, int x, int y, Color color,
+        private static Point GetGreedyMeshedSize(bool[,] visited, int screen, int x, int y, Color color,
             LevelTexture texture)
         {
             var blockWidth = 1;
             var blockHeight = 1;
 
             while (x + blockWidth < Width
-                   && !visited[x + blockWidth + (y * Width)]
+                   && !visited[x + blockWidth, y]
                    && color == texture.GetColor(screen, x + blockWidth, y)
                    && !GetHitbox(screen, x + blockWidth, y, out _))
             {
-                visited[x + blockWidth + (y * Width)] = true;
+                visited[x + blockWidth, y] = true;
                 blockWidth += 1;
             }
 
@@ -278,9 +275,9 @@ namespace MoreBlockSizes.Patches
             {
                 for (var dx = 0; dx < blockWidth; dx++)
                 {
-                    if (!visited[x + dx + ((y + blockHeight) * Width)]
+                    if (!visited[x + dx, y + blockHeight]
                         && color == texture.GetColor(screen, x + dx, y + blockHeight)
-                        && GetHitbox(screen, x + dx, y + blockHeight, out _))
+                        && !GetHitbox(screen, x + dx, y + blockHeight, out _))
                     {
                         continue;
                     }
@@ -296,19 +293,25 @@ namespace MoreBlockSizes.Patches
 
                 for (var dx = 0; dx < blockWidth; dx++)
                 {
-                    visited[x + dx + ((y + blockHeight) * Width)] = true;
+                    visited[x + dx, y + blockHeight] = true;
                 }
 
                 blockHeight += 1;
             }
 
-            return new Point(blockWidth, blockHeight);
+            return new Point(8 * blockWidth, 8 * blockHeight);
         }
 
         private static bool GetHitbox(int screen, int x, int y, out Rectangle result)
         {
             var location = new Point(x * 8, (y - (screen * 45)) * 8);
             var size = new Point(8, 8);
+            if (Sizes is null)
+            {
+                result = new Rectangle(location, size);
+                return false;
+            }
+
             var color = Sizes.GetColor(screen, x, y);
             if (color.R > 63
                 || color.G < 1

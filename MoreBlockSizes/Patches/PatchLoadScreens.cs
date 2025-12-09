@@ -21,13 +21,7 @@ namespace MoreBlockSizes.Patches
             var contentManager = Game1.instance.contentManager;
 
             var tags = contentManager.level?.Info.Tags;
-            if (!(tags is null))
-            {
-                if (tags.Contains("GreedyMeshBlocks"))
-                {
-                    PatchLoadBlocksInterval.Visited = new bool[Width * Height];
-                }
-            }
+            PatchLoadBlocksInterval.CanMesh = !(tags is null) && tags.Contains("GreedyMeshBlocks");
 
             // Can't use Path.Combine as the path in reload is hardcoded to be ...bin\\sizes
             //var file = Path.Combine(contentManager.root, "sizes");
@@ -54,10 +48,6 @@ namespace MoreBlockSizes.Patches
         }
 
         [UsedImplicitly]
-        public static void Postfix()
-        {
-            PatchLoadBlocksInterval.Visited = null;
-            PatchLoadBlocksInterval.Sizes = null;
-        }
+        public static void Postfix() => PatchLoadBlocksInterval.Sizes = null;
     }
 }
