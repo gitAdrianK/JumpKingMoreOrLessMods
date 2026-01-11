@@ -1,12 +1,10 @@
 namespace MoreSaves
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using HarmonyLib;
     using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
@@ -18,7 +16,6 @@ namespace MoreSaves
     using Menus.Models;
     using Menus.Nodes;
     using Microsoft.Xna.Framework;
-    using Patches;
 #if DEBUG
     using System.Diagnostics;
 #endif
@@ -34,11 +31,10 @@ namespace MoreSaves
         private const string SavesPerma = ModStrings.SavesPerma;
 
         public static string DllDirectory { get; private set; }
-        //public static string ExeDirectory { get; private set; }
 
         public static string SaveName { get; set; }
 
-        [MainMenuItemSetting]
+        //[MainMenuItemSetting]
         [UsedImplicitly]
         public static TextButton LoadAutoSavefile(object factory, GuiFormat format)
         {
@@ -76,27 +72,16 @@ namespace MoreSaves
         [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
 #endif
 
-            _ = new PatchGameTitleScreen(harmony);
-            try
-            {
-                _ = new PatchSaveHelper(harmony);
-                _ = new PatchSaveLube(harmony);
-            }
-            catch (NotImplementedException)
-            {
-                PatchGameTitleScreen.HasPatchingFailed = true;
-                throw;
-            }
+            // var harmony = new Harmony(HarmonyIdentifier);
+            // _ = new PatchSaveHelper(harmony);
+            // _ = new PatchSaveLube(harmony);
 
             DllDirectory =
                 $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}";
-            //ExeDirectory =
-            //    $"{Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}{Path.DirectorySeparatorChar}";
 
             if (!Directory.Exists($"{DllDirectory}{Manual}"))
             {
@@ -127,6 +112,7 @@ namespace MoreSaves
 
             SaveName = SanitizeName(GetSaveName());
 
+            /*
             PatchXmlWrapper.Serialize(PatchSaveLube.GetGeneralSettings(), Auto, SaveName, SavesPerma);
             PatchEncryption.SaveInventory(PatchInventoryManager.GetInventory(), Auto, SaveName, SavesPerma);
             PatchEncryption.SaveEventFlags(EventFlagsSave.Save, Auto, SaveName, SavesPerma);
@@ -134,6 +120,7 @@ namespace MoreSaves
                 SavesPerma);
             PatchEncryption.SavePlayerStats(PatchAchievementManager.GetPermaStats(), ModStrings.Permanent, Auto,
                 SaveName, SavesPerma);
+            */
         }
 
         /// <summary>

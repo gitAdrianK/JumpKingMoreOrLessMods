@@ -113,7 +113,7 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, firstContinueLabel)
+                new CodeInstruction(OpCodes.Brtrue_S, firstContinueLabel),
             };
             code.InsertRange(firstInsertionIndex, firstInsert);
 
@@ -125,7 +125,7 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, secondContinueLabel)
+                new CodeInstruction(OpCodes.Brtrue_S, secondContinueLabel),
             };
             code.InsertRange(secondInsertionIndex + firstInsert.Count, secondInsert);
 

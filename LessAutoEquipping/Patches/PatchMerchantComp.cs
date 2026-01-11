@@ -70,7 +70,7 @@ namespace LessAutoEquipping.Patches
                 new CodeInstruction(
                     OpCodes.Callvirt,
                     AccessTools.PropertyGetter(typeof(Preferences), nameof(Preferences.ShouldPreventAutoEquip))),
-                new CodeInstruction(OpCodes.Brtrue_S, continueLabel)
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
             };
             code.InsertRange(insertionIndex, insert);
 

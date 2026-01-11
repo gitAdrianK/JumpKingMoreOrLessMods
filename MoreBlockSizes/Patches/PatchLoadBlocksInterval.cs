@@ -40,7 +40,7 @@ namespace MoreBlockSizes.Patches
                 {
                     typeof(LevelTexture), typeof(Level), typeof(int), typeof(bool).MakeByRefType(),
                     typeof(TeleportLink[]).MakeByRefType(), typeof(float).MakeByRefType(),
-                    typeof(bool?).MakeByRefType()
+                    typeof(bool?).MakeByRefType(),
                 });
 
         [UsedImplicitly]

@@ -17,7 +17,7 @@ namespace MoreSaves.Menus.Models
         public enum PageOption
         {
             Auto,
-            Manual
+            Manual,
         }
 
         private const string Auto = ModStrings.Auto;

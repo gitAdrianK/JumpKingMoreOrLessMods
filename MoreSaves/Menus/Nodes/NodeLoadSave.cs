@@ -79,16 +79,17 @@ namespace MoreSaves.Menus.Nodes
             SetSkinEnabled = skinManager.GetMethod("SetSkinEnabled");
 
             var loadFile = encryption.GetMethod("LoadFile");
-            LoadCombinedSaveFile = loadFile.MakeGenericMethod(typeof(CombinedSaveFile));
-            LoadEventFlags = loadFile.MakeGenericMethod(typeof(EventFlagsSave));
-            LoadPlayerStats = loadFile.MakeGenericMethod(typeof(PlayerStats));
-            LoadInventory = loadFile.MakeGenericMethod(typeof(Inventory));
+            LoadCombinedSaveFile = loadFile?.MakeGenericMethod(typeof(CombinedSaveFile));
+            LoadEventFlags = loadFile?.MakeGenericMethod(typeof(EventFlagsSave));
+            LoadPlayerStats = loadFile?.MakeGenericMethod(typeof(PlayerStats));
+            LoadInventory = loadFile?.MakeGenericMethod(typeof(Inventory));
 
             SaveProgramStartInitialize = saveLube.GetMethod("ProgramStartInitialize");
             SaveCombinedSaveFile = saveLube.GetMethod("SaveCombinedSaveFile");
 
             var achievementManagerInstance = achievementManager
-                .GetField("instance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                .GetField("instance", BindingFlags.NonPublic | BindingFlags.Static)
+                ?.GetValue(null);
             var achievementManagerTraverse = Traverse.Create(achievementManagerInstance);
             TraversePlayerStats = achievementManagerTraverse.Field("m_snapshot");
             TraversePermaStats = achievementManagerTraverse.Field("m_all_time_stats");

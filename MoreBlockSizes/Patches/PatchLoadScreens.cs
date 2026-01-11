@@ -12,9 +12,6 @@ namespace MoreBlockSizes.Patches
     [HarmonyPatch(typeof(LevelManager), nameof(LevelManager.LoadScreens))]
     public static class PatchLoadScreens
     {
-        private const int Width = 60;
-        private const int Height = 45;
-
         [UsedImplicitly]
         public static bool Prefix()
         {
