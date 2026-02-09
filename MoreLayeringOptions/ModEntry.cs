@@ -1,13 +1,13 @@
 namespace MoreLayeringOptions
 {
-#if DEBUG
-    using System.Diagnostics;
-#endif
     using System.Collections.Generic;
     using EntityComponent;
     using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
+#if DEBUG
+    using System.Diagnostics;
+#endif
 
     [JumpKingMod("Zebra.MoreLayeringOptions")]
     [UsedImplicitly]
