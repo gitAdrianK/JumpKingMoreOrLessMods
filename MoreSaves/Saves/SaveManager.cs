@@ -11,7 +11,6 @@
     using JumpKing.Workshop;
     using LanguageJK;
     using Patches;
-    using SwitchBlocks.Patches;
     using Util;
     using JKSaveManager = JumpKing.SaveThread.SaveManager;
 

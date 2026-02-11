@@ -1,4 +1,4 @@
-﻿namespace SwitchBlocks.Patches
+﻿namespace MoreSaves.Patches
 {
     using HarmonyLib;
     using JumpKing.MiscSystems.Achievements;
