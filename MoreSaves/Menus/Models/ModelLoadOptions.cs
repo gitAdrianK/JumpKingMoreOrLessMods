@@ -2,27 +2,18 @@ namespace MoreSaves.Menus.Models
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Reflection;
     using HarmonyLib;
     using JumpKing;
     using JumpKing.PauseMenu;
     using JumpKing.PauseMenu.BT;
     using LanguageJK;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Nodes;
+    using Util;
 
     public static class ModelLoadOptions
     {
-        public enum PageOption
-        {
-            Auto,
-            Manual,
-        }
-
-        private const string Auto = ModStrings.Auto;
-        private const string Manual = ModStrings.Manual;
-
         /// <summary>
         ///     Maximum amount of buttons per page.
         /// </summary>
@@ -43,34 +34,33 @@ namespace MoreSaves.Menus.Models
         /// </summary>
         public static void SetupButtons()
         {
-            var sep = Path.DirectorySeparatorChar;
-            var dllDirectory = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{sep}";
-            var autoDirectories = Directory.GetDirectories($"{dllDirectory}{Auto}{sep}");
-            var manualDirectories = Directory.GetDirectories($"{dllDirectory}{Manual}{sep}");
             var menuFontSmall = Game1.instance.contentManager.font.MenuFontSmall;
 
-            autoButtons = new List<TextButton>();
-            foreach (var directory in autoDirectories)
+            autoButtons = CreateButtons(SaveType.Auto.ToLowerString(), menuFontSmall);
+            manualButtons = CreateButtons(SaveType.Manual.ToLowerString(), menuFontSmall);
+        }
+
+        private static List<TextButton> CreateButtons(string saveType, SpriteFont menuFont)
+        {
+            var buttons = new List<TextButton>();
+
+            var pathToSaveType = Path.Combine(ModEntry.DllDirectory, saveType);
+            foreach (var directory in Directory.GetDirectories(pathToSaveType))
             {
-                var dir = directory.Split(sep).Last();
-                autoButtons.Add(new TextButton(CropName(dir), new NodeLoadSave(Auto, dir), menuFontSmall));
+                var info = new DirectoryInfo(directory);
+                buttons.Add(new TextButton(CropName(info.Name), new NodeLoadSave(info.FullName), menuFont));
             }
 
-            manualButtons = new List<TextButton>();
-            foreach (var directory in manualDirectories)
-            {
-                var dir = directory.Split(sep).Last();
-                manualButtons.Add(new TextButton(CropName(dir), new NodeLoadSave(Manual, dir), menuFontSmall));
-            }
+            return buttons;
         }
 
         /// <summary>
-        ///     Crops the name should it be longer than 60 characters as it would cause an overflow.
-        ///     The name will be cropped at 57 characters and "..." will be inserted at the front to indicate the name having been
-        ///     cropped.
+        ///     Crops the name should it be longer than 60 characters as it would cause a visual overflow.
+        ///     The name will be cropped at 57 characters and "..." will be inserted at the front to indicate
+        ///     the name having been cropped.
         /// </summary>
-        /// <param name="name">The name to be cropped</param>
-        /// <returns>The cropped name</returns>
+        /// <param name="name">Name to be cropped.</param>
+        /// <returns>Cropped name.</returns>
         private static string CropName(string name)
         {
             if (name.Length > 60)
@@ -82,15 +72,15 @@ namespace MoreSaves.Menus.Models
         }
 
         public static MenuSelectorClosePopup CreateLoadOptions(object factory, GuiFormat format, int page,
-            PageOption pageOption)
+            SaveType saveType)
         {
             List<TextButton> buttons;
-            switch (pageOption)
+            switch (saveType)
             {
-                case PageOption.Auto:
+                case SaveType.Auto:
                     buttons = autoButtons;
                     break;
-                case PageOption.Manual:
+                case SaveType.Manual:
                     buttons = manualButtons;
                     break;
                 default:
@@ -139,7 +129,7 @@ namespace MoreSaves.Menus.Models
             if ((page * Amount) + num < buttons.Count)
             {
                 menuSelector.AddChild(new TextButton(language.PAGINATION_NEXT,
-                    CreateLoadOptions(factory, format, page + 1, pageOption)));
+                    CreateLoadOptions(factory, format, page + 1, saveType)));
             }
 
             menuSelector.Initialize();

@@ -1,28 +1,34 @@
-namespace MoreSaves.Patches
+﻿namespace SwitchBlocks.Patches
 {
-    using System.Reflection;
     using HarmonyLib;
     using JumpKing.MiscSystems.Achievements;
 
     public static class PatchAchievementManager
     {
-        private static readonly Traverse PlayerStats;
-        private static readonly Traverse PermaStats;
+        /// <summary>The achievement manager instance.</summary>
+        private static readonly object AchievementManager =
+            AccessTools.Field("JumpKing.MiscSystems.Achievements.AchievementManager:instance").GetValue(null);
 
-        static PatchAchievementManager()
+        /// <summary>FieldRef of the "all-time stats" field.</summary>
+        private static readonly AccessTools.FieldRef<object, PlayerStats> AllTimeStatsRef =
+            AccessTools.FieldRefAccess<object, PlayerStats>(
+                AccessTools.Field("JumpKing.MiscSystems.Achievements.AchievementManager:m_all_time_stats"));
+
+        /// <summary>FieldRef of the "snapshot" field.</summary>
+        private static readonly AccessTools.FieldRef<object, PlayerStats> SnapshotRef =
+            AccessTools.FieldRefAccess<object, PlayerStats>(
+                AccessTools.Field("JumpKing.MiscSystems.Achievements.AchievementManager:m_snapshot"));
+
+        public static PlayerStats AllTimeStats
         {
-            var achievementManager = AccessTools.TypeByName("JumpKing.MiscSystems.Achievements.AchievementManager");
-
-            var achievementManagerInstance = achievementManager
-                .GetField("instance", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null);
-            var achievementManagerTraverse = Traverse.Create(achievementManagerInstance);
-
-            PlayerStats = achievementManagerTraverse.Field("m_snapshot");
-            PermaStats = achievementManagerTraverse.Field("m_all_time_stats");
+            get => AllTimeStatsRef(AchievementManager);
+            set => AllTimeStatsRef(AchievementManager) = value;
         }
 
-        public static PlayerStats GetPlayerStats() => PlayerStats.GetValue<PlayerStats>();
-
-        public static PlayerStats GetPermaStats() => PermaStats.GetValue<PlayerStats>();
+        public static PlayerStats Snapshot
+        {
+            get => SnapshotRef(AchievementManager);
+            set => SnapshotRef(AchievementManager) = value;
+        }
     }
 }

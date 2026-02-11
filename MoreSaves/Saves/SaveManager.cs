@@ -250,7 +250,9 @@
             try
             {
                 JKSaveManager.instance.StopSaving();
+
                 var combined = PatchEncryption.LoadCombinedSaveFile(Path.Combine(directory, Saves, Combined));
+
                 var attemptStats = PatchEncryption.LoadPlayerStats(Path.Combine(directory, SavesPerma, AttemptStats));
                 var eventFlags = PatchEncryption.LoadEventFlags(Path.Combine(directory, SavesPerma, EventFlags));
                 var generalSettings = XmlSerializerHelper.Deserialize<GeneralSettings>(
@@ -258,6 +260,7 @@
                 var inventory = PatchEncryption.LoadInventory(Path.Combine(directory, SavesPerma, Inventory));
                 var permaPlayerStats =
                     PatchEncryption.LoadPlayerStats(Path.Combine(directory, SavesPerma, PermaPlayerStats));
+
                 // Root and level.
                 string root;
                 Level level = null;
@@ -284,6 +287,7 @@
                 }
 
                 PatchSaveLube.CombinedSaveFile = combined;
+
                 PatchSaveLube.PlayerStatsAttemptSnapshot = attemptStats;
                 PatchSaveLube.EventFlags = eventFlags;
                 PatchSaveLube.GeneralSettings = generalSettings;
@@ -295,11 +299,13 @@
                 {
                     PatchSkinManager.SetSkinEnabled(option.item, option.equipped);
                 }
+
                 PatchSaveLube.SaveCombinedSaveFile();
                 PatchSaveLube.ProgramStartInitialize();
 
                 PatchAchievementManager.Snapshot = attemptStats;
                 PatchAchievementManager.AllTimeStats = permaPlayerStats;
+
                 contentManager.LoadAssets(Game1.instance);
                 LevelManager.LoadScreens();
 
@@ -313,6 +319,7 @@
             {
                 JKSaveManager.instance.StartSaving();
             }
+
             return true;
         }
 

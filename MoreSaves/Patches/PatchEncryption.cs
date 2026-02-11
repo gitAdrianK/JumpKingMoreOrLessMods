@@ -1,7 +1,6 @@
 namespace MoreSaves.Patches
 {
-    using System.IO;
-    using System.Reflection;
+    using System;
     using HarmonyLib;
     using JumpKing.MiscEntities.WorldItems.Inventory;
     using JumpKing.MiscSystems.Achievements;
@@ -9,95 +8,71 @@ namespace MoreSaves.Patches
 
     public static class PatchEncryption
     {
-        private static readonly char Sep;
+        private static readonly Action<string, CombinedSaveFile> DelegateSaveCombinedSaveFile;
+        private static readonly Action<string, PlayerStats> DelegateSavePlayerStats;
+        private static readonly Action<string, EventFlagsSave> DelegateSaveEventFlags;
+        private static readonly Action<string, Inventory> DelegateSaveInventory;
 
-        private static readonly MethodInfo MethodSaveCombinedSaveFile;
-        private static readonly MethodInfo MethodSavePlayerStats;
-        private static readonly MethodInfo MethodSaveEventFlags;
-        private static readonly MethodInfo MethodSaveInventory;
+        private static readonly Func<string, CombinedSaveFile> DelegateLoadCombinedSaveFile;
+        private static readonly Func<string, PlayerStats> DelegateLoadPlayerStats;
+        private static readonly Func<string, EventFlagsSave> DelegateLoadEventFlags;
+        private static readonly Func<string, Inventory> DelegateLoadInventory;
 
         static PatchEncryption()
         {
-            Sep = Path.DirectorySeparatorChar;
+            var typeEncryption = AccessTools.TypeByName("FileUtil.Encryption.Encryption");
 
-            var encryption = AccessTools.TypeByName("FileUtil.Encryption.Encryption");
+            var saveFile = typeEncryption.GetMethod("SaveFile");
+            DelegateSaveCombinedSaveFile = (Action<string, CombinedSaveFile>)saveFile
+                .MakeGenericMethod(typeof(CombinedSaveFile))
+                .CreateDelegate(typeof(Action<string, CombinedSaveFile>));
+            DelegateSavePlayerStats = (Action<string, PlayerStats>)saveFile
+                .MakeGenericMethod(typeof(PlayerStats))
+                .CreateDelegate(typeof(Action<string, PlayerStats>));
+            DelegateSaveEventFlags = (Action<string, EventFlagsSave>)saveFile
+                .MakeGenericMethod(typeof(EventFlagsSave))
+                .CreateDelegate(typeof(Action<string, EventFlagsSave>));
+            DelegateSaveInventory = (Action<string, Inventory>)saveFile
+                .MakeGenericMethod(typeof(Inventory))
+                .CreateDelegate(typeof(Action<string, Inventory>));
 
-            var saveFile = encryption.GetMethod("SaveFile");
-            if (saveFile == null)
-            {
-                return;
-            }
-
-            MethodSaveCombinedSaveFile = saveFile.MakeGenericMethod(typeof(CombinedSaveFile));
-            MethodSavePlayerStats = saveFile.MakeGenericMethod(typeof(PlayerStats));
-            MethodSaveEventFlags = saveFile.MakeGenericMethod(typeof(EventFlagsSave));
-            MethodSaveInventory = saveFile.MakeGenericMethod(typeof(Inventory));
+            var loadFile = typeEncryption.GetMethod("LoadFile");
+            DelegateLoadCombinedSaveFile = (Func<string, CombinedSaveFile>)loadFile
+                .MakeGenericMethod(typeof(CombinedSaveFile))
+                .CreateDelegate(typeof(Func<string, CombinedSaveFile>));
+            DelegateLoadPlayerStats = (Func<string, PlayerStats>)loadFile
+                .MakeGenericMethod(typeof(PlayerStats))
+                .CreateDelegate(typeof(Func<string, PlayerStats>));
+            DelegateLoadEventFlags = (Func<string, EventFlagsSave>)loadFile
+                .MakeGenericMethod(typeof(EventFlagsSave))
+                .CreateDelegate(typeof(Func<string, EventFlagsSave>));
+            DelegateLoadInventory = (Func<string, Inventory>)loadFile
+                .MakeGenericMethod(typeof(Inventory))
+                .CreateDelegate(typeof(Func<string, Inventory>));
         }
 
-        /// <summary>
-        ///     Used to save the combined savefile.
-        ///     Filename is always combined.sav
-        /// </summary>
-        /// <param name="combinedSave">Combined savefile to save</param>
-        /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
-        public static void SaveCombinedSaveFile(CombinedSaveFile combinedSave, params string[] folders)
-        {
-            var path = BuildAndCreatePath(folders);
-            _ = MethodSaveCombinedSaveFile.Invoke(null, new object[] { $"{path}{ModStrings.Combined}", combinedSave });
-        }
+        public static void SaveCombinedSaveFile(string path, CombinedSaveFile obj) =>
+            DelegateSaveCombinedSaveFile(path, obj);
 
-        /// <summary>
-        ///     Used to save the given player stats.
-        /// </summary>
-        /// <param name="playerStats">PlayerStats to save</param>
-        /// <param name="name">The name of the file it will be saved as</param>
-        /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
-        public static void SavePlayerStats(PlayerStats playerStats, string name, params string[] folders)
-        {
-            var path = BuildAndCreatePath(folders);
-            _ = MethodSavePlayerStats.Invoke(null, new object[] { $"{path}{name}", playerStats });
-        }
+        public static void SavePlayerStats(string path, PlayerStats obj) =>
+            DelegateSavePlayerStats(path, obj);
 
-        /// <summary>
-        ///     Used to save the given event flags.
-        /// </summary>
-        /// <param name="eventFlags">EventFlagsSave to save</param>
-        /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
-        public static void SaveEventFlags(EventFlagsSave eventFlags, params string[] folders)
-        {
-            var path = BuildAndCreatePath(folders);
-            _ = MethodSaveEventFlags.Invoke(null, new object[] { $"{path}{ModStrings.Event}", eventFlags });
-        }
+        public static void SaveEventFlags(string path, EventFlagsSave obj) =>
+            DelegateSaveEventFlags(path, obj);
 
-        /// <summary>
-        ///     Used to save the given inventory.
-        /// </summary>
-        /// <param name="inventory">Inventory to save</param>
-        /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
-        public static void SaveInventory(Inventory inventory, params string[] folders)
-        {
-            var path = BuildAndCreatePath(folders);
-            _ = MethodSaveInventory.Invoke(null, new object[] { $"{path}{ModStrings.Inventory}", inventory });
-        }
+        public static void SaveInventory(string path, Inventory obj) =>
+            DelegateSaveInventory(path, obj);
 
-        /// <summary>
-        ///     Builds a path from given folders, starting from the path to the dll. If the path doesn't exist creates it.
-        /// </summary>
-        /// <param name="folders">The folders making up the path to the save, starting from the path to the dll</param>
-        /// <returns>The path</returns>
-        private static string BuildAndCreatePath(params string[] folders)
-        {
-            var path = ModEntry.DllDirectory;
-            foreach (var folder in folders)
-            {
-                path += folder + Sep;
-                if (!Directory.Exists(path))
-                {
-                    _ = Directory.CreateDirectory(path);
-                }
-            }
+        public static CombinedSaveFile LoadCombinedSaveFile(string path) =>
+            DelegateLoadCombinedSaveFile(path);
 
-            return path;
-        }
+        public static PlayerStats LoadPlayerStats(string path) =>
+            DelegateLoadPlayerStats(path);
+
+        public static EventFlagsSave LoadEventFlags(string path) =>
+            DelegateLoadEventFlags(path);
+
+        public static Inventory LoadInventory(string path) =>
+            DelegateLoadInventory(path);
     }
 }

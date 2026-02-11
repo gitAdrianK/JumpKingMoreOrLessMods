@@ -1,95 +1,110 @@
-// ReSharper disable InconsistentNaming
-
-namespace MoreSaves.Patches
+﻿namespace MoreSaves.Patches
 {
-    using System.IO;
-    using System.Reflection;
+    using System;
     using HarmonyLib;
+    using JumpKing.MiscEntities.WorldItems.Inventory;
+    using JumpKing.MiscSystems.Achievements;
     using JumpKing.SaveThread;
+    using Util;
 
-    /// <summary>
-    ///     Patches the SaveLube class.
-    ///     Function SaveCombinedSaveFile to also save at our mod location.
-    ///     Function DeleteSaves to also delete the saves inside the auto folder.
-    /// </summary>
-    public class PatchSaveLube
+    public static class PatchSaveLube
     {
-        private static readonly char Sep;
+        private static readonly AccessTools.FieldRef<CombinedSaveFile> CombinedSaveRef;
 
-        private static readonly Traverse CombinedSavefile;
-        private static readonly Traverse GeneralSettings;
+        private static readonly Func<EventFlagsSave> GetEventFlags;
+        private static readonly Action<EventFlagsSave> SetEventFlags;
 
-        private static readonly MethodInfo MethodSaveCombinedSaveFile;
-        private static readonly HarmonyMethod MethodSaveCombinedPatch;
+        private static readonly Func<PlayerStats> GetPlayerStatsAttemptSnapshot;
+        private static readonly Action<PlayerStats> SetPlayerStatsAttemptSnapshot;
 
-        private static readonly MethodInfo MethodDeleteSave;
-        private static readonly HarmonyMethod MethodDeletePatch;
+        private static readonly Func<PlayerStats> GetPermanentPlayerStats;
+        private static readonly Action<PlayerStats> SetPermanentPlayerStats;
+
+        private static readonly Func<Inventory> GetInventory;
+        private static readonly Action<Inventory> SetInventory;
+
+        private static readonly Func<GeneralSettings> GetGeneralSettings;
+        private static readonly Action<GeneralSettings> SetGeneralSettings;
+
+        private static readonly Action DelegateProgramStartInitialize;
+        private static readonly Action DelegateSaveCombinedSaveFile;
 
         static PatchSaveLube()
         {
-            Sep = Path.DirectorySeparatorChar;
+            var typeSaveLube = AccessTools.TypeByName("JumpKing.SaveThread.SaveLube");
 
-            var saveLube = AccessTools.TypeByName("JumpKing.SaveThread.SaveLube");
+            // Only the combined save uses a backing field.
+            CombinedSaveRef =
+                AccessTools.StaticFieldRefAccess<CombinedSaveFile>(AccessTools.Field(typeSaveLube, "_COMBINED_SAVE"));
 
-            CombinedSavefile = Traverse.Create(saveLube).Property("CombinedSave");
-            GeneralSettings = Traverse.Create(saveLube).Property("generalSettings");
+            GetEventFlags = ReflectionUtil.CreateStaticPropertyGetter<EventFlagsSave>(typeSaveLube, "eventFlags");
+            SetEventFlags = ReflectionUtil.CreateStaticPropertySetter<EventFlagsSave>(typeSaveLube, "eventFlags");
 
-            var genericSave = saveLube.GetMethod("Save");
-            MethodSaveCombinedSaveFile = genericSave?.MakeGenericMethod(typeof(CombinedSaveFile));
-            MethodSaveCombinedPatch = new HarmonyMethod(typeof(PatchSaveLube).GetMethod(nameof(SaveCombinedSaveFile)));
+            GetGeneralSettings =
+                ReflectionUtil.CreateStaticPropertyGetter<GeneralSettings>(typeSaveLube, "generalSettings");
+            SetGeneralSettings =
+                ReflectionUtil.CreateStaticPropertySetter<GeneralSettings>(typeSaveLube, "generalSettings");
 
-            MethodDeleteSave = saveLube.GetMethod("DeleteSaves");
-            MethodDeletePatch = new HarmonyMethod(typeof(PatchSaveLube).GetMethod(nameof(DeleteSaves)));
+            GetInventory = ReflectionUtil.CreateStaticPropertyGetter<Inventory>(typeSaveLube, "inventory");
+            SetInventory = ReflectionUtil.CreateStaticPropertySetter<Inventory>(typeSaveLube, "inventory");
+
+            GetPlayerStatsAttemptSnapshot =
+                ReflectionUtil.CreateStaticPropertyGetter<PlayerStats>(typeSaveLube, "PlayerStatsAttemptSnapshot");
+            SetPlayerStatsAttemptSnapshot =
+                ReflectionUtil.CreateStaticPropertySetter<PlayerStats>(typeSaveLube, "PlayerStatsAttemptSnapshot");
+
+            GetPermanentPlayerStats =
+                ReflectionUtil.CreateStaticPropertyGetter<PlayerStats>(typeSaveLube, "PermanentPlayerStats");
+            SetPermanentPlayerStats =
+                ReflectionUtil.CreateStaticPropertySetter<PlayerStats>(typeSaveLube, "PermanentPlayerStats");
+
+            DelegateProgramStartInitialize =
+                (Action)typeSaveLube.GetMethod("ProgramStartInitialize").CreateDelegate(typeof(Action));
+
+            DelegateSaveCombinedSaveFile =
+                (Action)typeSaveLube.GetMethod("SaveCombinedSaveFile").CreateDelegate(typeof(Action));
         }
 
-        public PatchSaveLube(Harmony harmony)
+        public static CombinedSaveFile CombinedSaveFile
         {
-            _ = harmony.Patch(
-                MethodSaveCombinedSaveFile,
-                postfix: MethodSaveCombinedPatch
-            );
-
-            _ = harmony.Patch(
-                MethodDeleteSave,
-                postfix: MethodDeletePatch
-            );
+            get => CombinedSaveRef();
+            set => CombinedSaveRef() = value;
         }
 
-        public static void SaveCombinedSaveFile(CombinedSaveFile p_object)
+        public static EventFlagsSave EventFlags
         {
-            if (ModEntry.SaveName == string.Empty)
-            {
-                return;
-            }
-
-            PatchEncryption.SaveCombinedSaveFile(p_object, ModStrings.Auto, ModEntry.SaveName, ModStrings.Saves);
-            PatchEncryption.SavePlayerStats(PatchAchievementManager.GetPermaStats(), ModStrings.Permanent,
-                ModStrings.Auto, ModEntry.SaveName, ModStrings.SavesPerma);
+            get => GetEventFlags();
+            set => SetEventFlags(value);
         }
 
-        /// <summary>
-        ///     Deletes the savefiles in the dll directory when the give up option in selected in game.
-        /// </summary>
-        public static void DeleteSaves()
+        public static GeneralSettings GeneralSettings
         {
-            if (ModEntry.SaveName == string.Empty)
-            {
-                return;
-            }
-
-            var directory = $"{ModEntry.DllDirectory}{Sep}{ModStrings.Auto}{Sep}{ModEntry.SaveName}{Sep}";
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, true);
-            }
-
-            ModEntry.SaveName = string.Empty;
+            get => GetGeneralSettings();
+            set => SetGeneralSettings(value);
         }
 
-        public static CombinedSaveFile GetCombinedSaveFile()
-            => CombinedSavefile.GetValue<CombinedSaveFile>();
+        public static Inventory Inventory
+        {
+            get => GetInventory();
+            set => SetInventory(value);
+        }
 
-        public static GeneralSettings GetGeneralSettings()
-            => GeneralSettings.GetValue<GeneralSettings>();
+        public static PlayerStats PlayerStatsAttemptSnapshot
+        {
+            get => GetPlayerStatsAttemptSnapshot();
+            set => SetPlayerStatsAttemptSnapshot(value);
+        }
+
+        public static PlayerStats PermanentPlayerStats
+        {
+            get => GetPermanentPlayerStats();
+            set => SetPermanentPlayerStats(value);
+        }
+
+        public static void ProgramStartInitialize() =>
+            DelegateProgramStartInitialize();
+
+        public static void SaveCombinedSaveFile() =>
+            DelegateSaveCombinedSaveFile();
     }
 }
