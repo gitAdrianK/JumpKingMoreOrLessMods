@@ -8,7 +8,7 @@
         public static void Postfix()
         {
             var saveManager = ModEntry.SaveManager;
-            saveManager.SaveInventory(saveManager.AutoDirectory, saveManager.SaveName);
+            saveManager.SaveInventory();
         }
     }
 }

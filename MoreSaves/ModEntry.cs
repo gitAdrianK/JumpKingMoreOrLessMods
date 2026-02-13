@@ -96,6 +96,12 @@ namespace MoreSaves
         /// </summary>
         [OnLevelEnd]
         [UsedImplicitly]
-        public static void OnLevelEnd() => SaveManager.StopSaving();
+        public static void OnLevelEnd()
+        {
+            // Save settings and stats here an additional time as they get messed up otherwise.
+            SaveManager.SaveGeneralSettings();
+            SaveManager.SavePermaPlayerStats();
+            SaveManager.StopSaving();
+        }
     }
 }

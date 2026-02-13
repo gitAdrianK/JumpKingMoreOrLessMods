@@ -14,11 +14,7 @@ namespace MoreSaves.Menus.Nodes
             var date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
             var folderName = $"{ModEntry.SaveManager.SaveName}-{date}";
 
-            if (ModEntry.SaveManager.SaveAllManual(folderName))
-            {
-                Game1.instance.contentManager.audio.menu.MenuFail.Play();
-                return BTresult.Failure;
-            }
+            ModEntry.SaveManager.SaveAllManual(folderName);
 
             Game1.instance.contentManager.audio.menu.Select.Play();
             return BTresult.Success;

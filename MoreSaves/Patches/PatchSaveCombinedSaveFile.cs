@@ -8,8 +8,8 @@
         public static void Postfix()
         {
             var saveManager = ModEntry.SaveManager;
-            saveManager.SaveCombined(saveManager.AutoDirectory, saveManager.SaveName);
-            saveManager.SavePermaPlayerStats(saveManager.AutoDirectory, saveManager.SaveName);
+            saveManager.SaveCombined();
+            saveManager.SavePermaPlayerStats();
         }
     }
 }

@@ -14,6 +14,8 @@
     using Util;
     using JKSaveManager = JumpKing.SaveThread.SaveManager;
 
+    // This class is a little overburdened, I'll clean it up later.
+
     /// <summary>
     ///     Manages the saving and loading of files that make up a JK save.
     /// </summary>
@@ -69,6 +71,19 @@
         /// <summary> Name the save will be saved under. </summary>
         public string SaveName { get; set; }
 
+        /// <summary> Path to where the combined.sav file will be auto saved to. </summary>
+        private string AutoCombinedFilePath { get; set; }
+        /// <summary> Path to where the attempt_stats.stat file will be auto saved to. </summary>
+        private string AutoAttemptStatsFilePath { get; set; }
+        /// <summary> Path to where the event_flags.set file will be auto saved to. </summary>
+        private string AutoEventFlagsFilePath { get; set; }
+        /// <summary> Path to where the general_settings.set file will be auto saved to. </summary>
+        private string AutoGeneralSettingsFilePath { get; set; }
+        /// <summary> Path to where the inventory.inv file will be auto saved to. </summary>
+        private string AutoInventoryFilePath { get; set; }
+        /// <summary> Path to where the perma_player_stats.stat file will be auto saved to. </summary>
+        private string AutoPermaPlayerStatsFilePath { get; set; }
+
         /// <summary> <c>true</c> if the name is not null or empty, <c>false</c> otherwise. </summary>
         private bool IsNameSet => !string.IsNullOrEmpty(this.SaveName);
 
@@ -76,7 +91,25 @@
         ///     Sets the save name that the save will be saved under. A name is required to be able to save.
         ///     As such setting the name effectively starts saving.
         /// </summary>
-        public void StartSaving() => this.SaveName = this.SanitizeName(this.GetSaveName());
+        public void StartSaving()
+        {
+            this.SaveName = this.SanitizeName(this.GetSaveName());
+
+            // We additionally, to just setting the name, create required folders and paths,
+            // so we don't have to do it every time we auto save.
+            var saves = Path.Combine(this.AutoDirectory, this.SaveName, Saves);
+            var savesPerma = Path.Combine(this.AutoDirectory, this.SaveName, SavesPerma);
+
+            Directory.CreateDirectory(saves);
+            Directory.CreateDirectory(savesPerma);
+
+            this.AutoCombinedFilePath = Path.Combine(saves, Combined);
+            this.AutoAttemptStatsFilePath = Path.Combine(savesPerma, AttemptStats);
+            this.AutoEventFlagsFilePath = Path.Combine(savesPerma, EventFlags);
+            this.AutoGeneralSettingsFilePath = Path.Combine(savesPerma, GeneralSettings);
+            this.AutoInventoryFilePath = Path.Combine(savesPerma, Inventory);
+            this.AutoPermaPlayerStatsFilePath = Path.Combine(savesPerma, PermaPlayerStats);
+        }
 
         /// <summary>
         ///     Unsets the save name. A name is required to be able to save.
@@ -85,152 +118,96 @@
         public void StopSaving() => this.SaveName = string.Empty;
 
         /// <summary>
-        ///     Save all six files that make up a JK save file.
+        ///     Saves all files to the auto subdirectory with the current save name. The required folders are created
+        ///     when the SaveManager starts saving.
+        ///     Does not save if saving hasn't started.
         /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that the save files are contained in.</param>
-        /// <returns></returns>
-        private bool SaveAll(string directory, string folderName)
+        public void SaveAllAuto()
         {
             if (!this.IsNameSet)
             {
-                return false;
+                return;
             }
 
-            return this.SaveCombined(directory, folderName) &&
-                   this.SaveAttemptStats(directory, folderName) &&
-                   this.SaveEventFlags(directory, folderName) &&
-                   this.SaveGeneralSettings(directory, folderName) &&
-                   this.SaveInventory(directory, folderName) &&
-                   this.SavePermaPlayerStats(directory, folderName);
+            PatchEncryption.SaveCombinedSaveFile(this.AutoCombinedFilePath, PatchSaveLube.CombinedSaveFile);
+            PatchEncryption.SavePlayerStats(this.AutoAttemptStatsFilePath, PatchAchievementManager.Snapshot);
+            PatchEncryption.SaveEventFlags(this.AutoEventFlagsFilePath, EventFlagsSave.Save);
+            XmlSerializerHelper.Serialize(this.AutoGeneralSettingsFilePath, PatchSaveLube.GeneralSettings);
+            PatchEncryption.SaveInventory(this.AutoInventoryFilePath, PatchSaveLube.Inventory);
+            PatchEncryption.SavePlayerStats(this.AutoPermaPlayerStatsFilePath, PatchAchievementManager.AllTimeStats);
         }
 
         /// <summary>
-        ///     Saves all files to the auto subdirectory with the current save name.
-        ///     As there won't be any feedback, it is not returned if the save succeeded.
+        ///     Saves the combined.sav to the set auto directory with the set name.
+        ///     Does not save if saving hasn't started.
         /// </summary>
-        public void SaveAllAuto() => this.SaveAll(this.AutoDirectory, this.SaveName);
-
-        /// <summary>
-        ///     Saves all files to the manual subdirectory with the given save name.
-        /// </summary>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveAllManual(string folderName) => this.SaveAll(this.ManualDirectory, folderName);
-
-        /// <summary>
-        ///     Saves the combined.sav to the given directory with the given save name.
-        /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveCombined(string directory, string folderName)
+        public void SaveCombined()
         {
             if (!this.IsNameSet)
             {
-                return false;
+                return;
             }
 
-            directory = Path.Combine(directory, folderName, Saves);
-            Directory.CreateDirectory(directory);
-            PatchEncryption.SaveCombinedSaveFile(Path.Combine(directory, Combined), PatchSaveLube.CombinedSaveFile);
-            return true;
+            PatchEncryption.SaveCombinedSaveFile(this.AutoCombinedFilePath, PatchSaveLube.CombinedSaveFile);
         }
 
         /// <summary>
-        ///     Saves the attempt_stats.stat to the given directory with the given save name.
+        ///     Saves the general_settings.set to the set auto directory with the set name.
+        ///     Does not save if saving hasn't started.
         /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveAttemptStats(string directory, string folderName)
+        public void SaveGeneralSettings()
         {
             if (!this.IsNameSet)
             {
-                return false;
+                return;
             }
 
-            directory = Path.Combine(directory, folderName, SavesPerma);
-            Directory.CreateDirectory(directory);
-            PatchEncryption.SavePlayerStats(Path.Combine(directory, AttemptStats), PatchAchievementManager.Snapshot);
-            return true;
+            XmlSerializerHelper.Serialize(this.AutoGeneralSettingsFilePath, PatchSaveLube.GeneralSettings);
         }
 
         /// <summary>
-        ///     Saves the event_flags.set to the given directory with the given save name.
+        ///     Saves the inventory.inv to the set auto directory with the set name.
+        ///     Does not save if saving hasn't started.
         /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveEventFlags(string directory, string folderName)
+        public void SaveInventory()
         {
             if (!this.IsNameSet)
             {
-                return false;
+                return;
             }
 
-            directory = Path.Combine(directory, folderName, SavesPerma);
-            Directory.CreateDirectory(directory);
-            PatchEncryption.SaveEventFlags(Path.Combine(directory, EventFlags), EventFlagsSave.Save);
-            return true;
+            PatchEncryption.SaveInventory(this.AutoInventoryFilePath, PatchSaveLube.Inventory);
         }
 
         /// <summary>
-        ///     Saves the general_settings.set to the given directory with the given save name.
+        ///     Saves the perma_player_stats.stat to the set auto directory with the set name.
+        ///     Does not save if saving hasn't started.
         /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveGeneralSettings(string directory, string folderName)
+        public void SavePermaPlayerStats()
         {
             if (!this.IsNameSet)
             {
-                return false;
+                return;
             }
 
-            directory = Path.Combine(directory, folderName, SavesPerma);
-            Directory.CreateDirectory(directory);
-            XmlSerializerHelper.Serialize(Path.Combine(directory, GeneralSettings), PatchSaveLube.GeneralSettings);
-            return true;
+            PatchEncryption.SavePlayerStats(this.AutoPermaPlayerStatsFilePath, PatchAchievementManager.AllTimeStats);
         }
 
-        /// <summary>
-        ///     Saves the inventory.inv to the given directory with the given save name.
-        /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SaveInventory(string directory, string folderName)
+        public void SaveAllManual(string folderName)
         {
-            if (!this.IsNameSet)
-            {
-                return false;
-            }
+            var folderPath = Path.Combine(this.ManualDirectory, folderName);
+            var savesPath =  Path.Combine(folderPath, Saves);
+            var savesPermaPath = Path.Combine(folderPath, SavesPerma);
 
-            directory = Path.Combine(directory, folderName, SavesPerma);
-            Directory.CreateDirectory(directory);
-            PatchEncryption.SaveInventory(Path.Combine(directory, Inventory), PatchSaveLube.Inventory);
-            return true;
-        }
+            Directory.CreateDirectory(savesPath);
+            Directory.CreateDirectory(savesPermaPath);
 
-        /// <summary>
-        ///     Saves the perma_player_stats.stat to the given directory with the given save name.
-        /// </summary>
-        /// <param name="directory">Directory to save to.</param>
-        /// <param name="folderName">Name of the folder that will contain the save files.</param>
-        /// <returns><c>true</c> if the save succeeded, <c>false</c> otherwise.</returns>
-        public bool SavePermaPlayerStats(string directory, string folderName)
-        {
-            if (!this.IsNameSet)
-            {
-                return false;
-            }
-
-            directory = Path.Combine(directory, folderName, SavesPerma);
-            Directory.CreateDirectory(directory);
-            PatchEncryption.SavePlayerStats(Path.Combine(directory, PermaPlayerStats),
-                PatchAchievementManager.AllTimeStats);
-            return true;
+            PatchEncryption.SaveCombinedSaveFile(Path.Combine(savesPath, Combined), PatchSaveLube.CombinedSaveFile);
+            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, AttemptStats), PatchAchievementManager.Snapshot);
+            PatchEncryption.SaveEventFlags(Path.Combine(savesPermaPath, EventFlags), EventFlagsSave.Save);
+            XmlSerializerHelper.Serialize(Path.Combine(savesPermaPath, GeneralSettings), PatchSaveLube.GeneralSettings);
+            PatchEncryption.SaveInventory(Path.Combine(savesPermaPath, Inventory), PatchSaveLube.Inventory);
+            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, PermaPlayerStats), PatchAchievementManager.AllTimeStats);
         }
 
         /// <summary>
