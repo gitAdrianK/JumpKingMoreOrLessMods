@@ -13,6 +13,7 @@
     using Patches;
     using Util;
     using JKSaveManager = JumpKing.SaveThread.SaveManager;
+    using Program = JumpKing.Program;
 
     // This class is a little overburdened, I'll clean it up later.
 
@@ -226,6 +227,7 @@
             try
             {
                 JKSaveManager.instance.StopSaving();
+                Program.contentThread.Stop();
 
                 var combined = PatchEncryption.LoadCombinedSaveFile(Path.Combine(directory, Saves, Combined));
 
@@ -294,6 +296,7 @@
             finally
             {
                 JKSaveManager.instance.StartSaving();
+                PatchContentThread.Running = true;
             }
 
             return true;

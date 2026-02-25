@@ -14,14 +14,13 @@ namespace MoreSaves.Menus.Nodes
 
         protected override BTresult MyRun(TickData pData)
         {
-            if (!ModEntry.SaveManager.LoadSave(this.Directory))
+            if (ModEntry.SaveManager.LoadSave(this.Directory))
             {
-                Game1.instance.contentManager.audio.menu.MenuFail.Play();
-                return BTresult.Failure;
+                return BTresult.Success;
             }
 
-            Game1.instance.contentManager.audio.menu.Select.Play();
-            return BTresult.Success;
+            Game1.instance.contentManager.audio.menu.MenuFail.Play();
+            return BTresult.Failure;
         }
     }
 }

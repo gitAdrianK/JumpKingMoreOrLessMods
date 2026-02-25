@@ -83,6 +83,7 @@
     <Compile Include="Menus\Nodes\NodeLoadSave.cs"/>
     <Compile Include="Menus\Nodes\NodeOpenFolderExplorer.cs"/>
     <Compile Include="Patches\PatchAchievementManager.cs"/>
+    <Compile Include="Patches\PatchContentThread.cs" />
     <Compile Include="Patches\PatchDeleteSaves.cs"/>
     <Compile Include="Patches\PatchEncryption.cs"/>
     <Compile Include="Patches\PatchGeneralSettings.cs"/>
