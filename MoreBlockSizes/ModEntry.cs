@@ -4,6 +4,7 @@ namespace MoreBlockSizes
     using System.Reflection;
     using HarmonyLib;
     using JetBrains.Annotations;
+    using JumpKing;
     using JumpKing.Mods;
     using JumpKing.PauseMenu;
     using Menus;
@@ -23,7 +24,10 @@ namespace MoreBlockSizes
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
         [UsedImplicitly]
         public static ToggleDrawGrouping CustomText(object factory, GuiFormat format)
-            => new ToggleDrawGrouping();
+            => LevelDebugState.instance != null
+                ? new ToggleDrawGrouping()
+                : null;
+
 
         /// <summary>
         ///     Called by Jump King before the level loads.

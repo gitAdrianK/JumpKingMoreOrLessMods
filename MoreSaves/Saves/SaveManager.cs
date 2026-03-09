@@ -74,14 +74,19 @@
 
         /// <summary> Path to where the combined.sav file will be auto saved to. </summary>
         private string AutoCombinedFilePath { get; set; }
+
         /// <summary> Path to where the attempt_stats.stat file will be auto saved to. </summary>
         private string AutoAttemptStatsFilePath { get; set; }
+
         /// <summary> Path to where the event_flags.set file will be auto saved to. </summary>
         private string AutoEventFlagsFilePath { get; set; }
+
         /// <summary> Path to where the general_settings.set file will be auto saved to. </summary>
         private string AutoGeneralSettingsFilePath { get; set; }
+
         /// <summary> Path to where the inventory.inv file will be auto saved to. </summary>
         private string AutoInventoryFilePath { get; set; }
+
         /// <summary> Path to where the perma_player_stats.stat file will be auto saved to. </summary>
         private string AutoPermaPlayerStatsFilePath { get; set; }
 
@@ -197,18 +202,20 @@
         public void SaveAllManual(string folderName)
         {
             var folderPath = Path.Combine(this.ManualDirectory, folderName);
-            var savesPath =  Path.Combine(folderPath, Saves);
+            var savesPath = Path.Combine(folderPath, Saves);
             var savesPermaPath = Path.Combine(folderPath, SavesPerma);
 
             Directory.CreateDirectory(savesPath);
             Directory.CreateDirectory(savesPermaPath);
 
             PatchEncryption.SaveCombinedSaveFile(Path.Combine(savesPath, Combined), PatchSaveLube.CombinedSaveFile);
-            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, AttemptStats), PatchAchievementManager.Snapshot);
+            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, AttemptStats),
+                PatchAchievementManager.Snapshot);
             PatchEncryption.SaveEventFlags(Path.Combine(savesPermaPath, EventFlags), EventFlagsSave.Save);
             XmlSerializerHelper.Serialize(Path.Combine(savesPermaPath, GeneralSettings), PatchSaveLube.GeneralSettings);
             PatchEncryption.SaveInventory(Path.Combine(savesPermaPath, Inventory), PatchSaveLube.Inventory);
-            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, PermaPlayerStats), PatchAchievementManager.AllTimeStats);
+            PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, PermaPlayerStats),
+                PatchAchievementManager.AllTimeStats);
         }
 
         /// <summary>
