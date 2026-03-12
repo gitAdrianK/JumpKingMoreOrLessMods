@@ -1,19 +1,21 @@
 ﻿namespace MoreSaves.Saves
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using HarmonyLib;
     using JumpKing;
     using JumpKing.Level;
     using JumpKing.SaveThread;
     using JumpKing.SaveThread.SaveComponents;
     using JumpKing.Workshop;
+    using JumpKing.XnaWrappers;
     using LanguageJK;
     using Patches;
     using Util;
     using JKSaveManager = JumpKing.SaveThread.SaveManager;
-    using Program = JumpKing.Program;
 
     // This class is a little overburdened, I'll clean it up later.
 
@@ -49,6 +51,9 @@
         /// <summary> Regex for all filenames reserved by windows. </summary>
         private static readonly Regex ReservedNamesRegex =
             new Regex(@"^(con|prn|aux|nul|com\d|lpt\d)$", RegexOptions.IgnoreCase);
+
+        private static readonly Action<IJKSound> PlayDelegate = AccessTools.MethodDelegate<Action<IJKSound>>(
+            AccessTools.Method("JumpKing.MusicManager:Play"));
 
         /// <summary>
         ///     Ctor.
@@ -234,7 +239,6 @@
             try
             {
                 JKSaveManager.instance.StopSaving();
-                Program.contentThread.Stop();
 
                 var combined = PatchEncryption.LoadCombinedSaveFile(Path.Combine(directory, Saves, Combined));
 
@@ -294,7 +298,8 @@
                 contentManager.LoadAssets(Game1.instance);
                 LevelManager.LoadScreens();
 
-                Game1.instance.m_game.UpdateMenu();
+                JumpGame.instance.UpdateMenu();
+                PlayDelegate(Game1.instance.contentManager.audio.music.TitleScreen);
             }
             catch
             {
@@ -303,7 +308,6 @@
             finally
             {
                 JKSaveManager.instance.StartSaving();
-                PatchContentThread.Running = true;
             }
 
             return true;

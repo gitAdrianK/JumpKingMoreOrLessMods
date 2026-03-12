@@ -1,20 +1,15 @@
 ﻿namespace MoreSaves.Patches
 {
+    using System;
     using HarmonyLib;
-    using JumpKing;
     using JumpKing.JKMemory.ManagedAssets.ThreadLube;
 
+    [HarmonyPatch(typeof(ContentThread), "Update")]
     public static class PatchContentThread
     {
-        /// <summary>FieldRef of the "m_running" field.</summary>
-        private static readonly AccessTools.FieldRef<ContentThread, bool> RunningRef =
-            AccessTools.FieldRefAccess<ContentThread, bool>(
-                AccessTools.Field("JumpKing.JKMemory.ManagedAssets.ThreadLube.ContentThread:m_running"));
 
-        public static bool Running
-        {
-            get => RunningRef(Program.contentThread);
-            set => RunningRef(Program.contentThread) = value;
-        }
+        // ReSharper disable once InconsistentNaming
+        public static Exception Finalizer(Exception __exception)
+            => __exception is NullReferenceException ? null : __exception;
     }
 }
