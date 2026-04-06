@@ -47,8 +47,13 @@ namespace MoreSaves
 
         [PauseMenuItemSetting]
         [UsedImplicitly]
-        public static TextButton CreateManualSave(object factory, GuiFormat format)
-            => new TextButton("Create Manual Save", new NodeCreateManualSave());
+        public static TextButton CreateSimpleSave(object factory, GuiFormat format)
+            => new TextButton("Create Simple Save", new NodeCreateManualSave());
+
+        [PauseMenuItemSetting]
+        [UsedImplicitly]
+        public static TextButton CreateTimestampSave(object factory, GuiFormat format)
+            => new TextButton("Create Timestamp Save", new NodeCreateManualSaveWithTimestamp());
 
         [MainMenuItemSetting]
         [PauseMenuItemSetting]

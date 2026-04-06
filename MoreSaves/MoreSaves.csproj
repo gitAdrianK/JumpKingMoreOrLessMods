@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Menus\ButtonTextExplorer.cs"/>
     <Compile Include="Menus\Models\ModelLoadOptions.cs"/>
+    <Compile Include="Menus\Nodes\NodeCreateManualSaveWithTimestamp.cs" />
     <Compile Include="ModEntry.cs"/>
     <Compile Include="Menus\Nodes\NodeCreateManualSave.cs"/>
     <Compile Include="Menus\Nodes\NodeLoadSave.cs"/>
