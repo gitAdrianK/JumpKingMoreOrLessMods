@@ -219,8 +219,11 @@
             PatchEncryption.SaveEventFlags(Path.Combine(savesPermaPath, EventFlags), EventFlagsSave.Save);
             XmlSerializerHelper.Serialize(Path.Combine(savesPermaPath, GeneralSettings), PatchSaveLube.GeneralSettings);
             PatchEncryption.SaveInventory(Path.Combine(savesPermaPath, Inventory), PatchSaveLube.Inventory);
+
+            var permaPlayerStats = PatchAchievementManager.AllTimeStats;
+            permaPlayerStats.session += 1;
             PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, PermaPlayerStats),
-                PatchAchievementManager.AllTimeStats);
+                permaPlayerStats);
         }
 
         /// <summary>
@@ -249,6 +252,7 @@
                 var inventory = PatchEncryption.LoadInventory(Path.Combine(directory, SavesPerma, Inventory));
                 var permaPlayerStats =
                     PatchEncryption.LoadPlayerStats(Path.Combine(directory, SavesPerma, PermaPlayerStats));
+                permaPlayerStats.attempts = Math.Max(permaPlayerStats.attempts, PatchAchievementManager.AllTimeStats.attempts);
 
                 // Root and level.
                 string root;
@@ -382,7 +386,7 @@
                 name = name.Replace(c, '#');
             }
 
-            // Windows special case: ".."
+            // Relative path special case: ".."
             name = name.Replace("..", ". .");
 
             // Windows reserved device names
