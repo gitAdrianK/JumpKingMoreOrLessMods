@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessAutoEquipping", "LessAu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessBabeNoises", "LessBabeNoises\LessBabeNoises.csproj", "{8AE97483-122E-4256-8D27-655C11972EEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessHiddenWallSFX", "LessHiddenWallSFX\LessHiddenWallSFX.csproj", "{7F13A861-9798-4844-8C57-474964935762}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessGameSFX", "LessGameSFX\LessGameSFX.csproj", "{7F13A861-9798-4844-8C57-474964935762}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessLocationText", "LessLocationText\LessLocationText.csproj", "{C2C58804-6429-4E2A-BDE9-8A8B6B35A4E1}"
 EndProject

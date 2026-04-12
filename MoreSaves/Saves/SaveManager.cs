@@ -252,7 +252,8 @@
                 var inventory = PatchEncryption.LoadInventory(Path.Combine(directory, SavesPerma, Inventory));
                 var permaPlayerStats =
                     PatchEncryption.LoadPlayerStats(Path.Combine(directory, SavesPerma, PermaPlayerStats));
-                permaPlayerStats.attempts = Math.Max(permaPlayerStats.attempts, PatchAchievementManager.AllTimeStats.attempts);
+                permaPlayerStats.attempts =
+                    Math.Max(permaPlayerStats.attempts, PatchAchievementManager.AllTimeStats.attempts);
 
                 // Root and level.
                 string root;
