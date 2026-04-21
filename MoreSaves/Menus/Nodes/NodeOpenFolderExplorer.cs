@@ -11,7 +11,7 @@ namespace MoreSaves.Menus.Nodes
     /// </summary>
     public class NodeOpenFolderExplorer : IBTnode
     {
-        protected override BTresult MyRun(TickData pData)
+        protected override BTresult MyRun(TickData tickData)
         {
             _ = Process.Start("explorer.exe", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             Game1.instance.contentManager.audio.menu.Select.Play();

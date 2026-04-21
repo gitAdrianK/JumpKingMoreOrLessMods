@@ -8,12 +8,26 @@ namespace MoreSaves.Menus.Nodes
     /// </summary>
     public class NodeCreateManualSave : IBTnode
     {
-        protected override BTresult MyRun(TickData pData)
+        protected override BTresult MyRun(TickData tickData)
         {
-            ModEntry.SaveManager.SaveAllManual(ModEntry.SaveManager.SaveName);
-
-            Game1.instance.contentManager.audio.menu.Select.Play();
+            CreateSave(ModEntry.SaveManager.SaveName);
             return BTresult.Success;
+        }
+
+        public static void CreateSave(string saveName)
+        {
+            try
+            {
+                ModEntry.SaveManager.SaveAllManual(saveName);
+            }
+            catch
+            {
+                ModEntry.SaveInfo?.SetText("> Failed to save.");
+                Game1.instance.contentManager?.audio?.menu?.MenuFail?.Play();
+            }
+
+            ModEntry.SaveInfo?.SetText("> Saved successfully.");
+            Game1.instance?.contentManager?.audio?.menu?.Select?.Play();
         }
     }
 }

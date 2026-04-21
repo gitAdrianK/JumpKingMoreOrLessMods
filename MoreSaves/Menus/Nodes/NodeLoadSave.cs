@@ -12,7 +12,7 @@ namespace MoreSaves.Menus.Nodes
         public NodeLoadSave(string directory) => this.Directory = directory;
         private string Directory { get; }
 
-        protected override BTresult MyRun(TickData pData)
+        protected override BTresult MyRun(TickData tickData)
         {
             if (ModEntry.SaveManager.LoadSave(this.Directory))
             {

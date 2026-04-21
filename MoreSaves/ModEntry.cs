@@ -27,6 +27,8 @@ namespace MoreSaves
         public static string DllDirectory { get; private set; }
         public static SaveManager SaveManager { get; private set; }
 
+        public static TextInfoTimed SaveInfo { get; set; }
+
         [MainMenuItemSetting]
         [UsedImplicitly]
         public static TextButton LoadAutoSavefile(object factory, GuiFormat format)
@@ -43,6 +45,14 @@ namespace MoreSaves
             ModelLoadOptions.SetupButtons();
             return new TextButton("Load Manual Save",
                 ModelLoadOptions.CreateLoadOptions(factory, format, 0, SaveType.Manual));
+        }
+
+        [PauseMenuItemSetting]
+        [UsedImplicitly]
+        public static TextInfo GiveStatusInfo(object factory, GuiFormat format)
+        {
+            SaveInfo = new TextInfoTimed();
+            return SaveInfo;
         }
 
         [PauseMenuItemSetting]
