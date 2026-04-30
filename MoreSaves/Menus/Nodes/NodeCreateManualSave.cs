@@ -18,12 +18,17 @@ namespace MoreSaves.Menus.Nodes
         {
             try
             {
-                ModEntry.SaveManager.SaveAllManual(saveName);
+                if (!ModEntry.SaveManager.SaveAllManual(saveName))
+                {
+                    ModEntry.SaveInfo?.SetText("> Failed to save.");
+                    Game1.instance?.contentManager?.audio?.menu?.MenuFail?.Play();
+                    return;
+                }
             }
             catch
             {
                 ModEntry.SaveInfo?.SetText("> Failed to save.");
-                Game1.instance.contentManager?.audio?.menu?.MenuFail?.Play();
+                Game1.instance?.contentManager?.audio?.menu?.MenuFail?.Play();
             }
 
             ModEntry.SaveInfo?.SetText("> Saved successfully.");

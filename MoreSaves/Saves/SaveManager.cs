@@ -204,8 +204,13 @@
             PatchEncryption.SavePlayerStats(this.AutoPermaPlayerStatsFilePath, PatchAchievementManager.AllTimeStats);
         }
 
-        public void SaveAllManual(string folderName)
+        public bool SaveAllManual(string folderName)
         {
+            if (!this.IsNameSet)
+            {
+                return false;
+            }
+
             var folderPath = Path.Combine(this.ManualDirectory, folderName);
             var savesPath = Path.Combine(folderPath, Saves);
             var savesPermaPath = Path.Combine(folderPath, SavesPerma);
@@ -224,6 +229,8 @@
             permaPlayerStats.session += 1;
             PatchEncryption.SavePlayerStats(Path.Combine(savesPermaPath, PermaPlayerStats),
                 permaPlayerStats);
+
+            return true;
         }
 
         /// <summary>
@@ -348,7 +355,10 @@
             // Not a vanilla map
             if (contentManager.level != null)
             {
-                return contentManager.level.Name;
+                var name = contentManager.level.Name;
+                // Really the sanitization already ensures that the name is not null/empty, but apparently it can still
+                // happen? It should not be possible.
+                return !string.IsNullOrEmpty(name) ? name : "Unknown item";
             }
 
             // Which vanilla map
@@ -375,7 +385,7 @@
 
             if (string.IsNullOrEmpty(name))
             {
-                return "emptyName#";
+                return "Unknown item";
             }
 
             var invalidChars = Path.GetInvalidFileNameChars()
