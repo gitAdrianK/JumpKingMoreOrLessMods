@@ -130,10 +130,18 @@ namespace MoreTextOptions
             PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
             PatchStatsScreen.LoadEndingNames();
             PatchGameLoop.CanRearrange = true;
+            PatchTextHelper.PauseManager = AccessTools.Field("JumpKing.PauseMenu.PauseManager:instance").GetValue(null);
+            PatchTextHelper.IsPausedRef =
+                AccessTools.FieldRefAccess<object, bool>(AccessTools.Field("JumpKing.PauseMenu.PauseManager:_paused"));
         }
 
         [OnLevelEnd]
-        public static void OnLevelEnd() => PatchGameLoop.CanRearrange = false;
+        public static void OnLevelEnd()
+        {
+            PatchGameLoop.CanRearrange = false;
+            PatchTextHelper.PauseManager = null;
+            PatchTextHelper.IsPausedRef = null;
+        }
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)
             => Serialization.SaveToFile(Preferences, PreferencesPath);

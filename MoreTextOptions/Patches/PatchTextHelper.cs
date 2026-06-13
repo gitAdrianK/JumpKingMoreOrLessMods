@@ -13,11 +13,9 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(TextHelper), nameof(TextHelper.DrawString))]
     public static class PatchTextHelper
     {
-        private static readonly object PauseManager
-            = AccessTools.Field("JumpKing.PauseMenu.PauseManager:instance").GetValue(null);
+        public static object PauseManager { get; set; }
 
-        private static readonly AccessTools.FieldRef<object, bool> IsPausedRef
-            = AccessTools.FieldRefAccess<object, bool>(AccessTools.Field("JumpKing.PauseMenu.PauseManager:_paused"));
+        public static AccessTools.FieldRef<object, bool> IsPausedRef { get; set; }
 
         [UsedImplicitly]
         public static bool Prefix(
@@ -40,6 +38,8 @@ namespace MoreTextOptions.Patches
 
             var shouldRearrange =
                 PatchGameLoop.CanRearrange &&
+                IsPausedRef != null &&
+                PauseManager != null &&
                 !IsPausedRef(PauseManager) &&
                 pref.ShouldRearrangeText &&
                 p_position.X < Game1.WIDTH / 2 &&
