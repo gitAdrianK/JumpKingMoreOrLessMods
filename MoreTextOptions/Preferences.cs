@@ -11,9 +11,20 @@ namespace MoreTextOptions
         private int outlineBlue;
         private int outlineGreen;
         private int outlineRed;
+        private bool shouldRearrangeText;
         private int textBlue = 255;
         private int textGreen = 255;
         private int textRed = 255;
+
+        public bool ShouldRearrangeText
+        {
+            get => this.shouldRearrangeText;
+            set
+            {
+                this.shouldRearrangeText = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public bool IsCustomTextColor
         {
