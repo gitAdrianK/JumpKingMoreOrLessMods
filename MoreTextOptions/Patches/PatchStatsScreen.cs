@@ -40,12 +40,11 @@ namespace MoreTextOptions.Patches
             }
         }
 
-        public static void LoadEndingNames()
+        public static void LoadEndingNames(string[] tags)
         {
             MainBabeEnding = string.Empty;
             NewBabeEnding = string.Empty;
             GhostBabeEnding = string.Empty;
-            var tags = Game1.instance.contentManager?.level?.Info.Tags;
             if (tags is null)
             {
                 return;

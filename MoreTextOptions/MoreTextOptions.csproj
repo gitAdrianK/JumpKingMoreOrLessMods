@@ -89,6 +89,7 @@
     <Compile Include="ModEntry.cs"/>
     <Compile Include="Patches\PatchGameLoop.cs"/>
     <Compile Include="Patches\PatchOldManEntity.cs"/>
+    <Compile Include="Patches\PatchPlayerStandStill.cs"/>
     <Compile Include="Patches\PatchSayLine.cs"/>
     <Compile Include="Patches\PatchSpeechBubbleFormat.cs"/>
     <Compile Include="Patches\PatchSpriteBatch.cs"/>

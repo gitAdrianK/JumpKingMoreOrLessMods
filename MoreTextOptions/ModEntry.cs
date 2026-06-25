@@ -128,7 +128,11 @@ namespace MoreTextOptions
         public static void OnLevelStart()
         {
             PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
-            PatchStatsScreen.LoadEndingNames();
+
+            var tags = Game1.instance.contentManager?.level?.Info.Tags;
+            PatchStatsScreen.LoadEndingNames(tags);
+            PatchPlayerStandStill.CheckStandStillRequirement(tags);
+
             PatchGameLoop.CanRearrange = true;
             PatchTextHelper.PauseManager = AccessTools.Field("JumpKing.PauseMenu.PauseManager:instance").GetValue(null);
             PatchTextHelper.IsPausedRef =
