@@ -32,8 +32,8 @@
                 Game1.instance.contentManager.font.MenuFontSmall));
 
             var selectorHours = new NumberSelector("Hours");
-            var selectorMinutes = new NumberSelector("Minutes");
-            var selectorSeconds = new NumberSelector("Seconds");
+            var selectorMinutes = new NumberSelector("Minutes", 59, true, selectorHours);
+            var selectorSeconds = new NumberSelector("Seconds", 59, true, selectorMinutes);
 
             menuSelector.AddChild(selectorHours);
             menuSelector.AddChild(selectorMinutes);

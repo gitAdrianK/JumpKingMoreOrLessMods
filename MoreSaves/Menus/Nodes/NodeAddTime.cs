@@ -26,7 +26,7 @@
             var ticksSeconds = this.SelectorSeconds.CurrentValue / DeltaTime;
 
             var snapshot = PatchAchievementManager.Snapshot;
-            snapshot._ticks -= (int)(ticksHours + ticksMinutes + ticksSeconds);
+            snapshot._ticks -= (int)(ticksHours + ticksMinutes + ticksSeconds + 0.5d);
             PatchAchievementManager.Snapshot = snapshot;
             PatchSaveLube.PlayerStatsAttemptSnapshot = snapshot;
             JumpGame.instance.UpdateMenu();
