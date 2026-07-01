@@ -47,6 +47,11 @@ namespace MoreSaves
                 ModelLoadOptions.CreateLoadOptions(factory, format, 0, SaveType.Manual));
         }
 
+        [MainMenuItemSetting]
+        [UsedImplicitly]
+        public static TextButton AddTimeSave(object factory, GuiFormat format)
+            => new TextButton("Add Time to Save", ModelAddTime.CreateAddTimePage(factory, format));
+
         [PauseMenuItemSetting]
         [UsedImplicitly]
         public static TextInfo GiveStatusInfo(object factory, GuiFormat format)
