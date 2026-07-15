@@ -1,8 +1,5 @@
-// ReSharper disable InconsistentNaming
-
 namespace LessBabeNoises.Patches
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using BehaviorTree;
     using EntityComponent.BT;
@@ -13,8 +10,8 @@ namespace LessBabeNoises.Patches
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.OwlEnding.OwlKingEntity", "MakeBT")]
     public static class PatchOwlKingEntity
     {
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
+        // ReSharper disable InconsistentNaming
         public static void RemoveBabeNoises(BehaviorTreeComp __result)
         {
             /* Sounds, in order played, are:
@@ -35,35 +32,35 @@ namespace LessBabeNoises.Patches
                 return;
             }
 
-            var btSequencor = Traverse
+            var btSequencer = Traverse
                 .Create(__result.GetRaw())
                 .Field("m_root_node")
                 .Field("m_children")
                 .GetValue<IBTnode[]>()
                 .First(node => node is BTsequencor);
-            var sequencorChildren = Traverse
-                .Create(btSequencor)
+            var sequencerChildren = Traverse
+                .Create(btSequencer)
                 .Field("m_children");
-            var filteredNodes = sequencorChildren
+            var filteredNodes = sequencerChildren
                 .GetValue<IBTnode[]>()
                 .Where(node => !(node is PlaySFX));
-            var ibTnodes = filteredNodes as IBTnode[] ?? filteredNodes.ToArray();
-            _ = sequencorChildren
-                .SetValue(ibTnodes.ToArray());
-            var btSimultaneos = ibTnodes
+            var ibtNodes = filteredNodes as IBTnode[] ?? filteredNodes.ToArray();
+            _ = sequencerChildren
+                .SetValue(ibtNodes.ToArray());
+            var btSimultaneous = ibtNodes
                 .Last(node => node is BTsimultaneous);
-            var btSequencor2 = Traverse
-                .Create(btSimultaneos)
+            var btSequencer2 = Traverse
+                .Create(btSimultaneous)
                 .Field("m_children")
                 .GetValue<IBTnode[]>()
                 .First(node => node is BTsequencor);
-            var traverseSequencor2 = Traverse
-                .Create(btSequencor2)
+            var traverseSequencer2 = Traverse
+                .Create(btSequencer2)
                 .Field("m_children");
-            var filteredNodes2 = traverseSequencor2
+            var filteredNodes2 = traverseSequencer2
                 .GetValue<IBTnode[]>()
                 .Where(node => !(node is PlaySFX));
-            _ = traverseSequencor2
+            _ = traverseSequencer2
                 .SetValue(filteredNodes2.ToArray());
         }
     }

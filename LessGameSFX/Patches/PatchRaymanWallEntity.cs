@@ -14,7 +14,7 @@
         // Really it doesn't mute it but sets it to null so there's nothing to play.
         // In a way it is muting it.
 
-        /// <summary>The RaymanWallEnity type.</summary>
+        /// <summary>The RaymanWallEntity type.</summary>
         private static readonly Type RaymanWall =
             AccessTools.TypeByName("JumpKing.Props.RaymanWall.RaymanWallEntity");
 

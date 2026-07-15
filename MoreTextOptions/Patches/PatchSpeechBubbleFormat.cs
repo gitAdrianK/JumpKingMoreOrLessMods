@@ -3,7 +3,6 @@
 namespace MoreTextOptions.Patches
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using HarmonyLib;
     using JetBrains.Annotations;
@@ -14,7 +13,6 @@ namespace MoreTextOptions.Patches
         typeof(int), typeof(char[]))]
     public static class PatchSpeechBubbleFormat
     {
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
         public static bool Prefix(out string __state, ref string full_str)
         {
@@ -30,7 +28,6 @@ namespace MoreTextOptions.Patches
             return true;
         }
 
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
         public static void Postfix(string __state, ref List<string> __result)
         {

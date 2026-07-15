@@ -15,12 +15,8 @@ namespace MoreBlockSizes.Patches
     {
         private static readonly Color NO_WIND_COLOR = Color.White * 0.2f;
 
-        private static readonly AccessTools.FieldRef<LevelScreen, IBlock[]> HitboxesRef =
-            AccessTools.FieldRefAccess<LevelScreen, IBlock[]>(
-                AccessTools.Field("JumpKing.Level.LevelScreen:m_hitboxes"));
-
         [UsedImplicitly]
-        public static bool Prefix(LevelScreen __instance)
+        public static bool Prefix(LevelScreen __instance, ref IBlock[] ___m_hitboxes)
         {
             if (!ModEntry.DrawGrouping)
             {
@@ -29,7 +25,7 @@ namespace MoreBlockSizes.Patches
 
             var sprite = Game1.instance.contentManager.Pixel.sprite;
             var sprite2 = sprite;
-            var hitboxes = HitboxesRef(__instance);
+            var hitboxes = ___m_hitboxes;
             foreach (var block in hitboxes)
             {
                 var draw_dst = block.GetRect();

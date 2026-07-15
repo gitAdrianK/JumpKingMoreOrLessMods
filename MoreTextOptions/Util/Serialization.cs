@@ -7,6 +7,8 @@ namespace MoreTextOptions.Util
     using System.Reflection;
     using System.Xml.Linq;
 
+    // Using reflection again to serialize defeats the purpose and speedup of doing it manually.
+
     public static class Serialization
     {
         public static void SaveToFile<T>(T obj, string path) where T : new()

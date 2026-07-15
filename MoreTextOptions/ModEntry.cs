@@ -135,8 +135,6 @@ namespace MoreTextOptions
 
             PatchGameLoop.CanRearrange = true;
             PatchTextHelper.PauseManager = AccessTools.Field("JumpKing.PauseMenu.PauseManager:instance").GetValue(null);
-            PatchTextHelper.IsPausedRef =
-                AccessTools.FieldRefAccess<object, bool>(AccessTools.Field("JumpKing.PauseMenu.PauseManager:_paused"));
         }
 
         [OnLevelEnd]
@@ -144,7 +142,6 @@ namespace MoreTextOptions
         {
             PatchGameLoop.CanRearrange = false;
             PatchTextHelper.PauseManager = null;
-            PatchTextHelper.IsPausedRef = null;
         }
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)

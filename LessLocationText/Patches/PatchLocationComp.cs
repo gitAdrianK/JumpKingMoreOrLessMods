@@ -2,7 +2,6 @@
 
 namespace LessLocationText.Patches
 {
-    using System.Diagnostics.CodeAnalysis;
     using HarmonyLib;
     using JetBrains.Annotations;
 
@@ -10,7 +9,6 @@ namespace LessLocationText.Patches
     {
         [HarmonyPatch("JumpKing.MiscSystems.LocationText.LocationComp", "PollCurrent")]
         [HarmonyPostfix]
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
         public static void PatchPollCurrent(ref bool __result)
         {
@@ -22,7 +20,6 @@ namespace LessLocationText.Patches
 
         [HarmonyPatch("JumpKing.MiscSystems.LocationText.LocationComp", "PollNewScreen")]
         [HarmonyPostfix]
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
         public static void PatchPollNewScreen(ref bool __result)
         {

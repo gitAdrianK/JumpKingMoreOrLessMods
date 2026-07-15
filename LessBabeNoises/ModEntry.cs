@@ -36,10 +36,10 @@ namespace LessBabeNoises
         [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
 #endif
+            var harmony = new Harmony(HarmonyIdentifier);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
@@ -121,14 +121,14 @@ namespace LessBabeNoises
                 .GetValue<ISpriteEntity>()
                 .GetComponent<BehaviorTreeComp>()
                 .GetRaw();
-            var btSequencor = Traverse
+            var btSequencer = Traverse
                 .Create(btManager)
                 .Field("m_root_node")
                 .Field("m_children")
                 .GetValue<IBTnode[]>()
                 .First(node => node is BTsequencor);
             var traverseChildren = Traverse
-                .Create(btSequencor)
+                .Create(btSequencer)
                 .Field("m_children");
             var filteredNodes = traverseChildren
                 .GetValue<IBTnode[]>()

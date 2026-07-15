@@ -1,8 +1,5 @@
-// ReSharper disable InconsistentNaming
-
 namespace LessBabeNoises.Patches
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using BehaviorTree;
     using EntityComponent.BT;
@@ -13,8 +10,8 @@ namespace LessBabeNoises.Patches
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.NewBabePlusEnding.Actors.NBPKingEntity", "MakeBT")]
     public static class PatchNbpKingEntity
     {
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony naming convention")]
         [UsedImplicitly]
+        // ReSharper disable InconsistentNaming
         public static void Postfix(BehaviorTreeComp __result)
         {
             /* Sounds, in order played, are:
@@ -35,10 +32,10 @@ namespace LessBabeNoises.Patches
                 .Field("m_root_node")
                 .Field("m_children")
                 .GetValue<IBTnode[]>();
-            var btSequencor = managerNodes
+            var btSequencer = managerNodes
                 .First(node => node is BTsequencor);
             var traverseChildren = Traverse
-                .Create(btSequencor)
+                .Create(btSequencer)
                 .Field("m_children");
             var filteredNodes = traverseChildren
                 .GetValue<IBTnode[]>()

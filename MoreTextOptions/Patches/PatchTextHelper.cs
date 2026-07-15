@@ -1,5 +1,3 @@
-// ReSharper disable InconsistentNaming
-
 namespace MoreTextOptions.Patches
 {
     using HarmonyLib;
@@ -13,11 +11,13 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(TextHelper), nameof(TextHelper.DrawString))]
     public static class PatchTextHelper
     {
+        public static readonly AccessTools.FieldRef<object, bool> IsPausedRef =
+            AccessTools.FieldRefAccess<object, bool>(AccessTools.Field("JumpKing.PauseMenu.PauseManager:_paused"));
+
         public static object PauseManager { get; set; }
 
-        public static AccessTools.FieldRef<object, bool> IsPausedRef { get; set; }
-
         [UsedImplicitly]
+        // ReSharper disable InconsistentNaming
         public static bool Prefix(
             SpriteFont p_font,
             string p_text,

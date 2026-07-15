@@ -16,16 +16,11 @@
         ///     Method to be targeted, there are multiple so we specify the parameters.
         /// </summary>
         /// <returns><see cref="MethodBase" /> of the method to patch.</returns>
-        public static MethodBase TargetMethod()
-        {
-            var type = AccessTools.TypeByName("JumpKing.Particles.JumpParticleEntity+ParticleSpawner");
-
-            return AccessTools.Method(
-                type,
+        public static MethodBase TargetMethod() =>
+            AccessTools.Method(AccessTools.TypeByName("JumpKing.Particles.JumpParticleEntity+ParticleSpawner"),
                 "CreateWaterSplashParticle",
                 new[] { typeof(Point), typeof(bool) }
             );
-        }
 
         /// <summary>
         ///     Disable the method from running if enabled.
