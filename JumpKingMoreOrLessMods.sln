@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessAutoEquipping", "LessAutoEquipping\LessAutoEquipping.csproj", "{0D9871B5-C8BB-4970-B4B5-DC05F0CDC077}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessBabeNoises", "LessBabeNoises\LessBabeNoises.csproj", "{8AE97483-122E-4256-8D27-655C11972EEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreEndingOptions", "MoreEndingOptions\MoreEndingOptions.csproj", "{8AE97483-122E-4256-8D27-655C11972EEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessGameSFX", "LessGameSFX\LessGameSFX.csproj", "{7F13A861-9798-4844-8C57-474964935762}"
 EndProject

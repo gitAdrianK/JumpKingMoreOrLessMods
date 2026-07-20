@@ -1,10 +1,7 @@
-namespace LessBabeNoises
+namespace MoreEndingOptions
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
-    using BehaviorTree;
-    using EntityComponent.BT;
     using HarmonyLib;
     using JetBrains.Annotations;
     using JumpKing;
@@ -13,8 +10,7 @@ namespace LessBabeNoises
     using JumpKing.GameManager.MultiEnding.NormalEnding;
     using JumpKing.GameManager.MultiEnding.OwlEnding;
     using JumpKing.Mods;
-    using JumpKing.Util;
-    using JumpKing.Util.DrawBT;
+    using Util;
 #if DEBUG
     using System.Diagnostics;
 #endif
@@ -22,12 +18,16 @@ namespace LessBabeNoises
     [JumpKingMod(Identifier)]
     public static class ModEntry
     {
-        private const string Identifier = "Zebra.LessBabeNoises";
+        private const string Identifier = "Zebra.MoreEndingOptions";
         private const string HarmonyIdentifier = Identifier + ".Harmony";
 
         public static bool MuteMainBabe { get; private set; }
         public static bool MuteNewBabe { get; private set; }
         public static bool MuteGhostBabe { get; private set; }
+
+        public static bool ShortMainBabe { get; private set; }
+        public static bool ShortNewBabe { get; private set; }
+        public static bool ShortGhostBabe { get; private set; }
 
         /// <summary>
         ///     Called by Jump King before the level loads
@@ -64,6 +64,7 @@ namespace LessBabeNoises
                 return;
             }
 
+            // This happens once, so I'll allow Traverse.
             var endings = Traverse.Create(Game1.instance.m_game)
                 .Field("m_game_loop")
                 .Field("m_ending_manager")
@@ -75,66 +76,30 @@ namespace LessBabeNoises
                 {
                     case "MuteMainBabe":
                         MuteMainBabe = true;
-                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NormalEnding)));
+                        BtWalker.RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NormalEnding)));
                         break;
                     case "MuteNewBabe":
                         MuteNewBabe = true;
-                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
+                        BtWalker.RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
                         break;
                     case "MuteGhostBabe":
                         MuteGhostBabe = true;
-                        RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(OwlEnding)));
+                        BtWalker.RemoveBabeNoises(endings.Find(e => e.GetType() == typeof(OwlEnding)));
+                        break;
+                    case "ShortMainBabe":
+                        ShortMainBabe = true;
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NormalEnding)));
+                        break;
+                    case "ShortNewBabe":
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
+                        ShortNewBabe = true;
+                        break;
+                    case "ShortGhostBabe":
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(OwlEnding)));
+                        ShortGhostBabe = true;
                         break;
                 }
             }
-        }
-
-        /// <summary>
-        ///     Removes the noises made by the babe in the ending.
-        /// </summary>
-        /// <param name="ending">The ending the babe belongs to</param>
-        private static void RemoveBabeNoises(IEnding ending)
-        {
-            /* Sounds, in order played, are:
-             * Main Babe
-             * 1 - babe.Jump
-             * 2 - player.Land
-             * 3 - babe.Kiss
-             * 4 - babe.Pickup
-             *
-             * New Babe
-             * 1 - babe.Jump
-             * 2 - babe.Kiss
-             * 3 - babe.Mou
-             * 4 - audio.Plink
-             * 5 - babe.Pickup
-             *
-             * Ghost Babe
-             * 1 - babe.Kiss
-             * 2 - babe.Jump
-             * 3 - babe.Pickup
-             */
-
-            var btManager = Traverse
-                .Create(ending)
-                .Field("m_babe")
-                .GetValue<ISpriteEntity>()
-                .GetComponent<BehaviorTreeComp>()
-                .GetRaw();
-            var btSequencer = Traverse
-                .Create(btManager)
-                .Field("m_root_node")
-                .Field("m_children")
-                .GetValue<IBTnode[]>()
-                .First(node => node is BTsequencor);
-            var traverseChildren = Traverse
-                .Create(btSequencer)
-                .Field("m_children");
-            var filteredNodes = traverseChildren
-                .GetValue<IBTnode[]>()
-                .Where(node => !(node is PlaySFX));
-            _ = traverseChildren
-                .SetValue(filteredNodes.ToArray());
         }
     }
 }

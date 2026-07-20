@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LessBabeNoises</RootNamespace>
-    <AssemblyName>LessBabeNoises</AssemblyName>
+    <AssemblyName>MoreEndingOptions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -75,11 +75,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs"/>
+    <Compile Include="Patches\PatchEndingCherub.cs"/>
     <Compile Include="Patches\PatchEndingKing.cs"/>
     <Compile Include="Patches\PatchHangingBabe.cs"/>
-    <Compile Include="Patches\PatchNBPKingEntity.cs"/>
+    <Compile Include="Patches\PatchNbpCherubs.cs"/>
+    <Compile Include="Patches\PatchNbpCrow.cs"/>
+    <Compile Include="Patches\PatchNbpKingEntity.cs"/>
+    <Compile Include="Patches\PatchNewBabePlusEnding.cs"/>
+    <Compile Include="Patches\PatchNormalEnding.cs"/>
+    <Compile Include="Patches\PatchOwlBirdEntity.cs"/>
+    <Compile Include="Patches\PatchOwlEnding.cs"/>
     <Compile Include="Patches\PatchOwlKingEntity.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs"/>
+    <Compile Include="Util\BtWalker.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config"/>
