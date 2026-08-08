@@ -9,7 +9,7 @@
     using JumpKing.XnaWrappers;
     using Microsoft.Xna.Framework;
 
-    public class PatchRaymanWallEntity
+    public static class PatchRaymanWallEntity
     {
         // Really it doesn't mute it but sets it to null so there's nothing to play.
         // In a way it is muting it.

@@ -8,7 +8,7 @@ namespace MoreEndingOptions.Patches
     using JumpKing.Util.DrawBT;
 
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.NewBabePlusEnding.Actors.NBPCrow", "MakeBT")]
-    public class PatchNbpCrow
+    public static class PatchNbpCrow
     {
         [UsedImplicitly]
         public static void Postfix(ISpriteEntity __instance, ref BehaviorTreeComp __result)

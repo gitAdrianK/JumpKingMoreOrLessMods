@@ -5,7 +5,7 @@
     using Microsoft.Xna.Framework;
 
     [HarmonyPatch]
-    public class PatchParticleSpawner
+    public static class PatchParticleSpawner
     {
         /// <summary>
         ///     If the water enter/exit sfx should be muted, as a side effect this also removes enter/exit particles.

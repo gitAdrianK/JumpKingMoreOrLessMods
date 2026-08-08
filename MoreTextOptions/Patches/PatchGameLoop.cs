@@ -8,7 +8,7 @@
     using Util;
 
     [HarmonyPatch(typeof(GameLoop), nameof(GameLoop.Draw))]
-    public class PatchGameLoop
+    public static class PatchGameLoop
     {
         private const int Buffer = 2;
         private static readonly Vector2 TimerDisplayPosition = new Vector2(12f, 8f);
