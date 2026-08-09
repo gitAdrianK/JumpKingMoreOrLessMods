@@ -4,11 +4,13 @@
     using System.Text.RegularExpressions;
     using HarmonyLib;
     using JetBrains.Annotations;
+    using JumpKing;
     using JumpKing.MiscEntities.Merchant;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.MiscSystems.LocationText;
     using JumpKing.Props.RattmanText;
     using JumpKing.Workshop;
+    using Microsoft.Xna.Framework.Content;
     using Steamworks;
 
     public static class PatchXmlSerializerHelper
@@ -33,6 +35,12 @@
                 harmony.Patch(deserializeRattman, harmonyMethod);
                 harmony.Patch(deserializeOldMan, harmonyMethod);
                 harmony.Patch(deserializeMerchant, harmonyMethod);
+
+                var contentManager = Game1.instance.contentManager;
+                contentManager.oldMan.Reload(contentManager);
+                contentManager.props.Reload(contentManager);
+                contentManager.miscSettings.Load(Traverse.Create(contentManager).Field("contentManager")
+                    .GetValue<ContentManager>());
             }
             catch
             {
