@@ -99,11 +99,12 @@ namespace MoreTextOptions
         [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
-            var harmony = new Harmony(HarmonyIdentifier);
 #if DEBUG
             Debugger.Launch();
 #endif
+            var harmony = new Harmony(HarmonyIdentifier);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+            PatchXmlSerializerHelper.ApplyPatches(harmony);
 
             PreferencesPath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??

@@ -55,9 +55,11 @@
       <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net45\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=4242.42.42.42, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <Private>False</Private>
       <HintPath>..\packages\JetBrains.Annotations.2025.2.4\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Steamworks.NET">
+      <Private>False</Private>
       <HintPath>..\..\..\..\..\SteamLibrary\steamapps\common\Jump King\Steamworks.NET.dll</HintPath>
     </Reference>
     <Reference Include="System"/>

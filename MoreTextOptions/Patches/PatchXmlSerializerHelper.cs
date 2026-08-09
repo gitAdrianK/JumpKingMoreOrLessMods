@@ -1,8 +1,6 @@
 ﻿namespace MoreTextOptions.Patches
 {
-    using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
     using System.Text.RegularExpressions;
     using HarmonyLib;
     using JetBrains.Annotations;
@@ -13,22 +11,35 @@
     using JumpKing.Workshop;
     using Steamworks;
 
-    [HarmonyPatch]
     public static class PatchXmlSerializerHelper
     {
-        public static IEnumerable<MethodBase> TargetMethods()
+        public static void ApplyPatches(Harmony harmony)
         {
             var deserialize = AccessTools.Method(
                 typeof(XmlSerializerHelper),
                 nameof(XmlSerializerHelper.Deserialize));
-            yield return deserialize.MakeGenericMethod(typeof(Level.LevelSettings));
-            yield return deserialize.MakeGenericMethod(typeof(LocationSettings));
-            yield return deserialize.MakeGenericMethod(typeof(RattmanSettings));
-            yield return deserialize.MakeGenericMethod(typeof(OldManSettings));
-            yield return deserialize.MakeGenericMethod(typeof(MerchantSettings));
+            var deserializeLevel = deserialize.MakeGenericMethod(typeof(Level.LevelSettings));
+            var deserializeLocation = deserialize.MakeGenericMethod(typeof(LocationSettings));
+            var deserializeRattman = deserialize.MakeGenericMethod(typeof(RattmanSettings));
+            var deserializeOldMan = deserialize.MakeGenericMethod(typeof(OldManSettings));
+            var deserializeMerchant = deserialize.MakeGenericMethod(typeof(MerchantSettings));
+
+            var harmonyMethod = new HarmonyMethod(typeof(PatchXmlSerializerHelper), nameof(InsertLanguage));
+
+            try
+            {
+                harmony.Patch(deserializeLevel, harmonyMethod);
+                harmony.Patch(deserializeLocation, harmonyMethod);
+                harmony.Patch(deserializeRattman, harmonyMethod);
+                harmony.Patch(deserializeOldMan, harmonyMethod);
+                harmony.Patch(deserializeMerchant, harmonyMethod);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
-        [HarmonyPrefix]
         [UsedImplicitly]
         public static void InsertLanguage(ref string path)
         {
