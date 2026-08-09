@@ -1,5 +1,6 @@
 ﻿namespace MoreTextOptions.Patches
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
     using HarmonyLib;
@@ -8,6 +9,7 @@
     using JumpKing.MiscEntities.Merchant;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.MiscSystems.LocationText;
+    using JumpKing.Mods;
     using JumpKing.Props.RattmanText;
     using JumpKing.Workshop;
     using Microsoft.Xna.Framework.Content;
@@ -44,7 +46,21 @@
             }
             catch
             {
-                // ignored
+                // Traverse/.Invoke is okay because it happens only once.
+                var instance = AccessTools.StaticFieldRefAccess<ModLoader>("JumpKing.Mods.ModLoader:instance");
+                var method = AccessTools.Method("JumpKing.Mods.ModLoader:WriteLoadLogs",
+                    new[] { typeof(List<string>), typeof(bool) });
+                method.Invoke(instance,
+                    new object[]
+                    {
+                        new List<string>
+                        {
+                            "[ERROR - MoreTextOptions] Generic patching failed, translations feature unavailable.",
+                            "[FIX] You will have to change the mod load order to load a mod that includes harmony2.2.2 first.",
+                            "[HINT] This mod includes harmony 2.2.2, all of my mods do :D",
+                        },
+                        false,
+                    });
             }
         }
 
