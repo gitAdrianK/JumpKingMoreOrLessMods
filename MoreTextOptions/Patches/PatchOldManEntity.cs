@@ -22,20 +22,22 @@ namespace MoreTextOptions.Patches
         private static SpriteFont[] Fonts { get; set; }
 
         [UsedImplicitly]
-        public static bool Prefix(OldManFont p_font, ref SpriteFont __result)
+        public static bool Prefix(ref OldManFont p_font, ref SpriteFont __result)
         {
-            if (!HasCustomFonts)
+            var value = (int)p_font;
+            if (!HasCustomFonts || value == 0 || value == 1)
             {
                 return true;
             }
 
-            var customFont = Fonts?[(int)p_font];
+            var customFont = Fonts?[value];
             if (customFont is null)
             {
+                p_font = OldManFont.Default;
                 return true;
             }
 
-            __result = Fonts[(int)p_font];
+            __result = customFont;
             return false;
         }
 
@@ -60,14 +62,6 @@ namespace MoreTextOptions.Patches
             var intToFontDictionary = new Dictionary<int, SpriteFont>();
             var nameToIntDictionary = new Dictionary<string, int>();
 
-            intToFontDictionary[0] = File.Exists(Path.Combine(fontPath, "Default.xnb"))
-                ? contentManager.Load<SpriteFont>(Path.Combine(fontPath, "Default"))
-                : null;
-
-            intToFontDictionary[1] = File.Exists(Path.Combine(fontPath, "Gargoyle.xnb"))
-                ? contentManager.Load<SpriteFont>(Path.Combine(fontPath, "Gargoyle"))
-                : null;
-
             var index = 2;
             foreach (var fontFile in Directory.GetFiles(fontPath, "*.xnb")
                          .Where(file => !(file.EndsWith("Default.xnb") || file.EndsWith("Gargoyle.xnb"))))
@@ -79,15 +73,15 @@ namespace MoreTextOptions.Patches
                 index++;
             }
 
-            HasCustomFonts = true;
-            Fonts = intToFontDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
-
             if (index == 2)
             {
                 // The index is two if no other files have been found.
                 // That way we don't have to sift through all entities and look for files and what have you.
                 return;
             }
+
+            HasCustomFonts = true;
+            Fonts = intToFontDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
 
             var oldManResult = LoadOldManSettings(fontPath, out var oldManSettings);
             var rattmanResult = LoadRattmanSettings(fontPath, out var rattmanSettings);
@@ -99,14 +93,19 @@ namespace MoreTextOptions.Patches
             }
 
             var oldManType = AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity");
+            var oldManSettingsRef =
+                AccessTools.FieldRefAccess<object, OldManSettings>(AccessTools.Field(oldManType, "m_settings"));
+            var oldManNameRef = AccessTools.FieldRefAccess<object, string>(AccessTools.Field(oldManType, "m_name"));
+
             var rattmanType = AccessTools.TypeByName("JumpKing.Props.RattmanText.RattmanEntity");
+            var rattmanSettingsRef =
+                AccessTools.FieldRefAccess<object, RattmanSettings>(AccessTools.Field(rattmanType, "m_settings"));
 
             foreach (var entity in EntityManager.instance.Entities)
             {
                 if (entity.GetType() == oldManType)
                 {
-                    var traverse = Traverse.Create(entity);
-                    if (!oldManSettings.TryGetValue(traverse.Field("m_name").GetValue<string>(), out var fontName))
+                    if (!oldManSettings.TryGetValue(oldManNameRef(entity), out var fontName))
                     {
                         continue;
                     }
@@ -116,17 +115,16 @@ namespace MoreTextOptions.Patches
                         continue;
                     }
 
-                    var settings = traverse.Field("m_settings").GetValue<OldManSettings>();
+                    var settings = oldManSettingsRef(entity);
                     settings.font = (OldManFont)fontId;
-                    traverse.Field("m_settings").SetValue(settings);
+                    oldManSettingsRef(entity) = settings;
                 }
 
                 // ReSharper disable once InvertIf
                 if (entity.GetType() == rattmanType)
                 {
-                    var traverse = Traverse.Create(entity);
-                    if (!rattmanSettings.TryGetValue(traverse.Field("m_settings").Field("screen").GetValue<int>(),
-                            out var fontName))
+                    var settings = rattmanSettingsRef(entity);
+                    if (!rattmanSettings.TryGetValue(settings.screen, out var fontName))
                     {
                         continue;
                     }
@@ -136,9 +134,8 @@ namespace MoreTextOptions.Patches
                         continue;
                     }
 
-                    var settings = traverse.Field("m_settings").GetValue<RattmanSettings>();
                     settings.font = (OldManFont)fontId;
-                    traverse.Field("m_settings").SetValue(settings);
+                    rattmanSettingsRef(entity) = settings;
                 }
             }
         }
