@@ -58,6 +58,10 @@ namespace MoreEndingOptions
             MuteNewBabe = false;
             MuteGhostBabe = false;
 
+            ShortMainBabe = false;
+            ShortNewBabe = false;
+            ShortGhostBabe = false;
+
             var tags = Game1.instance.contentManager?.level?.Info.Tags;
             if (tags is null)
             {
