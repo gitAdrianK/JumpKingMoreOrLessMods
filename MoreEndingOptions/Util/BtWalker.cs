@@ -132,17 +132,22 @@
         /// <param name="ending">The ending the babe belongs to.</param>
         public static void StripBabeBt(IEnding ending)
         {
-            if (!ModEntry.ShortMainBabe)
+            if (ending is OwlEnding)
             {
-                return;
+                var gargoyle = Traverse
+                    .Create(ending)
+                    .Field("m_gargoyle")
+                    .GetValue<ISpriteEntity>();
+                var btComp2 = Traverse.Create(gargoyle.GetComponent<BehaviorTreeComp>());
+                btComp2.SetValue(new BehaviorTreeComp(new SuicideNode(gargoyle)));
             }
 
             var babe = Traverse
                 .Create(ending)
                 .Field("m_babe")
                 .GetValue<ISpriteEntity>();
-            var traverseBtComp = Traverse.Create(babe.GetComponent<BehaviorTreeComp>());
-            traverseBtComp.SetValue(new BehaviorTreeComp(new SuicideNode(babe)));
+            var btComp = Traverse.Create(babe.GetComponent<BehaviorTreeComp>());
+            btComp.SetValue(new BehaviorTreeComp(new SuicideNode(babe)));
         }
     }
 }

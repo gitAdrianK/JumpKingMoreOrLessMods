@@ -95,12 +95,12 @@ namespace MoreEndingOptions
                         BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NormalEnding)));
                         break;
                     case "ShortNewBabe":
-                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
                         ShortNewBabe = true;
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
                         break;
                     case "ShortGhostBabe":
-                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(OwlEnding)));
                         ShortGhostBabe = true;
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(OwlEnding)));
                         break;
                 }
             }
