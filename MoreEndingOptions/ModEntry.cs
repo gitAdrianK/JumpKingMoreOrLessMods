@@ -62,8 +62,8 @@ namespace MoreEndingOptions
             ShortNewBabe = false;
             ShortGhostBabe = false;
 
-            var tags = Game1.instance.contentManager?.level?.Info.Tags;
-            if (tags is null)
+            var contentManager = Game1.instance.contentManager;
+            if (contentManager?.level == null)
             {
                 return;
             }
@@ -74,6 +74,13 @@ namespace MoreEndingOptions
                 .Field("m_ending_manager")
                 .Field("m_endings")
                 .GetValue<List<IEnding>>();
+
+            var tags = contentManager.level?.Info.Tags;
+            if (tags is null)
+            {
+                return;
+            }
+
             foreach (var tag in tags)
             {
                 switch (tag)
@@ -95,12 +102,12 @@ namespace MoreEndingOptions
                         BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NormalEnding)));
                         break;
                     case "ShortNewBabe":
-                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
                         ShortNewBabe = true;
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(NewBabePlusEnding)));
                         break;
                     case "ShortGhostBabe":
-                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(OwlEnding)));
                         ShortGhostBabe = true;
+                        BtWalker.StripBabeBt(endings.Find(e => e.GetType() == typeof(OwlEnding)));
                         break;
                 }
             }
