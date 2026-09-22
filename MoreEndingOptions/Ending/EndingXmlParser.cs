@@ -86,6 +86,18 @@
                     btNode = new RunAllAnySuccess();
                     break;
                 // other bt nodes
+                case "Evaluator":
+                    var condition = GetBtNode(entity, element.Element("Condition").Elements().First(), ending);
+                    var func = GetBtNode(entity, element.Element("Func").Elements().First(), ending);
+                    btNode = new BTevaluator(condition, func);
+                    break;
+                case "EndingScroll":
+                    var endingStepElement = element.Element("Step");
+                    var endingStep = new Vector2(float.Parse(endingStepElement.Element("X").Value),
+                        float.Parse(endingStepElement.Element("Y").Value));
+                    var esRepetitions = int.Parse(element.Element("Repetitions").Value);
+                    btNode = EndingScroll.CreateFrom30FPS(endingStep, esRepetitions);
+                    break;
                 case "CoupleAnim":
                     var spriteWalkOne = GetSprite(element.Element("WalkOne").Value);
                     var spriteWalkTwo = GetSprite(element.Element("WalkTwo").Value);
@@ -95,29 +107,12 @@
                         : 1;
                     btNode = new CoupleAnim(entity, spriteWalkOne, spriteWalkTwo, spriteWalkSmear, speed);
                     break;
-                case "Evaluator":
-                    var condition = GetBtNode(entity, element.Element("Condition").Elements().First(), ending);
-                    var func = GetBtNode(entity, element.Element("Func").Elements().First(), ending);
-                    btNode = new BTevaluator(condition, func);
-                    break;
-                case "SetBBKeyNode":
-                    var setBbKey = element.Element("Key").Value;
-                    var setValue = int.Parse(element.Element("Value").Value);
-                    var enumSetNode = typeof(SetBBKeyNode<>).MakeGenericType(typeof(object));
-                    btNode = (IBTnode)Activator.CreateInstance(
-                        enumSetNode,
-                        entity,
-                        setBbKey,
-                        setValue);
-                    break;
-                case "SetSpriteNode":
-                    btNode = new SetSpriteNode(entity, GetSprite(element.Value));
-                    break;
-                case "ReceiverWaitNode":
-                    btNode = new RecieverWaitNode(element.Value);
-                    break;
                 case "PauseNode":
                     btNode = new PauseNode(float.Parse(element.Value, CultureInfo.InvariantCulture));
+                    break;
+                case "SetSpriteNode":
+                case "GetSpriteNode":
+                    btNode = new SetSpriteNode(entity, GetSprite(element.Value));
                     break;
                 case "SetSpriteEffectNode":
                     btNode = new SetSpriteEffectNode(entity,
@@ -126,23 +121,11 @@
                 case "BroadcastNode":
                     btNode = new BroadcastNode(element.Value);
                     break;
+                case "ReceiverWaitNode":
+                    btNode = new RecieverWaitNode(element.Value);
+                    break;
                 case "PlaySFX":
                     btNode = new PlaySFX(GetSound(element.Value, Game1.instance.contentManager.audio));
-                    break;
-                case "PlayEventSFX":
-                    btNode = new PlayEventSFX(element.Value);
-                    break;
-                case "JumpToTargetHeight":
-                    var velocity = float.Parse(element.Element("Velocity").Value, CultureInfo.InvariantCulture);
-                    var targetMove = float.Parse(element.Element("TargetMove").Value, CultureInfo.InvariantCulture);
-                    btNode = new JumpToTargetHeight(entity, velocity, targetMove);
-                    break;
-                case "EndingScroll":
-                    var endingStepElement = element.Element("Step");
-                    var endingStep = new Vector2(float.Parse(endingStepElement.Element("X").Value),
-                        float.Parse(endingStepElement.Element("Y").Value));
-                    var esRepetitions = int.Parse(element.Element("Repetitions").Value);
-                    btNode = EndingScroll.CreateFrom30FPS(endingStep, esRepetitions);
                     break;
                 case "MoveNode":
                     var mnRepetitions = int.Parse(element.Element("Repetitions").Value);
@@ -150,9 +133,6 @@
                     var deltaMove = new Vector2(float.Parse(deltaMoveElement.Element("X").Value),
                         float.Parse(deltaMoveElement.Element("Y").Value));
                     btNode = MoveNode.CreateFrom30FPS(entity, mnRepetitions, deltaMove);
-                    break;
-                case "EndNode":
-                    btNode = new EndNode();
                     break;
                 case "CheckBBKey":
                     var checkBbKey = element.Element("Key").Value;
@@ -164,11 +144,15 @@
                         checkBbKey,
                         checkValue);
                     break;
-                case "GiveCrownNBP":
-                    btNode = new GiveWearableItemNode(Items.CrownNBP);
-                    break;
-                case "SuicideNode":
-                    btNode = new SuicideNode(entity);
+                case "SetBBKeyNode":
+                    var setBbKey = element.Element("Key").Value;
+                    var setValue = int.Parse(element.Element("Value").Value);
+                    var enumSetNode = typeof(SetBBKeyNode<>).MakeGenericType(typeof(object));
+                    btNode = (IBTnode)Activator.CreateInstance(
+                        enumSetNode,
+                        entity,
+                        setBbKey,
+                        setValue);
                     break;
                 case "CherubsDeliver":
                     switch (ending)
@@ -206,37 +190,6 @@
                     }
 
                     break;
-                case "CherubsDeliverAnim":
-                    btNode = new CherubsDeliverAnim(entity);
-                    break;
-                case "CherubsEscapeAnim":
-                    btNode = new CherubsEscapeAnim(entity);
-                    break;
-                case "Jump":
-                    btNode = new Jump(entity);
-                    break;
-                case "PutOnCrown":
-                    var typePutOnCrown = AccessTools.TypeByName(
-                        "JumpKing.GameManager.MultiEnding.NormalEnding.EndingKing+PutOnCrown");
-                    btNode = (IBTnode)Activator.CreateInstance(typePutOnCrown);
-                    break;
-                case "JumpUp":
-                    btNode = new JumpUp(entity);
-                    break;
-                case "FallDown":
-                    btNode = new FallDown(entity);
-                    break;
-                case "GetSpriteNode":
-                    btNode = new SetSpriteNode(entity, GetSprite(element.Value));
-                    break;
-                case "IsBirdDone":
-                    var typeIsBirdDone = AccessTools.TypeByName(
-                        "JumpKing.GameManager.MultiEnding.OwlEnding.OwlBirdEntity+IsBirdDone");
-                    btNode = (IBTnode)Activator.CreateInstance(
-                        typeIsBirdDone,
-                        new object[] { Traverse.Create(entity).Field("m_is_done").GetValue<bool>() }
-                    );
-                    break;
                 case "GiveWearableItemNode":
                     btNode = new GiveWearableItemNode((Items)Enum.Parse(typeof(Items), element.Value));
                     break;
@@ -246,25 +199,11 @@
                     var staticResult = (BTresult)Enum.Parse(typeof(BTresult), element.Element("Result").Value);
                     btNode = new StaticNode(child, staticResult);
                     break;
-                case "JumpInPlace":
-                    btNode = new JumpInPlace(entity, int.Parse(element.Element("Speed").Value));
-                    break;
-                case "SpawnLightning":
-                    var typeSpawnLightning = AccessTools.TypeByName(
-                        "JumpKing.GameManager.MultiEnding.OwlEnding.OwlKingEntity+SpawnLightning");
-                    btNode = (IBTnode)Activator.CreateInstance(typeSpawnLightning);
-                    break;
-                case "IdleAnim":
-                    btNode = new IdleAnim(entity);
-                    break;
                 case "LoopingAnimNode":
                     var loopStep = float.Parse(element.Element("Step").Value, CultureInfo.InvariantCulture);
                     var loopSprites = element.Element("Sprites")
                         .Elements("Sprite").Select(sprite => GetSprite(sprite.Value)).ToArray();
                     btNode = new LoopingAnimNode(entity, loopSprites, loopStep);
-                    break;
-                case "BabeJump":
-                    btNode = new BabeJump(entity);
                     break;
                 case "PlayMusic":
                     switch (ending)
@@ -282,6 +221,68 @@
                             throw new ArgumentOutOfRangeException(nameof(ending), ending, null);
                     }
 
+                    break;
+                case "EndNode":
+                    btNode = new EndNode();
+                    break;
+                case "SuicideNode":
+                    btNode = new SuicideNode(entity);
+                    break;
+                // mb specific
+                case "JumpUp":
+                    btNode = new JumpUp(entity);
+                    break;
+                case "FallDown":
+                    btNode = new FallDown(entity);
+                    break;
+                case "JumpToTargetHeight":
+                    var velocity = float.Parse(element.Element("Velocity").Value, CultureInfo.InvariantCulture);
+                    var targetMove = float.Parse(element.Element("TargetMove").Value, CultureInfo.InvariantCulture);
+                    btNode = new JumpToTargetHeight(entity, velocity, targetMove);
+                    break;
+                case "JumpInPlace":
+                    btNode = new JumpInPlace(entity, int.Parse(element.Element("Speed").Value));
+                    break;
+                case "Jump":
+                    btNode = new Jump(entity);
+                    break;
+                case "IdleAnim":
+                    btNode = new IdleAnim(entity);
+                    break;
+                case "PutOnCrown":
+                    var typePutOnCrown = AccessTools.TypeByName(
+                        "JumpKing.GameManager.MultiEnding.NormalEnding.EndingKing+PutOnCrown");
+                    btNode = (IBTnode)Activator.CreateInstance(typePutOnCrown);
+                    break;
+                case "CherubsDeliverAnim":
+                    btNode = new CherubsDeliverAnim(entity);
+                    break;
+                case "CherubsEscapeAnim":
+                    btNode = new CherubsEscapeAnim(entity);
+                    break;
+                // nb+ specific
+                case "BabeJump":
+                    btNode = new BabeJump(entity);
+                    break;
+                case "GiveCrownNBP":
+                    btNode = new GiveWearableItemNode(Items.CrownNBP);
+                    break;
+                //gotb specific
+                case "IsBirdDone":
+                    var typeIsBirdDone = AccessTools.TypeByName(
+                        "JumpKing.GameManager.MultiEnding.OwlEnding.OwlBirdEntity+IsBirdDone");
+                    btNode = (IBTnode)Activator.CreateInstance(
+                        typeIsBirdDone,
+                        new object[] { Traverse.Create(entity).Field("m_is_done").GetValue<bool>() }
+                    );
+                    break;
+                case "PlayEventSFX":
+                    btNode = new PlayEventSFX(element.Value);
+                    break;
+                case "SpawnLightning":
+                    var typeSpawnLightning = AccessTools.TypeByName(
+                        "JumpKing.GameManager.MultiEnding.OwlEnding.OwlKingEntity+SpawnLightning");
+                    btNode = (IBTnode)Activator.CreateInstance(typeSpawnLightning);
                     break;
                 default:
                     throw new Exception($"Unknown behaviour tree node: {element.Name}");
