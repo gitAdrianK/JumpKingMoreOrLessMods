@@ -63,13 +63,15 @@ namespace MoreTextOptions.Patches
                 return;
             }
 
-            var blackBoardComp = GetBlackBoard(__instance);
-            var dict = DictionaryRef(blackBoardComp);
+            var dict = DictionaryRef(GetBlackBoard(__instance));
+            if (!dict.TryGetValue("BB_LINE_KEY", out var line))
+            {
+                return;
+            }
 
             var font = GetOldManFont(oldManFont);
-
             dict["BB_LINE_KEY"] =
-                string.Join("", SpeechBubbleFormat.ChopString((string)dict["BB_LINE_KEY"], font, width));
+                string.Join("", SpeechBubbleFormat.ChopString((string)line, font, width));
         }
     }
 }
