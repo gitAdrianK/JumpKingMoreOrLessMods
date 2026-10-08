@@ -21,10 +21,11 @@ namespace MoreBlockSizes.Patches
         public static bool Prefix()
         {
             var contentManager = Game1.instance.contentManager;
-            if (File.Exists(Path.Combine(contentManager.root, "level+.xnb")))
+            if (File.Exists(contentManager.root + "\\" + "level+.xnb"))
             {
                 contentManager.LevelTexture = JKContentManager.SmartLoad<Texture2D>(
                     ContentManagerRef(contentManager), "level+", true);
+                contentManager.ReloadAsset<Texture2D>("level+", true);
             }
 
             var tags = contentManager.level?.Info.Tags;
