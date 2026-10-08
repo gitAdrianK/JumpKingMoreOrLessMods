@@ -7,15 +7,25 @@ namespace MoreBlockSizes.Patches
     using JumpKing;
     using JumpKing.Level;
     using JumpKing.Level.Sampler;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     [HarmonyPatch(typeof(LevelManager), nameof(LevelManager.LoadScreens))]
     public static class PatchLoadScreens
     {
+        private static readonly AccessTools.FieldRef<JKContentManager, ContentManager> ContentManagerRef =
+            AccessTools.FieldRefAccess<JKContentManager, ContentManager>(
+                AccessTools.Field("JumpKing.JKContentManager:contentManager"));
+
         [UsedImplicitly]
         public static bool Prefix()
         {
             var contentManager = Game1.instance.contentManager;
+            if (File.Exists(Path.Combine(contentManager.root, "level+.xnb")))
+            {
+                contentManager.LevelTexture = JKContentManager.SmartLoad<Texture2D>(
+                    ContentManagerRef(contentManager), "level+", true);
+            }
 
             var tags = contentManager.level?.Info.Tags;
             PatchLoadBlocksInterval.CanMesh = !(tags is null) && tags.Contains("GreedyMeshBlocks");
