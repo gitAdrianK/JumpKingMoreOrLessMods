@@ -104,7 +104,6 @@ namespace MoreTextOptions
 #endif
             var harmony = new Harmony(HarmonyIdentifier);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-            PatchXmlSerializerHelper.ApplyPatches(harmony);
 
             PreferencesPath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
@@ -133,16 +132,6 @@ namespace MoreTextOptions
             var tags = Game1.instance.contentManager?.level?.Info.Tags;
             PatchStatsScreen.LoadEndingNames(tags);
             PatchPlayerStandStill.CheckStandStillRequirement(tags);
-
-            PatchGameLoop.CanRearrange = true;
-            PatchTextHelper.PauseManager = AccessTools.Field("JumpKing.PauseMenu.PauseManager:instance").GetValue(null);
-        }
-
-        [OnLevelEnd]
-        public static void OnLevelEnd()
-        {
-            PatchGameLoop.CanRearrange = false;
-            PatchTextHelper.PauseManager = null;
         }
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)

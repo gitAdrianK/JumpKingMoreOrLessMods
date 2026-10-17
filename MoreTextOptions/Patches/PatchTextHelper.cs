@@ -6,19 +6,13 @@ namespace MoreTextOptions.Patches
     using JumpKing.Util;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Util;
 
     [HarmonyPatch(typeof(TextHelper), nameof(TextHelper.DrawString))]
     public static class PatchTextHelper
     {
-        public static readonly AccessTools.FieldRef<object, bool> IsPausedRef =
-            AccessTools.FieldRefAccess<object, bool>(AccessTools.Field("JumpKing.PauseMenu.PauseManager:_paused"));
-
-        public static object PauseManager { get; set; }
-
         [UsedImplicitly]
         // ReSharper disable InconsistentNaming
-        public static bool Prefix(
+        public static void Prefix(
             SpriteFont p_font,
             string p_text,
             Vector2 p_position,
@@ -27,7 +21,7 @@ namespace MoreTextOptions.Patches
         {
             if (!p_is_outlined)
             {
-                return true;
+                return;
             }
 
             var pref = ModEntry.Preferences;
@@ -35,15 +29,6 @@ namespace MoreTextOptions.Patches
             {
                 p_color = new Color(pref.TextRed, pref.TextGreen, pref.TextBlue, p_color.A);
             }
-
-            var shouldRearrange =
-                PatchGameLoop.CanRearrange &&
-                IsPausedRef != null &&
-                PauseManager != null &&
-                !IsPausedRef(PauseManager) &&
-                pref.ShouldRearrangeText &&
-                p_position.X < Game1.WIDTH / 2 &&
-                p_position.Y < Game1.HEIGHT / 2;
 
             var outlineColor = Color.Gray;
             if (pref.IsOutlineDisabled)
@@ -55,21 +40,9 @@ namespace MoreTextOptions.Patches
                 outlineColor = new Color(pref.OutlineRed, pref.OutlineGreen, pref.OutlineBlue, 255);
             }
 
-            if (shouldRearrange)
-            {
-                PatchGameLoop.SubmitTextDraw(
-                    new DrawTextSubmission(
-                        p_font,
-                        p_text,
-                        p_color,
-                        p_is_outlined,
-                        outlineColor));
-                return false;
-            }
-
             if (pref.IsOutlineDisabled || !pref.IsCustomOutline)
             {
-                return true;
+                return;
             }
 
             p_is_outlined = false;
@@ -82,8 +55,6 @@ namespace MoreTextOptions.Patches
             Game1.spriteBatch.DrawString(p_font, p_text, Vector2.Add(p_position, new Vector2(1f, -1f)), outlineColor);
             Game1.spriteBatch.DrawString(p_font, p_text, Vector2.Add(p_position, new Vector2(1f, 0f)), outlineColor);
             Game1.spriteBatch.DrawString(p_font, p_text, Vector2.Add(p_position, new Vector2(1f, 1f)), outlineColor);
-
-            return true;
         }
     }
 }

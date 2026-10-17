@@ -14,18 +14,16 @@ namespace MoreTextOptions.Patches
     public static class PatchSpeechBubbleFormat
     {
         [UsedImplicitly]
-        public static bool Prefix(out string __state, ref string full_str)
+        public static void Prefix(out string __state, ref string full_str)
         {
             __state = string.Empty;
             if (!ModEntry.Regex.IsMatch(full_str))
             {
-                return true;
+                return;
             }
 
             __state = full_str;
             full_str = ModEntry.Regex.Replace(full_str, string.Empty);
-
-            return true;
         }
 
         [UsedImplicitly]

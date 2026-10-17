@@ -8,10 +8,6 @@ namespace MoreTextOptions.Patches
     public static class PatchSpriteFont
     {
         [UsedImplicitly]
-        public static bool Prefix(ref string text)
-        {
-            text = ModEntry.Regex.Replace(text, string.Empty);
-            return true;
-        }
+        public static void Prefix(ref string text) => text = ModEntry.Regex.Replace(text, string.Empty);
     }
 }

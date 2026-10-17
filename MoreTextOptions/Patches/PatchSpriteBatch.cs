@@ -14,11 +14,11 @@ namespace MoreTextOptions.Patches
     public static class PatchSpriteBatch
     {
         [UsedImplicitly]
-        public static bool Prefix(SpriteFont spriteFont, ref string text, Vector2 position, ref Color color)
+        public static void Prefix(SpriteFont spriteFont, ref string text, Vector2 position, ref Color color)
         {
             if (!ModEntry.Regex.IsMatch(text))
             {
-                return true;
+                return;
             }
 
             var pairs = Sanitize(ModEntry.Regex.Split(text));
@@ -42,7 +42,7 @@ namespace MoreTextOptions.Patches
 
             if (colors.Count != texts.Count)
             {
-                return true;
+                return;
             }
 
             text = texts.First();
@@ -60,7 +60,7 @@ namespace MoreTextOptions.Patches
             newColor = AdjustRgbaFromRef(newColor, color);
             color = newColor;
 
-            return true;
+            return;
         }
 
         private static LinkedList<string> Sanitize(string[] substrings)
