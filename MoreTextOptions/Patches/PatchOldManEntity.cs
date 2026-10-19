@@ -8,7 +8,6 @@ namespace MoreTextOptions.Patches
     using System.Xml.Linq;
     using EntityComponent;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.Props.RattmanText;
@@ -21,7 +20,6 @@ namespace MoreTextOptions.Patches
 
         private static SpriteFont[] Fonts { get; set; }
 
-        [UsedImplicitly]
         public static bool Prefix(ref OldManFont p_font, ref SpriteFont __result)
         {
             var value = (int)p_font;

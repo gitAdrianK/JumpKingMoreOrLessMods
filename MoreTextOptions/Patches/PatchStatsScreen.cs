@@ -4,7 +4,6 @@ namespace MoreTextOptions.Patches
 {
     using System.Text.RegularExpressions;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.GameManager;
     using JumpKing.GameManager.MultiEnding;
@@ -16,7 +15,7 @@ namespace MoreTextOptions.Patches
         private static string NewBabeEnding { get; set; }
         private static string GhostBabeEnding { get; set; }
 
-        [UsedImplicitly]
+
         public static void Postfix(ref string __result)
         {
             if (Game1.instance.contentManager.root == "Content")

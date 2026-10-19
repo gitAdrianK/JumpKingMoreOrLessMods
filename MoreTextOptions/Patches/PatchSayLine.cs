@@ -4,7 +4,6 @@ namespace MoreTextOptions.Patches
     using System.Text.RegularExpressions;
     using BehaviorTree;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.MiscEntities.OldMan;
 
     [HarmonyPatch(typeof(SayLine), "MyRun")]
@@ -14,7 +13,6 @@ namespace MoreTextOptions.Patches
         private static readonly Regex PrefixRegex =
             new Regex("^color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
 
-        [UsedImplicitly]
         // ReSharper disable InconsistentNaming
         public static void Postfix(SayLine __instance, BTresult __result, ref string ___m_current_line)
         {

@@ -59,8 +59,6 @@ namespace MoreTextOptions.Patches
             var newColor = ColorFromHex(colors.First());
             newColor = AdjustRgbaFromRef(newColor, color);
             color = newColor;
-
-            return;
         }
 
         private static LinkedList<string> Sanitize(string[] substrings)

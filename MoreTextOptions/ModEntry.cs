@@ -1,6 +1,7 @@
 namespace MoreTextOptions
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
     using System.Reflection;
@@ -14,7 +15,6 @@ namespace MoreTextOptions
     using Menus;
     using Microsoft.Xna.Framework;
     using Patches;
-    using Util;
 #if DEBUG
     using System.Diagnostics;
 #endif
@@ -27,10 +27,14 @@ namespace MoreTextOptions
         private const string PreferencesFile = Identifier + ".Settings.xml";
 
         public static readonly Regex Regex = new Regex("{color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
+
         private static string PreferencesPath { get; set; }
         public static Preferences Preferences { get; private set; }
+
         public static int OffsetX { get; private set; }
         public static int OffsetY { get; private set; }
+
+        public static Dictionary<string, string> Translations { get; set; }
 
         [MainMenuItemSetting]
         [UsedImplicitly]
@@ -87,11 +91,6 @@ namespace MoreTextOptions
         public static SliderOutlineBlue OutlineBlue(object factory, GuiFormat format)
             => new SliderOutlineBlue();
 
-        [PauseMenuItemSetting]
-        [UsedImplicitly]
-        public static ToggleRearrangeText RearrangeText(object factory, GuiFormat format)
-            => new ToggleRearrangeText();
-
         /// <summary>
         ///     Called by Jump King before the level loads
         /// </summary>
@@ -102,14 +101,25 @@ namespace MoreTextOptions
 #if DEBUG
             Debugger.Launch();
 #endif
-            var harmony = new Harmony(HarmonyIdentifier);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            var assembly = Assembly.GetExecutingAssembly();
+
+            new Harmony(HarmonyIdentifier).PatchAll(assembly);
 
             PreferencesPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ??
+                Path.GetDirectoryName(assembly.Location) ??
                 throw new InvalidOperationException(),
                 PreferencesFile);
-            Preferences = Serialization.ReadFromFile<Preferences>(PreferencesPath);
+            try
+            {
+                var prefs = XmlSerializerHelper.Deserialize<Preferences>(PreferencesPath);
+                Preferences = prefs;
+            }
+            catch
+            {
+                Preferences = new Preferences();
+                XmlSerializerHelper.Serialize(PreferencesPath, Preferences);
+            }
+
             Preferences.PropertyChanged += SavePreferencesToFile;
 
             var spriteFont = Game1.instance.contentManager.font.MenuFont;
@@ -135,6 +145,6 @@ namespace MoreTextOptions
         }
 
         private static void SavePreferencesToFile(object sender, PropertyChangedEventArgs args)
-            => Serialization.SaveToFile(Preferences, PreferencesPath);
+            => XmlSerializerHelper.Serialize(PreferencesPath, Preferences);
     }
 }

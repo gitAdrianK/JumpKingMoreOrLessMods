@@ -5,7 +5,6 @@ namespace MoreTextOptions.Patches
     using System.Collections.Generic;
     using System.Text;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.MiscEntities.OldMan;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +12,6 @@ namespace MoreTextOptions.Patches
         typeof(int), typeof(char[]))]
     public static class PatchSpeechBubbleFormat
     {
-        [UsedImplicitly]
         public static void Prefix(out string __state, ref string full_str)
         {
             __state = string.Empty;
@@ -26,7 +24,7 @@ namespace MoreTextOptions.Patches
             full_str = ModEntry.Regex.Replace(full_str, string.Empty);
         }
 
-        [UsedImplicitly]
+
         public static void Postfix(string __state, ref List<string> __result)
         {
             if (__state == string.Empty || __result == null)

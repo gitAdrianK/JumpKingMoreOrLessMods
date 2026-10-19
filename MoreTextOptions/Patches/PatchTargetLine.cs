@@ -4,7 +4,6 @@ namespace MoreTextOptions.Patches
     using System.Collections.Generic;
     using EntityComponent.BT;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.Props.RattmanText;
     using Microsoft.Xna.Framework.Graphics;
@@ -39,7 +38,7 @@ namespace MoreTextOptions.Patches
                 .MakeGenericMethod(AccessTools.TypeByName("EntityComponent.BlackBoardComp")));
 
         // ReSharper disable InconsistentNaming
-        [UsedImplicitly]
+
         public static void Postfix(TargetLine __instance)
         {
             var typeInstance = __instance.game_object.GetType();
