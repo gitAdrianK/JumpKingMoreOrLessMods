@@ -5,7 +5,6 @@
 namespace MoreBlockSizes.Patches
 {
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Level;
     using Microsoft.Xna.Framework;
@@ -15,8 +14,8 @@ namespace MoreBlockSizes.Patches
     {
         private static readonly Color NO_WIND_COLOR = Color.White * 0.2f;
 
-        [UsedImplicitly]
-        public static bool Prefix(LevelScreen __instance, ref IBlock[] ___m_hitboxes)
+
+        public static bool Prefix(ref IBlock[] ___m_hitboxes)
         {
             if (!ModEntry.DrawGrouping)
             {

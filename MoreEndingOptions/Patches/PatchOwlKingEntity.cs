@@ -6,7 +6,6 @@ namespace MoreEndingOptions.Patches
     using Ending;
     using EntityComponent.BT;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Util;
     using JumpKing.Util.DrawBT;
@@ -15,7 +14,6 @@ namespace MoreEndingOptions.Patches
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.OwlEnding.OwlKingEntity", "MakeBT")]
     public static class PatchOwlKingEntity
     {
-        [UsedImplicitly]
         // ReSharper disable InconsistentNaming
         public static void Postfix(ISpriteEntity __instance, ref BehaviorTreeComp __result)
         {

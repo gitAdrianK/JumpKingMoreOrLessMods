@@ -5,13 +5,11 @@ namespace LessAutoEquipping.Patches
     using System.Reflection;
     using System.Reflection.Emit;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.MiscEntities.Merchant;
 
     [HarmonyPatch("JumpKing.MiscEntities.Merchant.MerchantComp", "OnSell")]
     public static class PatchMerchantComp
     {
-        [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);

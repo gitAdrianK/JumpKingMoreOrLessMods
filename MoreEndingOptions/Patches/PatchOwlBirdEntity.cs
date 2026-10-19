@@ -8,14 +8,12 @@ namespace MoreEndingOptions.Patches
     using Ending;
     using EntityComponent.BT;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Util.DrawBT;
 
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.OwlEnding.OwlBirdEntity", "MakeBT")]
     public static class PatchOwlBirdEntity
     {
-        [UsedImplicitly]
         public static void Postfix(ISpriteEntity __instance, ref BehaviorTreeComp __result)
         {
             var path = Path.Combine(Game1.instance.contentManager.root, "ending", "custom_owl_bird.xml");

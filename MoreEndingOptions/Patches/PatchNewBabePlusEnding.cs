@@ -6,14 +6,12 @@
     using BehaviorTree;
     using Ending;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.GameManager.MultiEnding.NewBabePlusEnding;
 
     [HarmonyPatch(typeof(NewBabePlusEnding), "MakeBT")]
     public static class PatchNewBabePlusEnding
     {
-        [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
         public static void Postfix(ref BTmanager __result)
         {

@@ -5,12 +5,10 @@ namespace LessAutoEquipping.Patches
     using System.Reflection;
     using System.Reflection.Emit;
     using HarmonyLib;
-    using JetBrains.Annotations;
 
     [HarmonyPatch("JumpKing.MiscEntities.WorldItems.WorldItemComp", "OnPickup")]
     public static class PatchWorldItemComp
     {
-        [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);

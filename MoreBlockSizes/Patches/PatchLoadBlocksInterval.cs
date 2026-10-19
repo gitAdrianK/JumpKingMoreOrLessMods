@@ -9,7 +9,6 @@ namespace MoreBlockSizes.Patches
     using System.Linq;
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.API;
     using JumpKing.Level;
     using JumpKing.Level.Sampler;
@@ -31,7 +30,6 @@ namespace MoreBlockSizes.Patches
         private static bool CanResize => !(Sizes is null);
 
 
-        [UsedImplicitly]
         public static MethodBase TargetMethod() =>
             AccessTools.Method(
                 typeof(LevelManager),
@@ -43,7 +41,7 @@ namespace MoreBlockSizes.Patches
                     typeof(bool?).MakeByRefType(),
                 });
 
-        [UsedImplicitly]
+
         public static bool Prefix(ref IBlock[] __result, LevelTexture p_src, Level level, int p_screen,
             ref bool wind_enabled, ref TeleportLink[] teleport, ref float wind_int, ref bool? wind_direction)
         {

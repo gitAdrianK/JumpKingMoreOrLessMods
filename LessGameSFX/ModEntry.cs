@@ -2,7 +2,6 @@ namespace LessGameSFX
 {
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
     using Patches;
@@ -19,7 +18,6 @@ namespace LessGameSFX
         ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
-        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
 #if DEBUG
@@ -33,7 +31,6 @@ namespace LessGameSFX
         ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
-        [UsedImplicitly]
         public static void OnLevelStart()
         {
             PatchParticleSpawner.MuteWaterSfx = false;

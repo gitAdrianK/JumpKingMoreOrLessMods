@@ -6,14 +6,12 @@
     using BehaviorTree;
     using Ending;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.GameManager.MultiEnding.OwlEnding;
 
     [HarmonyPatch(typeof(OwlEnding), "MakeBT")]
     public static class PatchOwlEnding
     {
-        [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
         public static void Postfix(ref BTmanager __result)
         {

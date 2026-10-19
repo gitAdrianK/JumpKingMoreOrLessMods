@@ -5,7 +5,6 @@ namespace LessLocationText
     using System.IO;
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.Mods;
     using Util;
 #if DEBUG
@@ -26,7 +25,6 @@ namespace LessLocationText
         ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
-        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
 #if DEBUG

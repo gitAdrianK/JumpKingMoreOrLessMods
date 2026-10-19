@@ -3,7 +3,6 @@ namespace MoreEndingOptions
     using System.Collections.Generic;
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.GameManager.MultiEnding;
     using JumpKing.GameManager.MultiEnding.NewBabePlusEnding;
@@ -33,7 +32,6 @@ namespace MoreEndingOptions
         ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
-        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
 #if DEBUG
@@ -47,7 +45,6 @@ namespace MoreEndingOptions
         ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
-        [UsedImplicitly]
         public static void OnLevelStart()
         {
             // Babes get created before OnLevelStart is called, so we cant rely on their MakeBT method to remove babe sounds!

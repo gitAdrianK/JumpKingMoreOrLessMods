@@ -3,7 +3,6 @@ namespace MoreBlockSizes.Patches
     using System.IO;
     using System.Linq;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Level;
     using JumpKing.Level.Sampler;
@@ -17,7 +16,7 @@ namespace MoreBlockSizes.Patches
             AccessTools.FieldRefAccess<JKContentManager, ContentManager>(
                 AccessTools.Field("JumpKing.JKContentManager:contentManager"));
 
-        [UsedImplicitly]
+
         public static bool Prefix()
         {
             var contentManager = Game1.instance.contentManager;
@@ -55,7 +54,7 @@ namespace MoreBlockSizes.Patches
             return true;
         }
 
-        [UsedImplicitly]
+
         public static void Postfix() => PatchLoadBlocksInterval.Sizes = null;
     }
 }

@@ -2,7 +2,6 @@ namespace MoreLayeringOptions
 {
     using System.Collections.Generic;
     using EntityComponent;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Mods;
 #if DEBUG
@@ -10,14 +9,12 @@ namespace MoreLayeringOptions
 #endif
 
     [JumpKingMod("Zebra.MoreLayeringOptions")]
-    [UsedImplicitly]
     public static class ModEntry
     {
         /// <summary>
         ///     Called by Jump King when the Level Starts
         /// </summary>
         [OnLevelStart]
-        [UsedImplicitly]
         public static void OnLevelStart()
         {
 #if DEBUG

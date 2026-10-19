@@ -6,7 +6,6 @@ namespace MoreEndingOptions.Patches
     using Ending;
     using EntityComponent.BT;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using JumpKing.Util.DrawBT;
     using Util;
@@ -14,7 +13,6 @@ namespace MoreEndingOptions.Patches
     [HarmonyPatch("JumpKing.GameManager.MultiEnding.NormalEnding.EndingKing", "MakeBT")]
     public static class PatchEndingKing
     {
-        [UsedImplicitly]
         // ReSharper disable InconsistentNaming
         public static void Postfix(ISpriteEntity __instance, ref BehaviorTreeComp __result)
         {

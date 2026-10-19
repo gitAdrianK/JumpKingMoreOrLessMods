@@ -1,6 +1,5 @@
 namespace LessNpcDialog.Menus
 {
-    using System.Diagnostics.CodeAnalysis;
     using JetBrains.Annotations;
     using JumpKing.Mods;
     using JumpKing.PauseMenu;
@@ -14,7 +13,6 @@ namespace LessNpcDialog.Menus
 
         [MainMenuItemSetting]
         [PauseMenuItemSetting]
-        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for JK")]
         [UsedImplicitly]
         public static ToggleEnabled Toggle(object factory, GuiFormat format) => new ToggleEnabled();
 

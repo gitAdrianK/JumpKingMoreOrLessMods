@@ -5,7 +5,6 @@ namespace LessAutoEquipping
     using System.IO;
     using System.Reflection;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing.Mods;
     using Util;
 #if DEBUG
@@ -26,7 +25,6 @@ namespace LessAutoEquipping
         ///     Called by Jump King before the level loads
         /// </summary>
         [BeforeLevelLoad]
-        [UsedImplicitly]
         public static void BeforeLevelLoad()
         {
             var harmony = new Harmony(HarmonyIdentifier);
