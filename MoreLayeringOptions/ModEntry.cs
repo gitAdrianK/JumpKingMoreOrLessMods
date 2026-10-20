@@ -72,19 +72,15 @@ namespace MoreLayeringOptions
 
             foreach (var tag in tags)
             {
-                if (tag == "MoveBirdBeforeProps")
+                switch (tag)
                 {
-                    MoveBirdBeforeProps();
-                    break;
+                    case "MoveBirdBeforeProps":
+                        MoveBirdBeforeProps();
+                        break;
+                    case "MoveWallsBeforePlayer":
+                        MoveWallsBeforePlayer();
+                        break;
                 }
-
-                if (tag != "MoveWallsBeforePlayer")
-                {
-                    continue;
-                }
-
-                MoveWallsBeforePlayer();
-                break;
             }
         }
 
