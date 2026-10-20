@@ -93,7 +93,6 @@
     <Compile Include="ModEntry.cs"/>
     <Compile Include="Patches\PatchCenteredLocationText.cs"/>
     <Compile Include="Patches\PatchLocationNotification.cs"/>
-    <Compile Include="Patches\PatchOldManEntity.cs"/>
     <Compile Include="Patches\PatchPlayerStandStill.cs"/>
     <Compile Include="Patches\PatchIntroState.cs"/>
     <Compile Include="Patches\PatchRattmanEntity.cs"/>

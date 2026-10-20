@@ -137,8 +137,6 @@ namespace MoreTextOptions
         [UsedImplicitly]
         public static void OnLevelStart()
         {
-            PatchOldManEntity.LoadAndAssignFonts(Game1.instance.contentManager);
-
             var tags = Game1.instance.contentManager?.level?.Info.Tags;
             PatchStatsScreen.LoadEndingNames(tags);
             PatchPlayerStandStill.CheckStandStillRequirement(tags);
