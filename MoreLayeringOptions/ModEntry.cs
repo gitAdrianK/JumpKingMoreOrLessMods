@@ -1,9 +1,9 @@
 namespace MoreLayeringOptions
 {
-    using System.Collections.Generic;
-    using EntityComponent;
+    using System.Text.RegularExpressions;
     using JumpKing;
     using JumpKing.Mods;
+    using Util;
 #if DEBUG
     using System.Diagnostics;
 #endif
@@ -70,89 +70,20 @@ namespace MoreLayeringOptions
                 return;
             }
 
+            var regexWalls = new Regex(@"MoveWallsBeforePlayer(?:=\(([\d\s,-]+)\))?");
+
             foreach (var tag in tags)
             {
-                switch (tag)
+                var matchWalls = regexWalls.Match(tag);
+
+                if (tag == "MoveBirdBeforeProps")
                 {
-                    case "MoveBirdBeforeProps":
-                        MoveBirdBeforeProps();
-                        break;
-                    case "MoveWallsBeforePlayer":
-                        MoveWallsBeforePlayer();
-                        break;
+                    Sorting.MoveBirdBeforeProps();
                 }
-            }
-        }
-
-        private static void MoveBirdBeforeProps()
-        {
-            var entityManager = EntityManager.instance;
-
-            var ravens = new List<Entity>();
-            var others = new List<Entity>(entityManager.Entities.Count);
-
-            foreach (var entity in entityManager.Entities)
-            {
-                var type = entity.GetType().ToString();
-                if (type.Contains("RavenEntity"))
+                else if (matchWalls.Success)
                 {
-                    ravens.Add(entity);
-                    others.Clear();
+                    Sorting.MoveWallsBeforePlayer(matchWalls);
                 }
-                else if (type.Contains("LoopingProp"))
-                {
-                    others.Clear();
-                }
-                else
-                {
-                    others.Add(entity);
-                }
-            }
-
-            foreach (var raven in ravens)
-            {
-                entityManager.MoveToFront(raven);
-            }
-
-            foreach (var other in others)
-            {
-                entityManager.MoveToFront(other);
-            }
-        }
-
-        private static void MoveWallsBeforePlayer()
-        {
-            var entityManager = EntityManager.instance;
-
-            var walls = new List<Entity>();
-            var others = new List<Entity>(entityManager.Entities.Count);
-
-            foreach (var entity in entityManager.Entities)
-            {
-                var type = entity.GetType().ToString();
-                if (type.Contains("RaymanWallEntity"))
-                {
-                    walls.Add(entity);
-                    others.Clear();
-                }
-                else if (type.Contains("PlayerEntity"))
-                {
-                    others.Clear();
-                }
-                else
-                {
-                    others.Add(entity);
-                }
-            }
-
-            foreach (var wall in walls)
-            {
-                entityManager.MoveToFront(wall);
-            }
-
-            foreach (var other in others)
-            {
-                entityManager.MoveToFront(other);
             }
         }
     }
