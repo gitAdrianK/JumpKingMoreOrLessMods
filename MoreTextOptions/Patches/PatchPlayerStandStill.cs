@@ -28,10 +28,13 @@
 
             foreach (var tag in tags)
             {
-                if (tag == "DisableStandStillRequirement")
+                if (tag != "DisableStandStillRequirement")
                 {
-                    DisableStandStillRequirement = true;
+                    continue;
                 }
+
+                DisableStandStillRequirement = true;
+                break;
             }
         }
     }

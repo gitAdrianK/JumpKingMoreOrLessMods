@@ -2,9 +2,9 @@ namespace MoreTextOptions.Patches
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics;
+    using System.IO;
     using HarmonyLib;
-    using JetBrains.Annotations;
     using JumpKing;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -13,88 +13,136 @@ namespace MoreTextOptions.Patches
         typeof(Vector2), typeof(Color))]
     public static class PatchSpriteBatch
     {
-        [UsedImplicitly]
-        public static void Prefix(SpriteFont spriteFont, ref string text, Vector2 position, ref Color color)
+        // We can't clear this OnLevelEnd because credits might use custom fonts which run after the OnLevelEnd step.
+        private static Dictionary<string, SpriteFont> SpriteFonts { get; set; }
+
+        public static void Prefix(ref SpriteFont spriteFont, ref string text, Vector2 position, ref Color color)
         {
-            if (!ModEntry.Regex.IsMatch(text))
+            var matches = ModEntry.Regex.Matches(text);
+            if (matches.Count == 0)
             {
                 return;
             }
 
-            var pairs = Sanitize(ModEntry.Regex.Split(text));
+            Debug.WriteLine(text);
 
-            var colors = new List<string>();
-            var texts = new List<string>();
-            var i = 0;
-            foreach (var element in pairs)
+            var index = 0;
+            var segments = ModEntry.Regex.Split(text);
+            if (!string.IsNullOrEmpty(segments[0]))
             {
-                if (i % 2 == 0)
-                {
-                    colors.Add(element);
-                }
-                else
-                {
-                    texts.Add(element);
-                }
-
-                i++;
-            }
-
-            if (colors.Count != texts.Count)
-            {
-                return;
-            }
-
-            text = texts.First();
-
-            var advancedPosition = new Vector2(position.X + spriteFont.MeasureString(text).X, position.Y);
-            for (var j = 1; j < texts.Count; j++)
-            {
-                var remainingColor = ColorFromHex(colors[j]);
-                remainingColor = AdjustRgbaFromRef(remainingColor, color);
-                Game1.spriteBatch.DrawString(spriteFont, texts[j], advancedPosition, remainingColor);
-                advancedPosition.X += spriteFont.MeasureString(texts[j]).X;
-            }
-
-            var newColor = ColorFromHex(colors.First());
-            newColor = AdjustRgbaFromRef(newColor, color);
-            color = newColor;
-        }
-
-        private static LinkedList<string> Sanitize(string[] substrings)
-        {
-            LinkedList<string> pairs;
-            if (substrings[0] == string.Empty)
-            {
-                pairs = new LinkedList<string>(substrings.Skip(1));
+                text = segments[0];
             }
             else
             {
-                pairs = new LinkedList<string>(substrings);
-                _ = pairs.AddFirst("#FFFFFF");
+                text = segments[1];
+                index = 1;
+
+                var tag = matches[0].Value;
+                var fontMatch = ModEntry.RegexFont.Match(tag);
+                var colorMatch = ModEntry.RegexColor.Match(tag);
+
+                if (fontMatch.Success)
+                {
+                    spriteFont = GetFont(fontMatch.Groups["Font"].Value) ?? spriteFont;
+                }
+
+                if (colorMatch.Success)
+                {
+                    color = AdjustRgbaFromRef(ColorFromHex(colorMatch.Groups["R"].Value,
+                            colorMatch.Groups["G"].Value,
+                            colorMatch.Groups["B"].Value),
+                        color);
+                }
             }
 
-            return pairs;
+            var advancedPosition = new Vector2(position.X + spriteFont.MeasureString(text).X, position.Y);
+            var currentFont = spriteFont;
+            var currentColor = color;
+            for (var i = index; i < matches.Count; i++)
+            {
+                var tag = matches[i].Value;
+                var fontMatch = ModEntry.RegexFont.Match(tag);
+                var colorMatch = ModEntry.RegexColor.Match(tag);
+
+                if (fontMatch.Success)
+                {
+                    currentFont = GetFont(fontMatch.Groups["Font"].Value) ?? currentFont;
+                }
+
+                if (colorMatch.Success)
+                {
+                    currentColor = AdjustRgbaFromRef(ColorFromHex(colorMatch.Groups["R"].Value,
+                            colorMatch.Groups["G"].Value,
+                            colorMatch.Groups["B"].Value),
+                        color);
+                }
+
+                var segment = segments[i + 1];
+                if (string.IsNullOrEmpty(segment))
+                {
+                    return;
+                }
+
+                Game1.spriteBatch.DrawString(currentFont, segment, advancedPosition, currentColor);
+                advancedPosition.X += currentFont.MeasureString(segment).X;
+            }
         }
 
-        private static Color ColorFromHex(string hex)
+        private static Color ColorFromHex(string r, string g, string b) =>
+            new Color(Convert.ToByte(r, 16), Convert.ToByte(g, 16), Convert.ToByte(b, 16));
+
+        private static Color AdjustRgbaFromRef(Color color, Color reference) =>
+            new Color(
+                color.R * reference.R / 255,
+                color.G * reference.G / 255,
+                color.B * reference.B / 255,
+                color.A * reference.A / 255
+            );
+
+        public static void LoadCustomFonts(string root)
         {
-            var r = Convert.ToInt32(hex.Substring(1, 2), 16);
-            var g = Convert.ToInt32(hex.Substring(3, 2), 16);
-            var b = Convert.ToInt32(hex.Substring(5, 2), 16);
-            return new Color(r, g, b);
+            var fontFolder = Path.Combine(root, "font");
+            if (!Directory.Exists(fontFolder))
+            {
+                return;
+            }
+
+            SpriteFonts = new Dictionary<string, SpriteFont>();
+            var contentManager = Game1.instance.contentManager;
+            foreach (var file in Directory.EnumerateFiles(fontFolder, "*.xnb"))
+            {
+                var fontName = Path.GetFileNameWithoutExtension(file);
+                var fontPath = Path.ChangeExtension(file, null);
+                var spriteFont = contentManager.Load<SpriteFont>(fontPath);
+                SpriteFonts[fontName.ToLowerInvariant()] = spriteFont;
+            }
         }
 
-        private static Color AdjustRgbaFromRef(Color color, Color reference)
+        private static SpriteFont GetFont(string fontName)
         {
-            var adjustedR = reference.R / 255.0f * color.R;
-            var adjustedG = reference.G / 255.0f * color.G;
-            var adjustedB = reference.B / 255.0f * color.B;
-            return new Color(
-                (int)adjustedR,
-                (int)adjustedG,
-                (int)adjustedB,
-                reference.A);
+            var font = Game1.instance.contentManager.font;
+            fontName = fontName.ToLowerInvariant();
+            switch (fontName)
+            {
+                case "menufont":
+                    return font.MenuFont;
+                case "menufontsmall":
+                    return font.MenuFontSmall;
+                case "stylefont":
+                    return font.StyleFont;
+                case "optimusunderline":
+                    return font.OptimusUnderline;
+                case "tangerine":
+                    return font.Tangerine;
+                case "locationfont":
+                    return font.LocationFont;
+                case "gargoylefont":
+                    return font.GargoyleFont;
+            }
+
+            return SpriteFonts.TryGetValue(fontName, out var spriteFont)
+                ? spriteFont
+                : font.MenuFont;
         }
     }
 }

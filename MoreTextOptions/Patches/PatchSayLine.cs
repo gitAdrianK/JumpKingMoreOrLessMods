@@ -10,8 +10,10 @@ namespace MoreTextOptions.Patches
     public static class PatchSayLine
     {
         // Basically ModEntry regex, but requires it to be at the start and no first '{'.
-        private static readonly Regex PrefixRegex =
-            new Regex("^color=\"(#(?:[0-9a-fA-F]{2}){3})\"}", RegexOptions.IgnoreCase);
+        private static readonly Regex PrefixRegex = new Regex(
+            @"^(?:color=""#(?:[0-9a-fA-F]{2}){3}""|font=""[^""]+"")(?:\s+(?:color=""#(?:[0-9a-fA-F]{2}){3}""|font=""[^""]+""))?\}",
+            RegexOptions.IgnoreCase
+        );
 
         // ReSharper disable InconsistentNaming
         public static void Postfix(SayLine __instance, BTresult __result, ref string ___m_current_line)
@@ -29,16 +31,17 @@ namespace MoreTextOptions.Patches
 
             var sampleLine = __instance.GetFullLine();
             var remainder = sampleLine.Substring(currentLine.Length);
-            if (!PrefixRegex.IsMatch(remainder))
+            var match = PrefixRegex.Match(remainder);
+            if (!match.Success)
             {
                 return;
             }
 
-            // The regex is 16 characters long,
-            // but we are also adding the next character (17).
-            if (remainder.Length >= 17)
+            // The regex is x characters long,
+            // but we are also adding the next character (x + 1).
+            if (remainder.Length >= match.Length)
             {
-                ___m_current_line = currentLine + remainder.Substring(0, 17);
+                ___m_current_line = currentLine + remainder.Substring(0, match.Length + 1);
             }
         }
     }
