@@ -74,6 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviourTree\MsHasTreasure.cs"/>
+    <Compile Include="BehaviourTree\MsHasTreasureReceiver.cs"/>
     <Compile Include="BehaviourTree\MsPause.cs"/>
     <Compile Include="BehaviourTree\MsRandom.cs"/>
     <Compile Include="BehaviourTree\MsRandomReceiver.cs"/>

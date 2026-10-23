@@ -9,6 +9,7 @@
     using EntityComponent.BT;
     using HarmonyLib;
     using JumpKing.MiscEntities;
+    using JumpKing.MiscEntities.Raven;
     using JumpKing.Util;
     using JumpKing.Util.DrawBT;
     using JumpKing.Util.DrawBT.Util;
@@ -164,6 +165,22 @@
                         {
                             var provider = (MsSetRandomSprite)providers.GetNode();
                             var receiver = new MsSetSprite(sprite);
+                            provider.AddReceiver(receiver);
+                            children[i] = receiver;
+                        }
+
+                        break;
+                    case HasTreasure treasure:
+                        if (isMaster)
+                        {
+                            var msTreasure = new MsHasTreasure(treasure);
+                            providers.AddNode(msTreasure);
+                            children[i] = msTreasure;
+                        }
+                        else
+                        {
+                            var provider = (MsHasTreasure)providers.GetNode();
+                            var receiver = new MsHasTreasureReceiver(treasure);
                             provider.AddReceiver(receiver);
                             children[i] = receiver;
                         }

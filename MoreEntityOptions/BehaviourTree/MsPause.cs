@@ -43,9 +43,9 @@
 
         public void UpdateAll(BTresult newResult)
         {
-            foreach (var lastResult in this.Receiver)
+            foreach (var receiver in this.Receiver)
             {
-                lastResult.LastResult = newResult;
+                receiver.LastResult = newResult;
             }
         }
     }
