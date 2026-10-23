@@ -16,28 +16,18 @@
 
     public static class Ravens
     {
-        public static string Provider { get; set; }
-        public static bool ProviderRavenDone { get; set; }
+        public static string[] SyncedRavens { get; set; }
+        public static bool RavenSyncDone { get; set; }
+        public static int UntilPosition { get; set; }
 
-        public static void SyncRavens(string[] ravens)
+        public static void SyncRavens(string[] ravens, int untilPosition)
         {
-            switch (ravens[0])
-            {
-                case "Raven":
-                    Provider = "raven";
-                    break;
-                case "WhiteRaven":
-                    Provider = "white_raven";
-                    break;
-                case "Tsuchinoko":
-                    Provider = "tsuchinoko";
-                    break;
-                case "Fly":
-                    Provider = "fly";
-                    break;
-            }
+            RavenSyncDone = false;
+            UntilPosition = untilPosition;
 
-            var syncedRavens = FindSyncedRavens(ravens);
+            var syncedRavens = FindSyncedRavens(ravens, out var internalNames);
+            SyncedRavens = internalNames;
+
             var isMaster = true;
             var provider = new RavenRandomNodes();
             foreach (var syncedRaven in syncedRavens)
@@ -47,7 +37,7 @@
             }
         }
 
-        private static ISpriteEntity[] FindSyncedRavens(string[] ravens)
+        private static ISpriteEntity[] FindSyncedRavens(string[] ravens, out string[] names)
         {
             var typeRaven = AccessTools.TypeByName("JumpKing.MiscEntities.RavenEntity");
             var settingsRef =
@@ -58,6 +48,7 @@
             ISpriteEntity whiteRaven = null;
             ISpriteEntity tsuchinoko = null;
             ISpriteEntity fly = null;
+            var internalNames = new List<string>();
 
             foreach (var entity in EntityManager.instance.Entities)
             {
@@ -71,19 +62,24 @@
                 {
                     case "raven" when ravens.Contains("Raven"):
                         raven = (ISpriteEntity)entity;
+                        internalNames.Add(name);
                         break;
                     case "white_raven" when ravens.Contains("WhiteRaven"):
                         whiteRaven = (ISpriteEntity)entity;
+                        internalNames.Add(name);
                         break;
                     case "tsuchinoko" when ravens.Contains("Tsuchinoko"):
                         tsuchinoko = (ISpriteEntity)entity;
+                        internalNames.Add(name);
                         break;
                     case "fly" when ravens.Contains("Fly"):
                         fly = (ISpriteEntity)entity;
+                        internalNames.Add(name);
                         break;
                 }
             }
 
+            names = internalNames.ToArray();
             return new[] { raven, whiteRaven, tsuchinoko, fly }
                 .Where(r => r != null)
                 .ToArray();
@@ -203,7 +199,7 @@
             public IBTnode GetNode()
             {
                 var node = this.nodes[this.index];
-                this.index++;
+                this.index = (this.index + 1) % this.nodes.Count;
                 return node;
             }
         }

@@ -16,7 +16,7 @@
 
         protected override BTresult MyRun(TickData tickData)
         {
-            if (!Ravens.ProviderRavenDone)
+            if (!Ravens.RavenSyncDone)
             {
                 return BTresult.Success;
             }

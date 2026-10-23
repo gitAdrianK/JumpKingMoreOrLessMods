@@ -48,7 +48,8 @@ namespace MoreEntityOptions
             var regexWalls = new Regex(@"MoveWallsBeforePlayer(?:=\(([\d\s,-]+)\))?");
             var regexRavenSync =
                 new Regex(
-                    @"^SyncRavens=\((?<Ravens>(?:WhiteRaven|Raven|Tsuchinoko|Fly)(?:\s*,\s*(?:WhiteRaven|Raven|Tsuchinoko|Fly))+)\)$");
+                    @"^SyncRavens=\((?<Ravens>(?:WhiteRaven|Raven|Tsuchinoko|Fly)(?:\s*,\s*(?:WhiteRaven|Raven|Tsuchinoko|Fly))*)\)(?:UntilPosition\((?<Position>\d+)\))?$");
+
 
             foreach (var tag in tags)
             {
@@ -69,7 +70,12 @@ namespace MoreEntityOptions
                         .Split(',')
                         .Select(r => r.Trim())
                         .ToArray();
-                    Ravens.SyncRavens(ravens);
+
+                    var untilPosition = matchRavenSync.Groups["Position"].Success
+                        ? int.Parse(matchRavenSync.Groups["Position"].Value) - 1
+                        : int.MaxValue;
+
+                    Ravens.SyncRavens(ravens, untilPosition);
                 }
             }
         }

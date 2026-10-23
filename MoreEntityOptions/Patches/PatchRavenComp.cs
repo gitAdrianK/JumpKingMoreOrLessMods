@@ -2,6 +2,7 @@
 
 namespace MoreEntityOptions.Patches
 {
+    using System.Linq;
     using HarmonyLib;
     using JumpKing.MiscEntities;
     using JumpKing.MiscEntities.Raven;
@@ -12,9 +13,19 @@ namespace MoreEntityOptions.Patches
     {
         public static void Postfix(RavenState ___m_state, RavenSettings ___m_settings)
         {
-            if (___m_settings.name == Ravens.Provider && ___m_state.is_done)
+            if (Ravens.RavenSyncDone)
             {
-                Ravens.ProviderRavenDone = true;
+                return;
+            }
+
+            if (!Ravens.SyncedRavens.Contains(___m_settings.name))
+            {
+                return;
+            }
+
+            if (___m_state.is_done || ___m_state.TimesFled() > Ravens.UntilPosition)
+            {
+                Ravens.RavenSyncDone = true;
             }
         }
     }

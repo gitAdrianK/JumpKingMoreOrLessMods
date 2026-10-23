@@ -13,7 +13,7 @@
 
         protected override BTresult MyRun(TickData tickData)
         {
-            if (Ravens.ProviderRavenDone)
+            if (Ravens.RavenSyncDone)
             {
                 return !(Game1.random.NextDouble() < this.SuccessChance) ? BTresult.Failure : BTresult.Success;
             }

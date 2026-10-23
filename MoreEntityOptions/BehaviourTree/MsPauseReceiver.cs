@@ -16,7 +16,7 @@
 
         protected override BTresult MyRun(TickData tickData)
         {
-            if (Ravens.ProviderRavenDone)
+            if (Ravens.RavenSyncDone)
             {
                 // Completely arbitrary slowdown to prevent the raven from going hyper when the provider is done.
                 return this.Timer.Update(tickData.delta_time * 0.5f) == Timer.Result.Done
