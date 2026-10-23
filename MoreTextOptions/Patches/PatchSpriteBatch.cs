@@ -2,7 +2,6 @@ namespace MoreTextOptions.Patches
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using HarmonyLib;
     using JumpKing;
@@ -23,8 +22,6 @@ namespace MoreTextOptions.Patches
             {
                 return;
             }
-
-            Debug.WriteLine(text);
 
             var index = 0;
             var segments = ModEntry.Regex.Split(text);

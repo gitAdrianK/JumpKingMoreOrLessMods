@@ -1,4 +1,4 @@
-﻿namespace MoreLayeringOptions.Util
+﻿namespace MoreEntityOptions.Util
 {
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -9,6 +9,49 @@
 
     public static class Sorting
     {
+        /* The order of entities for vanilla (and presumably any map) is:
+                 JumpKing.PauseMenu.MenuFactory
+                 JumpKing.GameManager.MultiEnding.NormalEnding.EndingBabe
+                 JumpKing.GameManager.MultiEnding.NewBabePlusEnding.Actors.NBPBabeEntity
+                 JumpKing.GameManager.MultiEnding.OwlEnding.OwlGargoyleEntity
+                 JumpKing.GameManager.MultiEnding.OwlEnding.OwlBabeEntity
+            4x   JumpKing.MiscEntities.RavenEntity
+            27x  JumpKing.MiscEntities.OldManEntity
+            5x   JumpKing.MiscEntities.Merchant.MerchantEntity
+                 JumpKing.MiscEntities.WorldItems.Entities.BasicWorldItemEntity
+                 JumpKing.MiscEntities.WorldItems.Entities.WorldItemEntityDisplay
+            25x  JumpKing.MiscEntities.WorldItems.Entities.BasicWorldItemEntity
+                 JumpKing.MiscEntities.WorldItems.Entities.WorldItemEntityDisplay
+            324x JumpKing.Props.LoopingProp
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+                 JumpKing.Props.RaymanWall.RaymanWallEntity
+                 JumpKing.Props.Achievents.AchievementTrigger
+            92x  JumpKing.Props.RaymanWall.RaymanWallEntity
+            5x   JumpKing.Props.LoopingProp
+            4x   JumpKing.Props.Achievents.AchievementTrigger
+            23x  JumpKing.Props.RattmanText.RattmanEntity
+                 JumpKing.PauseMenu.MenuFactory
+                 JumpKing.Player.PlayerEntity
+                 JumpKing.AmbienceManager
+                 JumpKing.MiscSystems.LocationText.LocationTextManager
+                 JumpKing.MiscSystems.ScreenEventManager
+                 JumpKing.MiscSystems.FullRunManager
+                 JumpKing.MiscEntities.EarthquakeEntity
+            */
+
         public static void MoveBirdBeforeProps()
         {
             var entityManager = EntityManager.instance;

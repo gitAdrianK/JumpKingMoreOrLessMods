@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreSaves", "MoreSaves\More
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreTextOptions", "MoreTextOptions\MoreTextOptions.csproj", "{7F9A9182-3A01-45BA-8BFB-9943653B7510}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLayeringOptions", "MoreLayeringOptions\MoreLayeringOptions.csproj", "{F1CF119B-E912-4EAC-89F3-2052A6D47841}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreEntityOptions", "MoreEntityOptions\MoreEntityOptions.csproj", "{F1CF119B-E912-4EAC-89F3-2052A6D47841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
