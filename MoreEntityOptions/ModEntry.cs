@@ -1,5 +1,6 @@
 namespace MoreEntityOptions
 {
+    using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using HarmonyLib;
@@ -27,7 +28,7 @@ namespace MoreEntityOptions
         public static void BeforeLevelLoad()
         {
 #if DEBUG
-             Debugger.Launch();
+              Debugger.Launch();
 #endif
             new Harmony(Harmony).PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -45,10 +46,14 @@ namespace MoreEntityOptions
             }
 
             var regexWalls = new Regex(@"MoveWallsBeforePlayer(?:=\(([\d\s,-]+)\))?");
+            var regexRavenSync =
+                new Regex(
+                    @"^SyncRavens=\((?<Ravens>(?:WhiteRaven|Raven|Tsuchinoko|Fly)(?:\s*,\s*(?:WhiteRaven|Raven|Tsuchinoko|Fly))+)\)$");
 
             foreach (var tag in tags)
             {
                 var matchWalls = regexWalls.Match(tag);
+                var matchRavenSync = regexRavenSync.Match(tag);
 
                 if (tag == "MoveBirdBeforeProps")
                 {
@@ -58,12 +63,15 @@ namespace MoreEntityOptions
                 {
                     Sorting.MoveWallsBeforePlayer(matchWalls);
                 }
+                else if (matchRavenSync.Success)
+                {
+                    var ravens = matchRavenSync.Groups["Ravens"].Value
+                        .Split(',')
+                        .Select(r => r.Trim())
+                        .ToArray();
+                    Ravens.SyncRavens(ravens);
+                }
             }
-
-            //if (ravenPairs.Count > 0)
-            //{
-            //    RavenSync = new RavenSync(ravenPairs);
-            //}
         }
 
         /// <summary>
