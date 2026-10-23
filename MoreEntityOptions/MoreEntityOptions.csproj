@@ -76,11 +76,13 @@
   <ItemGroup>
     <Compile Include="BehaviourTree\MsPause.cs"/>
     <Compile Include="BehaviourTree\MsRandom.cs"/>
-    <Compile Include="BehaviourTree\MsResultReceiver.cs"/>
+    <Compile Include="BehaviourTree\MsRandomReceiver.cs"/>
+    <Compile Include="BehaviourTree\MsPauseReceiver.cs"/>
     <Compile Include="BehaviourTree\MsSetRandomSprite.cs"/>
     <Compile Include="BehaviourTree\MsSetSprite.cs"/>
     <Compile Include="ModEntry.cs"/>
     <Compile Include="Patches\PatchIntroState.cs"/>
+    <Compile Include="Patches\PatchRavenComp.cs"/>
     <Compile Include="Patches\PatchRavenEntity.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs"/>
     <Compile Include="Util\Ravens.cs"/>

@@ -10,14 +10,14 @@
     {
         public MsRandom(BTrandom random)
         {
-            this.Receiver = new List<MsResultReceiver>();
+            this.Receiver = new List<MsRandomReceiver>();
 
             this.SuccessChance = Traverse.Create(random).Field("m_success_chance").GetValue<float>();
         }
 
-        public List<MsResultReceiver> Receiver { get; }
+        public List<MsRandomReceiver> Receiver { get; }
 
-        private float SuccessChance { get; }
+        public float SuccessChance { get; }
 
         protected override BTresult MyRun(TickData tickData)
         {
@@ -26,7 +26,7 @@
             return newResult;
         }
 
-        public void AddReceiver(MsResultReceiver receiver) => this.Receiver.Add(receiver);
+        public void AddReceiver(MsRandomReceiver receiver) => this.Receiver.Add(receiver);
 
         public void UpdateAll(BTresult newResult)
         {

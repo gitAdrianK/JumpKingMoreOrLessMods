@@ -5,6 +5,7 @@
     using JumpKing;
     using JumpKing.Util.DrawBT;
     using JumpKing.Util.DrawBT.Util;
+    using Util;
 
     public class MsSetSprite : ISpriteBTnode
     {
@@ -13,7 +14,18 @@
 
         private Sprite[] Sprites { get; }
 
-        protected override BTresult MyRun(TickData tickData) => BTresult.Success;
+        protected override BTresult MyRun(TickData tickData)
+        {
+            if (!Ravens.ProviderRavenDone)
+            {
+                return BTresult.Success;
+            }
+
+            var num = Game1.random.Next(0, this.Sprites.Length);
+            this.SpriteEntity.SetSprite(this.Sprites[num]);
+
+            return BTresult.Success;
+        }
 
         public void UpdateSprite(int num) => this.SpriteEntity.SetSprite(this.Sprites[num]);
     }

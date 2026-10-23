@@ -15,8 +15,27 @@
 
     public static class Ravens
     {
+        public static string Provider { get; set; }
+        public static bool ProviderRavenDone { get; set; }
+
         public static void SyncRavens(string[] ravens)
         {
+            switch (ravens[0])
+            {
+                case "Raven":
+                    Provider = "raven";
+                    break;
+                case "WhiteRaven":
+                    Provider = "white_raven";
+                    break;
+                case "Tsuchinoko":
+                    Provider = "tsuchinoko";
+                    break;
+                case "Fly":
+                    Provider = "fly";
+                    break;
+            }
+
             var syncedRavens = FindSyncedRavens(ravens);
             var isMaster = true;
             var provider = new RavenRandomNodes();
@@ -112,7 +131,7 @@
                         else
                         {
                             var provider = (MsRandom)providers.GetNode();
-                            var receiver = new MsResultReceiver();
+                            var receiver = new MsRandomReceiver(provider);
                             provider.AddReceiver(receiver);
                             children[i] = receiver;
                         }
@@ -128,7 +147,7 @@
                         else
                         {
                             var provider = (MsPause)providers.GetNode();
-                            var receiver = new MsResultReceiver();
+                            var receiver = new MsPauseReceiver(provider);
                             provider.AddReceiver(receiver);
                             children[i] = receiver;
                         }

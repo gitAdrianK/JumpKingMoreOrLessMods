@@ -11,18 +11,17 @@
     {
         public MsPause(PauseRandom random)
         {
-            this.Receiver = new List<MsResultReceiver>();
+            this.Receiver = new List<MsPauseReceiver>();
 
             var traverse = Traverse.Create(random);
             this.Min = traverse.Field("m_min").GetValue<float>();
             this.Max = traverse.Field("m_max").GetValue<float>();
-            this.Timer = traverse.Field("m_timer").GetValue<Timer>();
         }
 
-        public List<MsResultReceiver> Receiver { get; }
+        public List<MsPauseReceiver> Receiver { get; }
 
-        private float Min { get; }
-        private float Max { get; }
+        public float Min { get; }
+        public float Max { get; }
         private Timer Timer { get; set; }
 
         protected override void OnNewRun()
@@ -33,14 +32,14 @@
 
         protected override BTresult MyRun(TickData tickData)
         {
-            var newResult = this.Timer.Update(tickData.delta_time) == Timer.Result.Done
+            var newResult = this.Timer.Update(tickData.delta_time * 0.5f) == Timer.Result.Done
                 ? BTresult.Success
                 : BTresult.Running;
             this.UpdateAll(newResult);
             return newResult;
         }
 
-        public void AddReceiver(MsResultReceiver receiver) => this.Receiver.Add(receiver);
+        public void AddReceiver(MsPauseReceiver receiver) => this.Receiver.Add(receiver);
 
         public void UpdateAll(BTresult newResult)
         {
