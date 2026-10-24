@@ -13,7 +13,7 @@ namespace MoreEntityOptions.Patches
     {
         public static void Postfix(RavenState ___m_state, RavenSettings ___m_settings)
         {
-            if (Ravens.RavenSyncDone)
+            if (Ravens.SyncedRavens == null || Ravens.RavenSyncDone)
             {
                 return;
             }
