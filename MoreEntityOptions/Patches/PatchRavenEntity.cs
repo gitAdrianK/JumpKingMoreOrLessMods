@@ -18,7 +18,7 @@
             AccessTools.FieldRefAccess<ISpriteEntity, RavenSettings>(
                 AccessTools.Field("JumpKing.MiscEntities.RavenEntity:m_settings"));
 
-        private static readonly AccessTools.FieldRef<object, RavenState> StateRef =
+        public static readonly AccessTools.FieldRef<object, RavenState> StateRef =
             AccessTools.FieldRefAccess<object, RavenState>(
                 AccessTools.Field("JumpKing.MiscEntities.Raven.RavenComp:m_state"));
 

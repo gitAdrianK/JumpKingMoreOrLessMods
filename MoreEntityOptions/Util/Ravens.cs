@@ -26,6 +26,26 @@
             UntilPosition = untilPosition;
 
             var syncedRavens = FindSyncedRavens(ravens, out var internalNames);
+
+            var compType = AccessTools.TypeByName("JumpKing.MiscEntities.Raven.RavenComp");
+            foreach (var syncedRaven in syncedRavens)
+            {
+                var comp = syncedRaven.GetComponents().FirstOrDefault(c => c.GetType() == compType);
+                if (comp == null)
+                {
+                    continue;
+                }
+
+                var state = Traverse.Create(comp).Field("m_state").GetValue<RavenState>();
+                if (!state.is_done && state.TimesFled() <= untilPosition)
+                {
+                    continue;
+                }
+
+                RavenSyncDone = true;
+                return;
+            }
+
             SyncedRavens = internalNames;
 
             var isMaster = true;

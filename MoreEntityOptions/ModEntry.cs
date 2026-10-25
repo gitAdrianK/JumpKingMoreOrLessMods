@@ -28,7 +28,7 @@ namespace MoreEntityOptions
         public static void BeforeLevelLoad()
         {
 #if DEBUG
-              Debugger.Launch();
+            Debugger.Launch();
 #endif
             new Harmony(Harmony).PatchAll(Assembly.GetExecutingAssembly());
         }
