@@ -48,8 +48,7 @@ namespace MoreEntityOptions
             var regexWalls = new Regex(@"MoveWallsBeforePlayer(?:=\(([\d\s,-]+)\))?");
             var regexRavenSync =
                 new Regex(
-                    @"^SyncRavens=\((?<Ravens>(?:WhiteRaven|Raven|Tsuchinoko|Fly)(?:\s*,\s*(?:WhiteRaven|Raven|Tsuchinoko|Fly))*)\)(?:UntilPosition\((?<Position>\d+)\))?$");
-
+                    @"^SyncRavens=\((?<ravens>.+?)\)(?:UntilPosition\((?<position>\d+)\))?$");
 
             foreach (var tag in tags)
             {
@@ -66,13 +65,13 @@ namespace MoreEntityOptions
                 }
                 else if (matchRavenSync.Success)
                 {
-                    var ravens = matchRavenSync.Groups["Ravens"].Value
+                    var ravens = matchRavenSync.Groups["ravens"].Value
                         .Split(',')
                         .Select(r => r.Trim())
                         .ToArray();
 
-                    var untilPosition = matchRavenSync.Groups["Position"].Success
-                        ? int.Parse(matchRavenSync.Groups["Position"].Value) - 1
+                    var untilPosition = matchRavenSync.Groups["position"].Success
+                        ? int.Parse(matchRavenSync.Groups["position"].Value) - 1
                         : int.MaxValue;
 
                     Ravens.SyncRavens(ravens, untilPosition);

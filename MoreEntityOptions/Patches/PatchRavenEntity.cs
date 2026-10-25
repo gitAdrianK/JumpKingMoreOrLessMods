@@ -76,9 +76,9 @@
                     return "tsuchinoko";
                 case "Fly":
                     return "fly";
+                default:
+                    return raven;
             }
-
-            throw new ArgumentException("Unknown raven: " + raven);
         }
     }
 }

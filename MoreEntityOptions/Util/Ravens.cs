@@ -68,6 +68,7 @@
             ISpriteEntity whiteRaven = null;
             ISpriteEntity tsuchinoko = null;
             ISpriteEntity fly = null;
+            var otherRavens = new List<ISpriteEntity>();
             var internalNames = new List<string>();
 
             foreach (var entity in EntityManager.instance.Entities)
@@ -96,11 +97,20 @@
                         fly = (ISpriteEntity)entity;
                         internalNames.Add(name);
                         break;
+                    default:
+                        if (ravens.Contains(name))
+                        {
+                            otherRavens.Add((ISpriteEntity)entity);
+                            internalNames.Add(name);
+                        }
+
+                        break;
                 }
             }
 
             names = internalNames.ToArray();
             return new[] { raven, whiteRaven, tsuchinoko, fly }
+                .Concat(otherRavens)
                 .Where(r => r != null)
                 .ToArray();
         }

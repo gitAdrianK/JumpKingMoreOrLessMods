@@ -18,7 +18,7 @@
             }
 
             var regexRavenHide = new Regex(
-                "^Hide(?<raven>WhiteRaven|Raven|Tsuchinoko|Fly)UntilPosition(?<position>\\d+)$");
+                "^Hide(?<raven>.+?)UntilPosition(?<position>\\d+)$");
 
             foreach (var tag in tags)
             {
