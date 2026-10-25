@@ -83,6 +83,6 @@ namespace MoreEntityOptions
         ///     Called by Jump King when the level ends.
         /// </summary>
         [OnLevelEnd]
-        public static void OnLevelEnd() => PatchRavenEntity.HideUntil = null;
+        public static void OnLevelEnd() => PatchRavenEntity.HideScreens = null;
     }
 }

@@ -18,7 +18,7 @@
             }
 
             var regexRavenHide = new Regex(
-                "^Hide(?<raven>.+?)UntilPosition(?<position>\\d+)$");
+                @"^Hide(?<raven>.+?)(?<condition>Until|At)Position=\(\s*(?<position>\d+(?:\s*,\s*\d+)*)\s*\)$");
 
             foreach (var tag in tags)
             {
@@ -28,14 +28,39 @@
                     continue;
                 }
 
-                if (PatchRavenEntity.HideUntil == null)
+                if (PatchRavenEntity.HideScreens == null)
                 {
-                    PatchRavenEntity.HideUntil = new Dictionary<string, int>();
+                    PatchRavenEntity.HideScreens = new Dictionary<string, HashSet<int>>();
                 }
 
-                var raven = PatchRavenEntity.NameToInternal(matchRavenHide.Groups["raven"].Value);
-                var positionValue = int.Parse(matchRavenHide.Groups["position"].Value) - 1;
-                PatchRavenEntity.HideUntil[raven] = positionValue;
+                var name = PatchRavenEntity.NameToInternal(matchRavenHide.Groups["raven"].Value);
+                var condition = matchRavenHide.Groups["condition"].Value;
+                var positions = matchRavenHide.Groups["position"].Value;
+                var screens = new HashSet<int>();
+
+                switch (condition)
+                {
+                    case "Until":
+                        for (var i = 0; i < int.Parse(positions); i++)
+                        {
+                            screens.Add(i - 1);
+                        }
+
+                        break;
+
+                    case "At":
+                        foreach (var pos in positions.Split(','))
+                        {
+                            if (int.TryParse(pos.Trim(), out var position))
+                            {
+                                screens.Add(position - 1);
+                            }
+                        }
+
+                        break;
+                }
+
+                PatchRavenEntity.HideScreens[name] = screens;
             }
         }
     }

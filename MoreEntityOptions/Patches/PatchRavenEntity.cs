@@ -22,7 +22,7 @@
             AccessTools.FieldRefAccess<object, RavenState>(
                 AccessTools.Field("JumpKing.MiscEntities.Raven.RavenComp:m_state"));
 
-        public static Dictionary<string, int> HideUntil { get; set; }
+        public static Dictionary<string, HashSet<int>> HideScreens { get; set; }
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
@@ -49,24 +49,18 @@
         public static bool ShouldRender(ISpriteEntity instance)
         {
             var settings = SettingsRef(instance);
-            if (HideUntil == null || !HideUntil.TryGetValue(settings.name, out var until))
+            if (HideScreens == null || !HideScreens.TryGetValue(settings.name, out var screens) || screens == null)
             {
                 return true;
             }
 
             var ravenComp = instance.GetComponents().FirstOrDefault(c => c.GetType() == RavenComp);
-            if (ravenComp == null)
-            {
-                return true;
-            }
-
-            var state = StateRef(ravenComp);
-            return state.TimesFled() >= until;
+            return !(ravenComp == null || screens.Contains(StateRef(ravenComp).TimesFled()));
         }
 
-        public static string NameToInternal(string raven)
+        public static string NameToInternal(string name)
         {
-            switch (raven)
+            switch (name)
             {
                 case "Raven":
                     return "raven";
@@ -77,7 +71,7 @@
                 case "Fly":
                     return "fly";
                 default:
-                    return raven;
+                    return name;
             }
         }
     }
