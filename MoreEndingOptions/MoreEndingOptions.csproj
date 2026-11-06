@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ending\EndingXmlParser.cs"/>
+    <Compile Include="Entities\EntityDebugHitbox.cs"/>
     <Compile Include="ModEntry.cs"/>
     <Compile Include="Patches\PatchEndingBabe.cs"/>
     <Compile Include="Patches\PatchEndingCherub.cs"/>
