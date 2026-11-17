@@ -2,8 +2,6 @@ namespace MoreEndingOptions
 {
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Text.RegularExpressions;
-    using Entities;
     using HarmonyLib;
     using JumpKing;
     using JumpKing.GameManager.MultiEnding;
@@ -20,17 +18,17 @@ namespace MoreEndingOptions
         private const string Identifier = "Zebra.MoreEndingOptions";
         private const string HarmonyIdentifier = Identifier + ".Harmony";
 
-        public static bool MuteMainBabe { get; private set; }
-        public static bool MuteNewBabe { get; private set; }
-        public static bool MuteGhostBabe { get; private set; }
+        public static bool MuteMainBabe { get; set; }
+        public static bool MuteNewBabe { get; set; }
+        public static bool MuteGhostBabe { get; set; }
 
-        public static bool ShortMainBabe { get; private set; }
-        public static bool ShortNewBabe { get; private set; }
-        public static bool ShortGhostBabe { get; private set; }
+        public static bool ShortMainBabe { get; set; }
+        public static bool ShortNewBabe { get; set; }
+        public static bool ShortGhostBabe { get; set; }
 
-        public static Rectangle? HitboxMainBabe { get; private set; }
-        public static Rectangle? HitboxNewBabe { get; private set; }
-        public static Rectangle? HitboxGhostBabe { get; private set; }
+        public static Rectangle? HitboxMainBabe { get; set; }
+        public static Rectangle? HitboxNewBabe { get; set; }
+        public static Rectangle? HitboxGhostBabe { get; set; }
 
         /// <summary>
         ///     Called by Jump King before the level loads
@@ -76,12 +74,27 @@ namespace MoreEndingOptions
 
             foreach (var tag in tags)
             {
-                if (HandleSimpleTags(tag, mainEnding, newEnding, ghostEnding))
+                if (Tags.HandleSimpleTags(tag, mainEnding, newEnding, ghostEnding))
                 {
                     continue;
                 }
 
-                _ = HandleHitboxTag(tag, mainEnding, newEnding, ghostEnding);
+                if (Tags.HandleHitboxTag(tag, mainEnding, newEnding, ghostEnding))
+                {
+                    continue;
+                }
+
+                if (Tags.HandleKingPositionTag(tag, mainEnding, newEnding, ghostEnding))
+                {
+                    continue;
+                }
+
+                if (Tags.HandleBabePositionTag(tag, mainEnding, newEnding, ghostEnding))
+                {
+                    continue;
+                }
+
+                _ = Tags.HandleGargoylePositionTag(tag, ghostEnding);
             }
         }
 
@@ -98,76 +111,6 @@ namespace MoreEndingOptions
             HitboxMainBabe = null;
             HitboxNewBabe = null;
             HitboxGhostBabe = null;
-        }
-
-        private static bool HandleSimpleTags(string tag, IEnding mainEnding, IEnding newEnding, IEnding ghostEnding)
-        {
-            switch (tag)
-            {
-                case "MuteMainBabe":
-                    MuteMainBabe = true;
-                    BtWalker.RemoveBabeNoises(mainEnding);
-                    return true;
-                case "MuteNewBabe":
-                    MuteNewBabe = true;
-                    BtWalker.RemoveBabeNoises(newEnding);
-                    return true;
-                case "MuteGhostBabe":
-                    MuteGhostBabe = true;
-                    BtWalker.RemoveBabeNoises(ghostEnding);
-                    return true;
-                case "ShortMainBabe":
-                    ShortMainBabe = true;
-                    BtWalker.StripBabeBt(mainEnding);
-                    return true;
-                case "ShortNewBabe":
-                    ShortNewBabe = true;
-                    BtWalker.StripBabeBt(newEnding);
-                    return true;
-                case "ShortGhostBabe":
-                    ShortGhostBabe = true;
-                    BtWalker.StripBabeBt(ghostEnding);
-                    return true;
-            }
-
-            return false;
-        }
-
-        private static bool HandleHitboxTag(string tag, IEnding mainEnding, IEnding newEnding, IEnding ghostEnding)
-        {
-            var hitboxRegex =
-                new Regex(@"^(Main|New|Ghost)BabeHitbox=\((\d+),\s*(\d+),\s*([1-9]\d*),\s*([1-9]\d*)\)$");
-            var hitboxMatch = hitboxRegex.Match(tag);
-            if (!hitboxMatch.Success)
-            {
-                return false;
-            }
-
-            var x = int.Parse(hitboxMatch.Groups[2].Value);
-            var y = int.Parse(hitboxMatch.Groups[3].Value);
-            var width = int.Parse(hitboxMatch.Groups[4].Value);
-            var height = int.Parse(hitboxMatch.Groups[5].Value);
-            var hitbox = new Rectangle(x, y, width, height);
-
-            var screen = -1;
-            switch (hitboxMatch.Groups[1].Value)
-            {
-                case "Main":
-                    HitboxMainBabe = hitbox;
-                    screen = mainEnding.GetEndingScreen0();
-                    break;
-                case "New":
-                    HitboxNewBabe = hitbox;
-                    screen = newEnding.GetEndingScreen0();
-                    break;
-                case "Ghost":
-                    HitboxGhostBabe = hitbox;
-                    screen = ghostEnding.GetEndingScreen0();
-                    break;
-            }
-
-            _ = new EntityDebugHitbox(screen + 1, hitbox);
-            return true;
         }
     }
 }
