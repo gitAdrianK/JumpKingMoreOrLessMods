@@ -2,7 +2,7 @@ namespace MoreTextOptions.Patches
 {
     using System;
     using System.Collections.Generic;
-    using EntityComponent.BT;
+    using System.Linq;
     using HarmonyLib;
     using JumpKing.MiscEntities.OldMan;
     using JumpKing.Props.RattmanText;
@@ -11,6 +11,8 @@ namespace MoreTextOptions.Patches
     [HarmonyPatch(typeof(TargetLine), "MyRun")]
     public static class PatchTargetLine
     {
+        private static readonly Type TypeBlackBoardComp = AccessTools.TypeByName("EntityComponent.BlackBoardComp");
+
         private static readonly AccessTools.FieldRef<object, Dictionary<string, object>> DictionaryRef =
             AccessTools.FieldRefAccess<object, Dictionary<string, object>>(
                 AccessTools.Field("EntityComponent.BlackBoardComp:m_values"));
@@ -32,13 +34,7 @@ namespace MoreTextOptions.Patches
             AccessTools.MethodDelegate<Func<OldManFont, SpriteFont>>(
                 AccessTools.Method(AccessTools.TypeByName("JumpKing.MiscEntities.OldManEntity"), "GetOldManFont"));
 
-        private static readonly Func<EntityBTNode, object> GetBlackBoard =
-            AccessTools.MethodDelegate<Func<EntityBTNode, object>>(AccessTools
-                .Method(typeof(TargetLine), "GetComponent")
-                .MakeGenericMethod(AccessTools.TypeByName("EntityComponent.BlackBoardComp")));
-
         // ReSharper disable InconsistentNaming
-
         public static void Postfix(TargetLine __instance)
         {
             var typeInstance = __instance.game_object.GetType();
@@ -62,7 +58,14 @@ namespace MoreTextOptions.Patches
                 return;
             }
 
-            var dict = DictionaryRef(GetBlackBoard(__instance));
+            var blackBoardComp = __instance.game_object.GetComponents()
+                .FirstOrDefault(c => c.GetType() == TypeBlackBoardComp);
+            if (blackBoardComp == null)
+            {
+                return;
+            }
+
+            var dict = DictionaryRef(blackBoardComp);
             if (!dict.TryGetValue("BB_LINE_KEY", out var line))
             {
                 return;
